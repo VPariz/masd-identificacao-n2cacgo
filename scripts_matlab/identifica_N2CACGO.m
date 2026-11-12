@@ -70,12 +70,14 @@ function [sys_id, theta, J] = identifica_N2CACGO(w, H_med, n)
     Y = [Y1; Y2];
 
     % 4. Resolução Analítica do Sistema Linear (Mínimo Global Convexo)
-    % Se a matriz for mal-condicionada em ordens elevadas, utiliza pinv/mldivide
-    if rcond(Q) < 1e-15
-        theta = pinv(Q) * Y;
-    else
+    % Utiliza divisão matricial (\) por eliminação Gaussiana com pivoteamento
+    warn_state = warning('off', 'MATLAB:nearlySingularMatrix');
+    try
         theta = Q \ Y;
+    catch
+        theta = pinv(Q, 1e-30) * Y;
     end
+    warning(warn_state);
 
     % 5. Extração dos Polinômios Numerador e Denominador
     num = theta(1:n+1).';

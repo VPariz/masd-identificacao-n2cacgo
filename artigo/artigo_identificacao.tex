@@ -173,9 +173,9 @@ A Tabela \ref{tab:silveira_comp} apresenta o confronto direto entre os custos de
 2 & $3,027 \times 10^{0}$  & $3,018 \times 10^{0}$  & 11,28 \% \\
 3 & $1,459 \times 10^{0}$  & $1,466 \times 10^{0}$  & 57,23 \% \\
 4 & $6,290 \times 10^{-4}$ & $6,320 \times 10^{-4}$ & 99,98 \% \\
-5 & $4,076 \times 10^{-4}$ & $3,795 \times 10^{-4}$ & 99,99 \% \\
-6 & $3,912 \times 10^{-4}$ & $6,306 \times 10^{-4}$ & 99,99 \% \\
-7 & $4,406 \times 10^{-4}$ & $3,439 \times 10^{-4}$ & 99,99 \% \\
+5 & $3,743 \times 10^{-4}$ & $3,795 \times 10^{-4}$ & 99,99 \% \\
+6 & $3,533 \times 10^{-4}$ & $6,306 \times 10^{-4}$ & 99,99 \% \\
+7 & $3,865 \times 10^{-4}$ & $3,439 \times 10^{-4}$ & 99,99 \% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -235,11 +235,11 @@ A resposta em frequência complexa de cada ensaio foi extraída calculando-se a 
 \toprule
 \textbf{Ordem} & \textbf{Custo $J$} & \textbf{RMSE Mag (dB)} & \textbf{RMSE Fase ($^\circ$)} & \textbf{FIT (\%)} \\
 \midrule
-\textbf{1ª} & \textbf{1,7459} & \textbf{0,2149} & \textbf{2,1917} & \textbf{88,37 \%} \\
-2ª          & 2,3151          & 0,2266          & 2,8586          & 84,58 \% \\
-3ª          & 2,3697          & 0,3386          & 2,8616          & 84,21 \% \\
-4ª          & 2,0156          & 0,2169          & 2,5258          & 86,57 \% \\
-5ª          & 2,7626          & 0,4047          & 3,5547          & 81,60 \% \\
+\textbf{1ª} & \textbf{1,7468} & \textbf{0,2166} & \textbf{2,1901} & \textbf{88,36 \%} \\
+2ª          & 2,2320          & 0,2250          & 2,7644          & 85,12 \% \\
+3ª          & 2,2780          & 0,3158          & 2,8527          & 84,82 \% \\
+4ª          & 1,8653          & 0,2135          & 2,3370          & 87,57 \% \\
+5ª          & 3,6628          & 0,6838          & 5,4644          & 75,59 \% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -260,7 +260,7 @@ A resposta em frequência complexa de cada ensaio foi extraída calculando-se a 
 
 Como demonstrado na Tabela \ref{tab:motor_comp} e nas Figs. \ref{fig:motor_todas_ordens} e \ref{fig:motor_melhor_bode}, o modelo de \textbf{1ª ordem} apresenta o melhor compromisso de parcimônia e precisão física:
 \begin{equation}
-    G_{\text{motor}}(s) = \frac{-0,2463 s + 48,2918}{s + 4,7896} \approx \frac{10,08}{\frac{s}{4,79} + 1}
+    G_{\text{motor}}(s) = \frac{-0,2468 s + 48,33}{s + 4,794} \approx \frac{10,08}{\frac{s}{4,79} + 1}
     \label{eq:modelo_motor_1ord}
 \end{equation}
 
@@ -268,9 +268,9 @@ Fisicamente, a função de transferência clássica de velocidade angular de mot
 \begin{equation}
     G(s) = \frac{K_m}{(\tau_m s + 1)(\tau_e s + 1)}
 \end{equation}
-Como a constante de tempo elétrica ($\tau_e = L_a/R_a$) é tipicamente ordens de magnitude menor que a mecânica ($\tau_m = J_m/B_m$), o polo mecânico em $s = -4,79$~rad/s domina integralmente a dinâmica na faixa ensaiada ($\tau_m \approx 0,209$~s), com ganho estático $K_m = 48,29 / 4,79 = 10,08$ ($20,07$~dB).
+Como a constante de tempo elétrica ($\tau_e = L_a/R_a$) é tipicamente ordens de magnitude menor que a mecânica ($\tau_m = J_m/B_m$), o polo mecânico em $s = -4,794$~rad/s domina integralmente a dinâmica na faixa ensaiada ($\tau_m \approx 0,209$~s), com ganho estático $K_m = 48,33 / 4,794 = 10,08$ ($20,07$~dB).
 
-Cumpre destacar que o zero real no semiplano direito ($z = +48,29 / 0,2463 \approx +196,1$~rad/s) configura um sistema de \textbf{fase não-mínima}. Esse comportamento decorre da aproximação racional de Padé de 1ª ordem ($e^{-s\tau_d} \approx \frac{1 - s\tau_d/2}{1 + s\tau_d/2}$) inerente ao \textbf{atraso puro de transporte} da bancada experimental ($\tau_d = 2/z \approx 10,2$~ms), originado pela latência de comunicação e amostragem do tacômetro digital. Tal efeito justifica de forma rigorosa por que a defasagem medida ultrapassa $-90^\circ$ nas frequências mais altas ensaiadas (chegando a $-130^\circ$ a $10$~Hz), sendo capturada com precisão pelo método N2CACGO sem a necessidade de aumentar artificialmente a ordem do denominador.
+Cumpre destacar que o zero real no semiplano direito ($z = +48,33 / 0,2468 \approx +195,8$~rad/s) configura um sistema de \textbf{fase não-mínima}. Esse comportamento decorre da aproximação racional de Padé de 1ª ordem ($e^{-s\tau_d} \approx \frac{1 - s\tau_d/2}{1 + s\tau_d/2}$) inerente ao \textbf{atraso puro de transporte} da bancada experimental ($\tau_d = 2/z \approx 10,2$~ms), originado pela latência de comunicação e amostragem do tacômetro digital. Tal efeito justifica de forma rigorosa por que a defasagem medida ultrapassa $-90^\circ$ nas frequências mais altas ensaiadas (chegando a $-104^\circ$ a $10$~Hz), sendo capturada com precisão pelo método N2CACGO sem a necessidade de aumentar artificialmente a ordem do denominador.
 
 \subsection{Validação Dinâmica Temporal do Motor}
 Para verificar a capacidade preditiva do modelo identificado fora do domínio espectral, submeteu-se a FT da Eq. (\ref{eq:modelo_motor_1ord}) às entradas reais de \textbf{onda quadrada} e \textbf{onda triangular} ensaiadas na bancada (10 Hz).
