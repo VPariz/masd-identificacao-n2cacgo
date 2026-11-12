@@ -42,10 +42,12 @@ trabalho_identificacao/
 │       ├── item5_motor_validacao_onda_quadrada.png
 │       └── item5_motor_validacao_onda_triangular.png
 │
-└── apresentacao/                     # Slides em PowerPoint (Item 7)
-    ├── apresentacao_identificacao_N2CACGO.pptx # Apresentação profissional widescreen 16:9
-    └── gera_apresentacao_pptx.py     # Script gerador dos slides
-```
+└── apresentacao/                     # Slides em PowerPoint e HTML5 Interativo (Item 7)
+    ├── slides.html                   # Apresentação executiva interativa em HTML5 (KaTeX + Standalone)
+    ├── index.html                    # Mesma apresentação configurada para GitHub Pages
+    ├── constroi_slides_html.py       # Script gerador dos slides HTML5
+    ├── apresentacao_identificacao_N2CACGO.pptx # Apresentação profissional em PowerPoint widescreen 16:9
+    └── gera_apresentacao_pptx.py     # Script gerador dos slides PPTX```
 
 ---
 
