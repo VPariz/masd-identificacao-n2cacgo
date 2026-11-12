@@ -697,6 +697,74 @@
         margin-bottom: 20px;
       }
     }
+  
+    /* ============================================================
+       MODO MULETA (ALOPRADO / DEFESA BLINDADA DE RESGATE)
+       ============================================================ */
+    body.muleta-mode {
+      --bg-dark: #050814;
+      --bg-card: rgba(10, 16, 31, 0.97);
+      --accent-cyan: #38BDF8;
+      --accent-gold: #F59E0B;
+      --accent-emerald: #10B981;
+      --accent-rose: #EF4444;
+      --border-card: rgba(245, 158, 11, 0.45);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.20) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.20) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(16, 185, 129, 0.12) 0px, transparent 60%);
+    }
+
+    body.muleta-mode .slide {
+      border: 2px solid rgba(245, 158, 11, 0.6) !important;
+      box-shadow: 0 0 60px rgba(245, 158, 11, 0.22), 0 25px 50px -12px rgba(0, 0, 0, 0.9) !important;
+    }
+
+    .muleta-cue-box {
+      display: none;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      border-left: 5px solid #F59E0B;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #FEF3C7;
+      animation: pulseAlert 2.5s infinite ease-in-out;
+    }
+
+    body.muleta-mode .muleta-cue-box {
+      display: block;
+    }
+
+    .muleta-cue-box strong {
+      color: #FFFFFF;
+      background: rgba(245, 158, 11, 0.3);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .btn-muleta-toggle {
+      background: rgba(245, 158, 11, 0.2) !important;
+      border: 1px solid rgba(245, 158, 11, 0.5) !important;
+      color: #FDE68A !important;
+      font-weight: 700 !important;
+      transition: all 0.25s ease !important;
+    }
+
+    body.muleta-mode .btn-muleta-toggle {
+      background: linear-gradient(135deg, #F59E0B, #D97706) !important;
+      color: #000 !important;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.7) !important;
+      border-color: #FFFFFF !important;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { transform: scale(1); opacity: 0.95; }
+      50% { transform: scale(1.015); opacity: 1; }
+    }
+
   </style>
 </head>
 <body>
@@ -774,6 +842,9 @@
     </div>
 
     <!-- SLIDE 3: FORMULAÇÃO MATEMÁTICA -->
+        <div class="muleta-cue-box">
+          ⚡ <strong>MULETA / RESGATE RÁPIDO (Pariz):</strong> Se a banca perguntar da convexidade: <em>"O resíduo é linear nos coeficientes do numerador e denominador; o critério de Cauchy-Schwarz garante hessiana estritamente positiva, solução global única via SEL analítico Qθ = Y sem risco de mínimos locais!"</em>
+        </div>
     <div class="slide" data-index="3">
       <div class="slide-header">
         <div class="slide-title-group">
@@ -1215,6 +1286,7 @@
       <div id="timer-widget" onclick="toggleTimer()" title="Clique para Iniciar/Pausar, Shift+Clique para Zerar">
         ⏱️ <span id="timer-display">00:00</span>
       </div>
+      <button class="nav-btn btn-muleta-toggle" id="btn-muleta" onclick="toggleMuleta()" title="Ativar Modo Muleta (Aloprado com Dicas de Resgate Imediato)">🛡️ MODO MULETA (M)</button>
       <button class="nav-btn" id="btn-notes" onclick="toggleNotes()">📝 Notas (N)</button>
       <button class="nav-btn" onclick="toggleFullscreen()">⛶ Tela Cheia (F)</button>
       <button class="nav-btn" onclick="window.print()">🖨️ PDF</button>
@@ -1426,6 +1498,28 @@
       }
     }
 
+    
+    function toggleMuleta() {
+      document.body.classList.toggle('muleta-mode');
+      const isMuleta = document.body.classList.contains('muleta-mode');
+      const btn = document.getElementById('btn-muleta');
+      if (btn) {
+        btn.innerHTML = isMuleta ? '🚨 MULETA ATIVA! (M)' : '🛡️ MODO MULETA (M)';
+      }
+      try {
+        localStorage.setItem('muleta_mode', isMuleta ? '1' : '0');
+      } catch(e) {}
+    }
+
+    // Carrega preferencia salva
+    try {
+      if (localStorage.getItem('muleta_mode') === '1') {
+        document.body.classList.add('muleta-mode');
+        const b = document.getElementById('btn-muleta');
+        if (b) b.innerHTML = '🚨 MULETA ATIVA! (M)';
+      }
+    } catch(e) {}
+
     function toggleNotes() {
       notesDrawer.classList.toggle('open');
       btnNotes.classList.toggle('active-btn', notesDrawer.classList.contains('open'));
@@ -1515,6 +1609,9 @@
       } else if (e.key.toLowerCase() === 'o') {
         e.preventDefault();
         toggleGrid();
+      } else if (e.key.toLowerCase() === 'm') {
+        e.preventDefault();
+        toggleMuleta();
       } else if (e.key.toLowerCase() === 't') {
         e.preventDefault();
         toggleTimer();
