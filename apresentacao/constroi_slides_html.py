@@ -139,6 +139,12 @@ html = r"""<!DOCTYPE html>
       margin-top: 4px;
     }
 
+    .slide-header-tags {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .slide-tag {
       font-size: 11px;
       font-weight: 700;
@@ -149,6 +155,20 @@ html = r"""<!DOCTYPE html>
       background: rgba(56, 189, 248, 0.12);
       color: var(--accent-cyan);
       border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .speaker-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 5px 13px;
+      border-radius: 9999px;
+      background: rgba(245, 158, 11, 0.14);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     /* Conteudo do Slide */
@@ -342,7 +362,7 @@ html = r"""<!DOCTYPE html>
       color: var(--text-muted);
       max-width: 880px;
       line-height: 1.5;
-      margin-bottom: 32px;
+      margin-bottom: 30px;
     }
 
     .cover-authors-card {
@@ -352,7 +372,7 @@ html = r"""<!DOCTYPE html>
       padding: 18px 36px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .cover-authors-names {
@@ -360,6 +380,18 @@ html = r"""<!DOCTYPE html>
       font-weight: 700;
       color: #FFFFFF;
       letter-spacing: 0.02em;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .cover-speaker-pill {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 13.5px;
     }
 
     .cover-advisor {
@@ -459,7 +491,7 @@ html = r"""<!DOCTYPE html>
       font-size: 13px;
       color: var(--accent-gold);
       background: rgba(0, 0, 0, 0.4);
-      padding: 5px 10px;
+      padding: 5px 11px;
       border-radius: 8px;
       border: 1px solid rgba(245, 158, 11, 0.3);
       display: flex;
@@ -473,9 +505,9 @@ html = r"""<!DOCTYPE html>
       position: fixed;
       bottom: 64px;
       right: 24px;
-      width: 440px;
-      max-height: 400px;
-      background: rgba(15, 23, 42, 0.95);
+      width: 480px;
+      max-height: 420px;
+      background: rgba(15, 23, 42, 0.96);
       backdrop-filter: blur(18px);
       border: 1px solid var(--accent-cyan);
       border-radius: 14px 14px 0 0;
@@ -531,6 +563,18 @@ html = r"""<!DOCTYPE html>
       font-size: 13px;
       color: #F1F5F9;
       line-height: 1.6;
+    }
+
+    .notes-speaker-tag {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 2px 9px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 11.5px;
+      margin-bottom: 8px;
     }
 
     .notes-body strong {
@@ -692,7 +736,12 @@ html = r"""<!DOCTYPE html>
         <p class="cover-subtitle">Fundamentação Matemática Convexa, Validação Teórica (Silveira, 2006), Simulação Simulink com Análise FFT e Aplicação Experimental em Motor Elétrico CC</p>
         
         <div class="cover-authors-card">
-          <div class="cover-authors-names">João Victor Tavares Pariz • Pedro Augusto • Renato Felix • Arthur Scarpini</div>
+          <div class="cover-authors-names">
+            <span class="cover-speaker-pill">👤 <strong>João Victor Pariz</strong> (Abertura & Teoria)</span>
+            <span class="cover-speaker-pill">👤 <strong>Pedro Augusto</strong> (Benchmark & Simulink)</span>
+            <span class="cover-speaker-pill">👤 <strong>Renato Felix</strong> (Bancada & Padé)</span>
+            <span class="cover-speaker-pill">👤 <strong>Arthur Scarpini</strong> (Validação & Fechamento)</span>
+          </div>
           <div class="cover-advisor">Disciplina: Modelagem e Análise de Sistemas Dinâmicos (MASD) | Docente: Prof. Dr. Marcelo de Araújo Oliveira</div>
         </div>
       </div>
@@ -705,7 +754,10 @@ html = r"""<!DOCTYPE html>
           <h2>1. Contextualização: Domínio da Frequência vs. Tempo</h2>
           <p>Superação de ruídos de alta frequência, condições iniciais e garantia de convexidade analítica</p>
         </div>
-        <div class="slide-tag">Fundamentação</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: João Victor Pariz</div>
+          <div class="slide-tag">Fundamentação</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col">
@@ -752,7 +804,10 @@ html = r"""<!DOCTYPE html>
           <h2>2. Formulação Matemática do N2CACGO</h2>
           <p>Estrutura convexa, matrizes de base polinomial e resolução analítica direta</p>
         </div>
-        <div class="slide-tag">Matemática</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: João Victor Pariz</div>
+          <div class="slide-tag">Matemática</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col">
@@ -800,7 +855,10 @@ html = r"""<!DOCTYPE html>
           <h2>3. [Item 3] Validação Teórica: Benchmark de Silveira (2006)</h2>
           <p>Reprodução exata dos resultados tabelados na dissertação de mestrado de referência</p>
         </div>
-        <div class="slide-tag">Item 3</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: Pedro Augusto</div>
+          <div class="slide-tag">Item 3</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col" style="flex: 1.1;">
@@ -851,7 +909,10 @@ html = r"""<!DOCTYPE html>
           <h2>4. [Item 4] Simulação Dinâmica Simulink com Chirp e FFT</h2>
           <p>Identificação de planta LTI a partir de séries temporais via análise espectral discreta</p>
         </div>
-        <div class="slide-tag">Item 4</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: Pedro Augusto</div>
+          <div class="slide-tag">Item 4</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col">
@@ -880,7 +941,7 @@ html = r"""<!DOCTYPE html>
             </div>
           </div>
         </div>
-        <div class="col">
+        <div class="col" style="flex: 1.05;">
           <div class="img-box" style="height: 100%;" onclick="openLightbox('{IMG_CHIRP}')">
             <img src="{IMG_CHIRP}" alt="Sinais Temporais Chirp Simulink">
           </div>
@@ -895,7 +956,10 @@ html = r"""<!DOCTYPE html>
           <h2>5. [Item 4] Validação do Modelo Identificado via FFT</h2>
           <p>Reconstrução precisa da amplitude de pico e dinâmica de fase da planta simulada</p>
         </div>
-        <div class="slide-tag">Item 4</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: Pedro Augusto</div>
+          <div class="slide-tag">Item 4</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col" style="flex: 0.95;">
@@ -942,7 +1006,10 @@ html = r"""<!DOCTYPE html>
           <h2>6. [Item 5] Aplicação Experimental: Bancada de Motor Elétrico CC</h2>
           <p>Identificação física baseada em ensaios reais com sinal senoidal puro (Grupo 3)</p>
         </div>
-        <div class="slide-tag">Item 5</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: Renato Felix</div>
+          <div class="slide-tag">Item 5</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col" style="flex: 0.95;">
@@ -981,7 +1048,10 @@ html = r"""<!DOCTYPE html>
           <h2>7. [Item 5] Parâmetros Físicos e Zero de Não-Fase Mínima (Padé)</h2>
           <p>Compreensão física dos parâmetros eletromecânicos e do atraso de amostragem da bancada</p>
         </div>
-        <div class="slide-tag">Item 5</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: Renato Felix</div>
+          <div class="slide-tag">Item 5</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col" style="flex: 0.95;">
@@ -1026,7 +1096,10 @@ html = r"""<!DOCTYPE html>
           <h2>8. [Item 5] Validação Dinâmica Temporal em Bancada Real</h2>
           <p>Confronto cego do modelo linear identificado contra ondas quadrada e triangular (10 Hz)</p>
         </div>
-        <div class="slide-tag">Item 5</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: Arthur Scarpini</div>
+          <div class="slide-tag">Item 5</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col">
@@ -1061,7 +1134,10 @@ html = r"""<!DOCTYPE html>
           <h2>9. Dificuldades Encontradas e Soluções de Engenharia</h2>
           <p>Superação de desafios numéricos, condicionamento matricial e integridade de dados</p>
         </div>
-        <div class="slide-tag">Engenharia</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: Arthur Scarpini</div>
+          <div class="slide-tag">Engenharia</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col">
@@ -1106,7 +1182,10 @@ html = r"""<!DOCTYPE html>
           <h2>10. Conclusões e Considerações Finais</h2>
           <p>Síntese das realizações, validação experimental e disponibilização pública</p>
         </div>
-        <div class="slide-tag">Conclusão</div>
+        <div class="slide-header-tags">
+          <div class="speaker-badge">👤 Orador: Arthur Scarpini & Equipe</div>
+          <div class="slide-tag">Conclusão</div>
+        </div>
       </div>
       <div class="slide-content">
         <div class="col">
@@ -1194,76 +1273,101 @@ html = r"""<!DOCTYPE html>
   </div>
 
   <script>
-    // Roteiro do Orador para cada um dos 11 slides
+    // Roteiro do Orador individualizado por integrante com tempos balanceados (Total: ~14 a 16 min)
     const speakerNotes = {
-      1: `<strong>Abertura e Cumprimentos (1:00 min):</strong>
+      1: `<div class="notes-speaker-tag">👤 Orador: João Victor Pariz (Abertura da Equipe) | ~1:00 min</div>
+          <strong>Abertura e Apresentação Formal:</strong>
           <ul>
             <li>Cumprimente o Prof. Dr. Marcelo de Araújo Oliveira e a banca avaliadora.</li>
-            <li>Apresente a equipe: <em>João Victor Tavares Pariz, Pedro Augusto, Renato Felix e Arthur Scarpini</em>.</li>
-            <li>Anuncie o tema: identificação de sistemas dinâmicos lineares no domínio da frequência utilizando o método convexo <strong>N2CACGO</strong> de Silveira (2006).</li>
-            <li>Enfatize que o trabalho contemplou desde a dedução algébrica pura até a aplicação prática em bancada real de motor CC.</li>
+            <li>Apresente a equipe dividida em 4 frentes:
+              <ul>
+                <li><strong>João Victor Pariz:</strong> Abertura, Contexto e Formulação Matemática Convexa;</li>
+                <li><strong>Pedro Augusto:</strong> Benchmark de Silveira (2006) e Simulação Simulink com FFT;</li>
+                <li><strong>Renato Felix:</strong> Dados Experimentais de Bancada e Modelo Físico com Padé;</li>
+                <li><strong>Arthur Scarpini:</strong> Validação Dinâmica Temporal Cega, Desafios Numéricos e Conclusão.</li>
+              </ul>
+            </li>
+            <li>Anuncie o tema: <em>Identificação de Sistemas SISO no Domínio da Frequência via Método N2CACGO</em>.</li>
           </ul>`,
-      2: `<strong>Motivação: Por que Domínio da Frequência? (1:15 min):</strong>
+      2: `<div class="notes-speaker-tag">👤 Orador: João Victor Pariz | ~1:15 min</div>
+          <strong>Contexto: Por que Domínio da Frequência?</strong>
           <ul>
-            <li>Destaque os problemas do domínio do tempo (ARX, PEM): ruído estocástico fora da banda contamina matrizes de covariância, e o estado inicial não nulo introduz viés severo.</li>
+            <li>Destaque os problemas do domínio do tempo (ARX, PEM): ruído estocástico de alta frequência contamina matrizes de covariância, e o estado inicial não nulo introduz viés severo.</li>
             <li>Explique a vantagem do domínio da frequência: energia concentrada estritamente nas frequências ensaiadas, com filtragem natural de ruídos.</li>
-            <li><strong>Ponto Crítico:</strong> Métodos como Nelder-Mead (<code>fminsearch</code>) minimizam erro de saída e caem em <em>mínimos locais</em>. O <strong>N2CACGO</strong> usa o erro de equação e torna o espaço <strong>estritamente convexo</strong>, garantindo solução global única!</li>
+            <li><strong>Ponto Crítico:</strong> Métodos como Nelder-Mead (<code>fminsearch</code>) minimizam o erro de saída e caem em <em>mínimos locais</em>. O <strong>N2CACGO</strong> usa o erro de equação e torna o espaço <strong>estritamente convexo</strong>, garantindo solução global única!</li>
           </ul>`,
-      3: `<strong>Formulação Matemática do N2CACGO (1:30 min):</strong>
+      3: `<div class="notes-speaker-tag">👤 Orador: João Victor Pariz | ~1:30 min</div>
+          <strong>Formulação Matemática do N2CACGO:</strong>
           <ul>
             <li>Apresente a função de transferência arbitrária \(G_e(s) = B(s)/A(s)\).</li>
             <li>Mostre o resíduo de equação ponderado por fasor: \(e(j\omega_i) = A(j\omega_i) G(j\omega_i) - B(j\omega_i)\).</li>
             <li>Explique a minimização analítica: igualando o gradiente \(\nabla_\theta J = 0\), chega-se ao sistema particionado \(Q \theta = Y\).</li>
             <li>Destaque que a solução \(\theta^* = Q^{-1} Y\) é <em>fechada e puramente analítica</em>, sem iterações ou risco de divergência.</li>
+            <li><strong>Transição de Fala:</strong> <em>"Para apresentar como validamos essa teoria matematicamente e a aplicação no Simulink, passo a palavra agora para o Pedro Augusto."</em></li>
           </ul>`,
-      4: `<strong>Item 3: Benchmark Acadêmico de Silveira (2006) (1:15 min):</strong>
+      4: `<div class="notes-speaker-tag">👤 Orador: Pedro Augusto | ~1:15 min</div>
+          <strong>Item 3: Benchmark Acadêmico de Silveira (2006):</strong>
           <ul>
+            <li>Agradeça a passagem de João Victor.</li>
             <li>Mostre a Tabela 3.2: reproduzimos com <strong>100% de concordância</strong> todos os valores de \(J\) da dissertação original (ordens 1 a 7).</li>
-            <li>Explique que para ordens \(n \ge 4\), o custo estaciona exatamente em \(6,2903 \times 10^{-4}\), provando que ordens maiores são redundantes para a planta dada.</li>
+            <li>Explique que para ordens \(n \ge 4\), o custo estaciona exatamente em \(6,2903 \times 10^{-4}\), provando que ordens maiores são redundantes para a dinâmica daquela planta.</li>
             <li>Mencione que em sistemas didáticos sintéticos com ordem compatível, o algoritmo obteve \(FIT = 100,00\%\) e erro resíduo \(J \sim 10^{-14}\).</li>
           </ul>`,
-      5: `<strong>Item 4: Simulação Simulink & Análise FFT (1:15 min):</strong>
+      5: `<div class="notes-speaker-tag">👤 Orador: Pedro Augusto | ~1:15 min</div>
+          <strong>Item 4: Simulação Simulink & Análise FFT:</strong>
           <ul>
             <li>Descreva o modelo Simulink (<code>modelo_item4.slx</code>): planta subamortecida de 2ª ordem (\(\omega_n = 10\text{ rad/s}, \zeta = 0,20\)).</li>
             <li>Explique o sinal de entrada: Chirp senoidal linear varrendo de \(0,1\) a \(15,0\text{ Hz}\), amostrado a \(1000\text{ Hz}\) (\(N = 20.001\) amostras).</li>
             <li>Explique a extração fasorial por FFT: \(G(j\omega_k) = Y(k)/U(k)\), isolando 126 frequências com alta coerência SNR.</li>
           </ul>`,
-      6: `<strong>Item 4: Validação do Modelo Identificado (1:00 min):</strong>
+      6: `<div class="notes-speaker-tag">👤 Orador: Pedro Augusto | ~1:00 min</div>
+          <strong>Item 4: Validação do Modelo Identificado via FFT:</strong>
           <ul>
             <li>Mostre o modelo identificado: \(\omega_n = 10,02\text{ rad/s}\) (erro de apenas \(0,2\%\)) e ganho unitário com erro \(< 0,03\%\).</li>
             <li>Apresente os índices de desempenho: <strong>FIT = 96,47%</strong>, RMSE de módulo \(0,77\text{ dB}\) e RMSE de fase \(8,69^{\circ}\).</li>
-            <li>Justifique a pequena dispersão residual como efeito inevitável de vazamento espectral (*spectral leakage*) na FFT, absorvido pelo estimador.</li>
+            <li>Justifique a pequena dispersão residual como efeito inevitável de vazamento espectral (*spectral leakage*) na FFT, plenamente absorvido pelo estimador.</li>
+            <li><strong>Transição de Fala:</strong> <em>"Agora que vimos a robustez do N2CACGO em simulação, passo a palavra ao Renato Felix para apresentar a identificação em bancada física real de um motor CC."</em></li>
           </ul>`,
-      7: `<strong>Item 5: Bancada Experimental do Motor CC (1:15 min):</strong>
+      7: `<div class="notes-speaker-tag">👤 Orador: Renato Felix | ~1:30 min</div>
+          <strong>Item 5: Bancada Experimental do Motor CC:</strong>
           <ul>
-            <li><strong>Rigor Metrológico:</strong> Utilizamos exclusivamente a base de dados do <em>Grupo 3</em> (26 ensaios senoidais de \(0,20\) a \(10,0\text{ Hz}\)). Nenhuma base externa foi misturada.</li>
+            <li>Agradeça a passagem de Pedro Augusto.</li>
+            <li><strong>Rigor Metrológico:</strong> Enfatize que utilizamos exclusivamente a base de dados autêntica do <em>Grupo 3</em> (26 ensaios senoidais de \(0,20\) a \(10,0\text{ Hz}\)). Nenhuma base externa foi misturada.</li>
             <li>Explique o tratamento dos dados: para cada frequência, os fasores foram extraídos via DFT sobre os últimos 60% das amostras temporais, garantindo regime permanente estrito e eliminando transitórios de partida.</li>
-            <li>Varredura de ordens: modelos de ordem superior apresentaram sobreajuste (*overfitting*) sem ganho físico real.</li>
+            <li>Varredura de ordens (1 a 4): mostre no gráfico que ordens maiores sofrem sobreajuste (*overfitting*) a ruídos de comutação sem ganho físico real. Justifique a seleção da 1ª ordem.</li>
           </ul>`,
-      8: `<strong>Item 5: Parâmetros Físicos e Atraso de Padé (1:45 min - Ponto Alto):</strong>
+      8: `<div class="notes-speaker-tag">👤 Orador: Renato Felix | ~2:00 min (Ponto Alto Técnico)</div>
+          <strong>Item 5: Parâmetros Físicos e Atraso de Padé:</strong>
           <ul>
             <li>Apresente o modelo adotado: \(G(s) = \frac{-0,2468 s + 48,33}{s + 4,794}\) (\(FIT = 88,36\%\)).</li>
             <li>Discuta a física: ganho estático \(K_m = 10,08\text{ (rad/s)/V}\) e constante de tempo \(\tau_m = 0,209\text{ s}\).</li>
-            <li><strong>Explicação Crucial da Banca:</strong> O modelo possui um zero no semi-plano direito (\(s = +195,8\text{ rad/s}\)). Explique que <em>não é instabilidade</em>, mas sim a aproximação de Padé de 1ª ordem do atraso puro de amostragem (\(\tau_d = 2/195,8 \approx 10,2\text{ ms}\)), explicando a queda de fase experimental além de \(-90^{\circ}\).</li>
+            <li><strong>Explicação Crucial para a Banca:</strong> O modelo possui um zero no semi-plano direito (\(s = +195,8\text{ rad/s}\)). Explique que <em>não é instabilidade</em>, mas sim a aproximação de Padé de 1ª ordem do atraso puro de amostragem (\(\tau_d = 2/195,8 \approx 10,2\text{ ms}\)).</li>
+            <li>Esse atraso de amostragem de \(\approx 10,2\text{ ms}\) da placa explica matematicamente por que a fase experimental cai além de \(-90^{\circ}\) a 10 Hz!</li>
+            <li><strong>Transição de Fala:</strong> <em>"Para apresentar a validação dinâmica cega no tempo, as dificuldades numéricas e as conclusões, passo a palavra para o Arthur Scarpini."</em></li>
           </ul>`,
-      9: `<strong>Item 5: Validação Dinâmica Cega no Tempo (1:15 min):</strong>
+      9: `<div class="notes-speaker-tag">👤 Orador: Arthur Scarpini | ~1:15 min</div>
+          <strong>Item 5: Validação Dinâmica Temporal Cega:</strong>
           <ul>
+            <li>Agradeça a passagem de Renato Felix.</li>
             <li>Mostre o teste cego com sinais de onda quadrada (<code>sqrf</code>) e triangular (<code>trif</code>) a \(10\text{ Hz}\).</li>
-            <li>Destaque que o modelo linear identificado no domínio da frequência foi capaz de simular a resposta temporal real com excelente precisão:</li>
-            <li>Na onda quadrada, acompanha as transições exponenciais e taxa de subida. Na onda triangular, arredonda suavemente as pontas pela ação do polo mecânico.</li>
+            <li>Destaque que o modelo linear identificado no domínio da frequência simulou a resposta temporal real com excelente precisão:</li>
+            <li>Na onda quadrada, acompanha as transições exponenciais e taxa de subida. Na onda triangular, arredonda suavemente as pontas pela ação do polo mecânico (\(s = -4,79\text{ rad/s}\)).</li>
           </ul>`,
-      10: `<strong>Dificuldades e Engenharia de Solução (1:30 min):</strong>
+      10: `<div class="notes-speaker-tag">👤 Orador: Arthur Scarpini | ~1:30 min</div>
+          <strong>Dificuldades Encontradas e Soluções de Engenharia:</strong>
           <ul>
-            <li><em>1. Condicionamento Numérico de Q:</em> Para ordens \(n \ge 4\), as potências \((j\omega)^n\) atingem \(10^{14}\) e \(\text{rcond}(Q) < 10^{-16}\). O comando <code>pinv</code> quebrava ordens altas. Resolvemos usando eliminação Gaussiana com pivoteamento (<code>Q \ Y</code>), recuperando o erro nulo exato de Silveira.</li>
+            <li><em>1. Condicionamento Numérico de Q:</em> Para ordens \(n \ge 4\), as potências \((j\omega)^n\) atingem \(10^{14}\) e \(\text{rcond}(Q) < 10^{-16}\). O comando <code>pinv</code> truncava autovalores essenciais. Resolvemos usando eliminação Gaussiana com pivoteamento (<code>Q \ Y</code>), recuperando o erro nulo exato de Silveira.</li>
             <li><em>2. Vazamento da FFT:</em> Contornado limitando a faixa de frequências úteis a \([1,0; 80,0]\text{ rad/s}\).</li>
             <li><em>3. Transitórios na Bancada:</em> Expurgados pela janela dos últimos 60%.</li>
             <li><em>4. Solvers no Simulink:</em> Parametrização programática com o solver contínuo <code>ode4</code> de passo fixo.</li>
           </ul>`,
-      11: `<strong>Conclusões e Repositório Aberto (1:00 min):</strong>
+      11: `<div class="notes-speaker-tag">👤 Orador: Arthur Scarpini & Toda a Equipe | ~1:15 min</div>
+          <strong>Conclusões e Repositório Aberto:</strong>
           <ul>
             <li>Sintetize as entregas: os 5 itens foram executados e automatizados com sucesso em scripts MATLAB nativos (<code>executa_todos_itens.m</code>).</li>
-            <li>Mostre o link do GitHub aberto: repositório completo com dados, diagramas Simulink, artigo IEEE em PDF de 5 páginas e apresentação.</li>
-            <li>Agradeça ao professor e à banca e abra formalmente para perguntas!</li>
+            <li>Mostre o link do GitHub aberto: repositório completo com dados, diagramas Simulink, artigo IEEE em PDF de 5 páginas e apresentação interativa.</li>
+            <li>Convide os 3 colegas (João Victor, Pedro e Renato) para se posicionarem juntos para a banca.</li>
+            <li>Agradeça ao Prof. Dr. Marcelo de Araújo Oliveira e abra formalmente a sessão para perguntas!</li>
           </ul>`
     };
 
