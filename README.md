@@ -46,8 +46,10 @@ trabalho_identificacao/
     ├── slides.html                   # Apresentação executiva interativa em HTML5 (KaTeX + Standalone)
     ├── index.html                    # Mesma apresentação configurada para GitHub Pages
     ├── constroi_slides_html.py       # Script gerador dos slides HTML5
+    ├── ROTEIRO_APRESENTACAO.md       # Roteiro do orador detalhado slide a slide com guia de fala
     ├── apresentacao_identificacao_N2CACGO.pptx # Apresentação profissional em PowerPoint widescreen 16:9
-    └── gera_apresentacao_pptx.py     # Script gerador dos slides PPTX```
+    └── gera_apresentacao_pptx.py     # Script gerador dos slides PPTX
+```
 
 ---
 
