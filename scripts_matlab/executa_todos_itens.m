@@ -1,6 +1,6 @@
 %% SCRIPT PRINCIPAL: EXECUÇÃO INTEGRADA DO TRABALHO DE IDENTIFICAÇÃO (MASD - IME)
 % Método: N2CACGO (Norma 2 Convexo Analítico Conjunto Gerador Ótimo - Silveira, 2006)
-% Aluno: João Pedro de S. Silva
+% Autores: João Victor Tavares Pariz, Pedro Augusto, Renato Felix, Scarpini
 % Professor: Prof. Dr. Marcelo de Araújo Oliveira
 % Data de Apresentação: 06 de Novembro
 

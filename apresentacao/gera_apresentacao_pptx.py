@@ -216,9 +216,9 @@ tab_text = (
     "  2ª   |      3,027       |     3,018\n"
     "  3ª   |      1,459       |     1,466\n"
     "  4ª   |    6,290e-4      |   6,320e-4\n"
-    "  5ª   |    4,076e-4      |   3,795e-4\n"
-    "  6ª   |    3,912e-4      |   6,306e-4\n"
-    "  7ª   |    4,406e-4      |   3,439e-4\n"
+    "  5ª   |    3,743e-4      |   3,795e-4\n"
+    "  6ª   |    3,533e-4      |   6,306e-4\n"
+    "  7ª   |    3,865e-4      |   3,439e-4\n"
 )
 p = tf_t3.add_paragraph()
 p.text = tab_text
@@ -268,18 +268,18 @@ p.font.size = Pt(15); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
 tab_m = (
     "Ordem | Custo J | RMSE Mag | RMSE Fase | FIT (%)\n"
     "-------------------------------------------------\n"
-    " 1ª   |  1,7459 | 0,21 dB  |  2,19°    | 88,37 %\n"
-    " 2ª   |  2,3151 | 0,23 dB  |  2,86°    | 84,58 %\n"
-    " 3ª   |  2,3697 | 0,34 dB  |  2,86°    | 84,21 %\n"
-    " 4ª   |  2,0156 | 0,22 dB  |  2,53°    | 86,57 %\n"
-    " 5ª   |  2,7626 | 0,40 dB  |  3,55°    | 81,60 %\n"
+    " 1ª   |  1,7468 | 0,22 dB  |  2,19°    | 88,36 %\n"
+    " 2ª   |  2,2320 | 0,22 dB  |  2,76°    | 85,12 %\n"
+    " 3ª   |  2,2780 | 0,32 dB  |  2,85°    | 84,82 %\n"
+    " 4ª   |  1,8653 | 0,21 dB  |  2,34°    | 87,57 %\n"
+    " 5ª   |  3,6628 | 0,68 dB  |  5,46°    | 75,59 %\n"
 )
 p = tf_t5.add_paragraph()
 p.text = tab_m
 p.font.size = Pt(11); p.font.bold = True; p.font.color.rgb = COR_AZUL_MEDIO; p.space_before = Pt(6)
 
 p = tf_t5.add_paragraph()
-p.text = "Compromisso de Parcimônia:\n• A 1ª ordem atinge o menor custo J (1,7459) e menor RMSE (0,21 dB).\n• Aumentar a ordem para 2 ou 3 não melhora o ajuste e introduz polos/zeros de alta frequência espúrios."
+p.text = "Compromisso de Parcimônia:\n• A 1ª ordem atinge o menor custo J (1,7468) e menor RMSE (0,22 dB).\n• Aumentar a ordem para 2 ou 3 não melhora o ajuste e introduz polos/zeros de alta frequência espúrios."
 p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(6)
 
 # =========================================================================
@@ -305,15 +305,15 @@ p.text = "Modelo de 1ª Ordem Identificado:"
 p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
 
 p = tf_f.add_paragraph()
-p.text = "G(s) = (-0,2463 s + 48,29) / (s + 4,79)\n     ≈ 10,08 / (0,209 s + 1)"
+p.text = "G(s) = (-0,2468 s + 48,33) / (s + 4,794)\n     ≈ 10,08 / (0,209 s + 1)"
 p.font.size = Pt(15); p.font.bold = True; p.font.color.rgb = RGBColor(180, 40, 20); p.space_before = Pt(6)
 
 p = tf_f.add_paragraph()
 p.text = "Conexão com a Teoria Eletromecânica:\n" \
-         "1. Ganho Estático:\n   Km = 48,29 / 4,79 = 10,08 (20,07 dB).\n" \
-         "2. Polo Dominante Mecânico:\n   s = -4,79 rad/s  =>  τm ≈ 0,209 s.\n" \
+         "1. Ganho Estático:\n   Km = 48,33 / 4,794 = 10,08 (20,07 dB).\n" \
+         "2. Polo Dominante Mecânico:\n   s = -4,794 rad/s  =>  τm ≈ 0,209 s.\n" \
          "3. Constante Elétrica:\n   Como τe = La/Ra << τm, a 1ª ordem domina a faixa de teste até 10 Hz.\n" \
-         "4. Atraso e Fase Não-Mínima:\n   O zero em s = +196 rad/s é a aproximação de Padé do atraso puro de transporte (τd ≈ 10 ms)."
+         "4. Atraso e Fase Não-Mínima:\n   O zero em s = +195,8 rad/s é a aproximação de Padé do atraso puro de transporte (τd ≈ 10,2 ms)."
 p.font.size = Pt(11); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(6)
 
 # =========================================================================

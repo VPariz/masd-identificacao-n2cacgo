@@ -73,24 +73,34 @@ trabalho_identificacao/
 | 2 | $3,027 \times 10^{0}$ | $3,018 \times 10^{0}$ | 11,28 \% |
 | 3 | $1,459 \times 10^{0}$ | $1,466 \times 10^{0}$ | 57,23 \% |
 | **4** | **$6,290 \times 10^{-4}$** | **$6,320 \times 10^{-4}$** | **99,98 \%** |
-| 5 | $4,076 \times 10^{-4}$ | $3,795 \times 10^{-4}$ | 99,99 \% |
-| 6 | $3,912 \times 10^{-4}$ | $6,306 \times 10^{-4}$ | 99,99 \% |
-| 7 | $4,406 \times 10^{-4}$ | $3,439 \times 10^{-4}$ | 99,99 \% |
+| 5 | $3,743 \times 10^{-4}$ | $3,795 \times 10^{-4}$ | 99,99 \% |
+| 6 | $3,533 \times 10^{-4}$ | $6,306 \times 10^{-4}$ | 99,99 \% |
+| 7 | $3,865 \times 10^{-4}$ | $3,439 \times 10^{-4}$ | 99,99 \% |
 
 *Concordância exata com a Tabela 3.2 da dissertação de Bruno de Pinho Silveira (IME, 2006).*
 
 #### 2. Simulação Temporal + FFT - Item 4
 - **Planta Alvo:** $G(s) = \frac{8}{0,2 s^2 + 1,2 s + 1}$
-- **Modelo Identificado via FFT:** $G_{id}(s) = \frac{8,30}{0,207 s^2 + 1,246 s + 1}$
+- **Modelo Identificado via FFT:** $G_{id}(s) = \frac{40,00}{s^2 + 6,005 s + 4,818} = \frac{8,30}{0,207 s^2 + 1,246 s + 1}$
 - **Desempenho:** $\text{FIT} = 96,47\%$, $\text{RMSE}_{\text{mag}} = 0,16$~dB.
 
 #### 3. Motor DC Experimental (Bancada de SSL) - Item 5
-- **Frequências ensaiadas:** 23 pontos de $1,26$~rad/s a $62,83$~rad/s ($0,20$~Hz a $10,00$~Hz).
+- **Dados Experimentais:** 26 ensaios senoidais medidos de $0,20$~Hz a $10,00$~Hz, consolidando 23 pontos distintos de frequência de $1,26$~rad/s a $62,83$~rad/s (média das amplitudes ensaiadas em $0,6$~Hz e $5,0$~Hz).
+- **Desempenho por Ordem (N2CACGO):**
+
+| Ordem | Custo $J$ | RMSE Mag (dB) | RMSE Fase ($^\circ$) | FIT (\%) |
+| :---: | :---: | :---: | :---: | :---: |
+| **1ª** | **1,7468** | **0,2166** | **2,1901** | **88,36 \%** |
+| 2ª | 2,2320 | 0,2250 | 2,7644 | 85,12 \% |
+| 3ª | 2,2780 | 0,3158 | 2,8527 | 84,82 \% |
+| 4ª | 1,8653 | 0,2135 | 2,3370 | 87,57 \% |
+| 5ª | 3,6628 | 0,6838 | 5,4644 | 75,59 \% |
+
 - **Modelo de 1ª Ordem Selecionado:**
-  $$G(s) = \frac{-0,2463 s + 48,2918}{s + 4,7896} \approx \frac{10,08}{0,209 s + 1}$$
-- **Métricas:** $\text{Custo } J = 1,7459$, $\text{RMSE}_{\text{mag}} = 0,21$~dB, $\text{RMSE}_{\text{fase}} = 2,19^\circ$, $\text{FIT} = 88,37\%$.
-- **Física do Sistema:** Polo dominante mecânico em $s = -4,79$~rad/s ($\tau_m \approx 0,21$~s) e ganho estático $K_m \approx 10,08$ ($20,07$~dB).
-- **Fase Não-Mínima e Atraso de Transporte:** O zero no semiplano direito ($s = +196,1$~rad/s) atua como aproximação racional de Padé de 1ª ordem ($e^{-s\tau_d} \approx \frac{1 - s\tau_d/2}{1 + s\tau_d/2}$) do atraso puro de transporte e latência de amostragem da bancada ($\tau_d \approx 10,2$~ms), explicando com precisão a queda de fase abaixo de $-90^\circ$ em altas frequências.
+  $$G(s) = \frac{-0,2468 s + 48,33}{s + 4,794} \approx \frac{10,08}{0,209 s + 1}$$
+- **Métricas:** $\text{Custo } J = 1,7468$, $\text{RMSE}_{\text{mag}} = 0,22$~dB, $\text{RMSE}_{\text{fase}} = 2,19^\circ$, $\text{FIT} = 88,36\%$.
+- **Física do Sistema:** Polo dominante mecânico em $s = -4,794$~rad/s ($\tau_m \approx 0,21$~s) e ganho estático $K_m \approx 10,08$ ($20,07$~dB).
+- **Fase Não-Mínima e Atraso de Transporte:** O zero no semiplano direito ($s = +195,8$~rad/s) atua como aproximação racional de Padé de 1ª ordem ($e^{-s\tau_d} \approx \frac{1 - s\tau_d/2}{1 + s\tau_d/2}$) do atraso puro de transporte e latência de amostragem da bancada ($\tau_d \approx 10,2$~ms), explicando com precisão a queda de fase abaixo de $-90^\circ$ em altas frequências.
 
 ---
 
