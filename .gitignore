@@ -1,0 +1,18 @@
+# Arquivos grandes (> 100 MB) que excedem o limite do GitHub
+dados_motor/relatorio_ssl.zip
+
+# MATLAB e Simulink temporários
+*.asv
+slprj/
+*.slxc
+
+# LaTeX temporários (mantendo o PDF compilado para visualização no GitHub)
+artigo/*.aux
+artigo/*.log
+artigo/*.out
+artigo/*.toc
+artigo/*.synctex.gz
+
+# Python
+__pycache__/
+*.pyc
