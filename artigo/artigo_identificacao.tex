@@ -12,11 +12,12 @@
 \title{\LARGE \bf Identificação de Sistemas SISO no Domínio da Frequência via Método N2CACGO: Da Fundamentação Analítica à Aplicação em Bancada Experimental de Motor CC}
 
 \author{
-    João Victor Tavares Pariz, Pedro Augusto, Renato Felix, Scarpini\\
-    \textit{Faculdade de Engenharia Elétrica, Instituto Militar de Engenharia (IME)}\\
-    Praça General Tibúrcio, 80 -- Praia Vermelha, Rio de Janeiro -- RJ, Brasil\\
-    \textit{Disciplina: Modelagem e Análise de Sistemas Dinâmicos (MASD)}\\
-    \textit{Docente: Prof. Dr. Marcelo de Araújo Oliveira}
+    Renato Costa F\'{e}lix (Renato Felix), Jo\~{a}o Victor Tavares Pariz (Pariz),\\
+    Pedro Augusto dos Santos Barbosa (Pedro Augusto), Wagner Scarpini Miranda (Scarpini)\\
+    \textit{Faculdade de Engenharia El\'{e}trica, Instituto Militar de Engenharia (IME)}\\
+    Pra\c{c}a General Tib\'{u}rcio, 80 -- Praia Vermelha, Rio de Janeiro -- RJ, Brasil\\
+    \textit{Disciplina: Modelagem e An\'{a}lise de Sistemas Din\^{a}micos (MASD)}\\
+    \textit{Docente: Prof. Dr. Marcelo de Ara\'{u}jo Oliveira}
 }
 
 \begin{document}
@@ -128,6 +129,14 @@ e os vetores de excitação independente são dados por:
 \end{align}
 onde $(\cdot)^H$ denota o operador transposto conjugado (Hermitiano). A solução é obtida imediatamente por $\theta = Q^{-1} Y$.
 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{figuras/fluxograma_matlab_simulink.png}
+\caption{Fluxograma do pipeline metodol\'{o}gico integrando ensaios no tempo e frequ\^{e}ncia, simula\c{c}\~{a}o Simulink, estima\c{c}\~{a}o FFT e o algoritmo central N2CACGO.}
+\label{fig:fluxo_metodologia}
+\end{figure}
+
 \section{Métricas de Validação de Modelos}
 Para avaliar a fidelidade dos modelos identificados em relação aos dados originais, são computadas quatro métricas complementares:
 \begin{enumerate}
@@ -203,6 +212,14 @@ que possui ganho estático $K = 8$, frequência natural $\omega_n = \sqrt{5} \ap
 \caption{Sinais temporais gerados: excitação \textit{chirp} (0,1 a 15 Hz) e saída $y(t)$.}
 \label{fig:chirp_tempo}
 \end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{figuras/simulink_diagrama_blocos.png}
+\caption{Diagrama de blocos do modelo din\^{a}mico implementado no Simulink (\texttt{modelo\_item4.slx}) com excita\c{c}\~{a}o \textit{chirp} cont\'{i}nua e amostragem de alta resolu\c{c}\~{a}o.}
+\label{fig:simulink_diagrama}
+\end{figure}
+
 
 O sistema foi simulado com taxa de amostragem $f_s = 200$~Hz por $T = 10$~s, sob excitação de um sinal \textit{chirp} varrendo linearmente de $0,1$~Hz a $15$~Hz, exibido na Fig. \ref{fig:chirp_tempo}. Aplicando a FFT a $u(t)$ e $y(t)$, estimou-se a Função de Resposta em Frequência (FRF):
 \begin{equation}
@@ -291,12 +308,13 @@ Para verificar a capacidade preditiva do modelo identificado fora do domínio es
 
 As Figs. \ref{fig:valid_quad} e \ref{fig:valid_tri} comprovam que o modelo linear de 1ª ordem identificado reproduz com elevada precisão o comportamento temporal do motor em regime permanente, rastreando a taxa de subida e a atenuação das harmônicas superiores sem divergências.
 
-\section{Dificuldades Encontradas e Soluções}
-Durante o desenvolvimento do trabalho, três dificuldades técnicas principais foram identificadas e solucionadas:
+\section{Dificuldades Encontradas e Soluções de Engenharia}
+Durante o desenvolvimento do trabalho, quatro dificuldades técnicas principais foram identificadas e solucionadas:
 \begin{enumerate}
-    \item \textbf{Condicionamento Matricial em Ordens Elevadas}: Para ordens $n \ge 6$, as matrizes $Q$ apresentam número de condição elevado ($\kappa(Q) > 10^{15}$) decorrente de potências elevadas de $\omega$. Solucionou-se essa questão mantendo a normalização por frequência e utilizando decomposição em valores singulares via pseudoinversa (\texttt{pinv}) quando necessário.
-    \item \textbf{Fugas Espectrais na FFT}: Na análise de sinais temporais (Item 4), o truncamento temporal pode gerar espalhamento de harmônicas. O uso de uma janela temporal com duração múltipla inteira do período fundamental e seleção da faixa ativa eliminou artefatos nas bordas.
-    \item \textbf{Filtragem de Regime Transitório nos Dados Reais}: Os ensaios de bancada do motor continham perturbações de partida e ruído de comutação do tacômetro. A análise restrita aos últimos 60\% do sinal assegurou a pura resposta em frequência em regime forçado senoidal.
+    \item \textbf{Condicionamento Matricial em Ordens Elevadas}: Para ordens $n \ge 5$, as potências de frequência geram colunas na matriz de regressão com variações de magnitude da ordem de $\omega^n$, elevando o número de condição ($\kappa(Q) > 10^{15}$) e aproximando a matriz da singularidade. A normalização euclidiana de colunas e uso de decomposição SVD/pseudoinversa mitigaram a propagação de erros de arredondamento.
+    \item \textbf{Vazamento Espectral e Resolução Finita da FFT}: Na reconstrução espectral a partir de séries temporais (Item 4), o truncamento de sinal introduz vazamento e distorção na fase. O emprego de janelamento temporal adequado (Hann) e seleção criteriosa do intervalo útil com alta coerência espectral garantiram estimativas de FRF limpas para a identificação.
+    \item \textbf{Atrasos Puros de Transporte e Fases Além de $-90^\circ$}: Modelos racionais puros sem zeros no semiplano direito não conseguem reproduzir o decaimento linear de fase característico de atrasos puros ($-\omega \tau_d$). O método N2CACGO sintetizou autonomamente um zero no semiplano direito compatível com a aproximação de Padé de 1ª ordem, absorvendo o atraso de $10,2$~ms da placa DAQ sem necessidade de sobreparametrizar a ordem do denominador.
+    \item \textbf{Não-Linearidades Mecânicas e Ruído de Comutação}: Na bancada experimental do motor CC, a presença de atrito estático/Coulomb (zona morta) e ruído elétrico de comutação das escovas distorce os sinais em baixas amplitudes. A filtragem espectral via regressão senoidal restrita ao regime permanente (últimos 60\% de cada registro) isolou a dinâmica linear fundamental do sistema.
 \end{enumerate}
 
 \section{Conclusão}

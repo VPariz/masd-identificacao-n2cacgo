@@ -1,211 +1,250 @@
-# 📋 GUIA OFICIAL DE APRESENTAÇÃO (POWERPOINT 14 SLIDES)
+# 📋 ROTEIRO OFICIAL DE APRESENTAÇÃO (POWERPOINT 14 SLIDES)
 ## Identificação de Sistemas SISO no Domínio da Frequência via Método N2CACGO
-**Disciplina:** Modelagem e Análise de Sistemas Dinâmicos (MASD) — SE/3 • IME  
-**Orientador:** Prof. Dr. Marcelo de Araújo Oliveira  
-**Equipe:** João Victor Tavares Pariz, Pedro Augusto, Renato Felix, Arthur Scarpini  
-**Tempo Total de Apresentação:** ~15:30 min (faixa estipulada: 10 a 20 min) + 5 min de arguição.  
-**Arquivo Oficial de Apresentação:** [`apresentacao_MASD_N2CACGO_IME.pptx`](file:///c:/Users/jvpar/estudo/3.2/MASD/trabalho_identificacao/apresentacao/apresentacao_MASD_N2CACGO_IME.pptx)
+**Instituição:** Instituto Militar de Engenharia (IME) — DE/3 • Engenharia Elétrica  
+**Disciplina:** Modelagem e Análise de Sistemas Dinâmicos (MASD)  
+**Docente / Orientador:** Prof. Dr. Marcelo de Araújo Oliveira  
+**Equipe de Autores (Nomes de Guerra em Destaque):**  
+- **Renato Felix** (Renato Costa Félix)  
+- **Pariz** (João Victor Tavares Pariz)  
+- **Pedro Augusto / Peu** (Pedro Augusto dos Santos Barbosa)  
+- **Scarpini** (Wagner Scarpini Miranda)  
+
+**Tempo Total de Apresentação:** ~15 a 17 minutos (faixa ideal da banca) + arguição.  
+**Arquivo Oficial da Apresentação:** [`apresentacao_MASD_N2CACGO_IME.pptx`](file:///c:/Users/jvpar/estudo/3.2/MASD/trabalho_identificacao/apresentacao/apresentacao_MASD_N2CACGO_IME.pptx)  
+**Artigo Acadêmico IEEE (PDF):** [`artigo_identificacao.pdf`](file:///c:/Users/jvpar/estudo/3.2/MASD/trabalho_identificacao/artigo/artigo_identificacao.pdf)
 
 ---
 
-### ⏱️ Tabela de Distribuição do Tempo por Integrante
+### ⏱️ Tabela de Distribuição do Tempo e Funções por Integrante
 
-| Bloco | Orador | Slides | Foco Técnico | Tempo Estimado |
+| Bloco | Orador | Slides | Foco Técnico Principal | Tempo Estimado |
 |:---:|---|:---:|---|:---:|
-| **1** | **João Victor Pariz** | 1 a 5 | Abertura, Contexto Físico (Caixa Branca/Cinza/Preta), Método N2CACGO de Silveira (2006), Código MATLAB (`identifica_N2CACGO.m`) e **Fluxograma Geral Integrado (Slide 5)** | **~5:00 min** |
-| **2** | **Pedro Augusto** | 6 a 8 | Validação de Silveira (Tabela 3.2 exata), **Modelo Simulink com Print do Diagrama (`modelo_item4.slx`)** e Extração Fasorial por FFT ($FIT = 96,47\%$) | **~3:30 min** |
-| **3** | **Renato Felix** | 9 a 11 | O Caso do Motor CC: Dados de Bancada de SSL (Grupo 3, 26 senoides), Varredura de Ordens (por que 1ª ordem?) e Parâmetros Físicos com Atraso de Padé de 10,2 ms | **~4:30 min** |
-| **4** | **Arthur Scarpini** | 12 a 14 | A "Regra de Ouro da Identificação" (Validação Cega com Ondas Quadrada e Triangular), Desafios Numéricos ($rcond(Q) < 10^{-16}$) e **Conclusões com Dificuldades e Lições** | **~4:00 min** |
-| **TOTAL** | **Toda a Equipe** | **1 a 14** | **Apresentação Completa, Equilibrada, Visual e Rigorosa** | **~17:00 min** |
+| **1** | **Renato Felix** | 1 a 3 | Abertura oficial, Modelagem vs. Identificação (Caixa Branca/Cinza/Preta), Domínio da Frequência vs. Tempo, Teoria de Silveira (2006) e Formulação Matemática Convexa | **~3:45 min** |
+| **2** | **Pariz** | 4 a 6 | Implementação Vetorizada no MATLAB (`identifica_N2CACGO.m` e `valida_modelo_fr.m`), Fluxograma Geral Integrado e Arquitetura do Modelo Simulink (`modelo_item4.slx`) | **~3:45 min** |
+| **3** | **Pedro Augusto (Peu)** | 7 a 11 | Validação Teórica de Silveira (Tabela 3.2), Reconstrução Espectral por FFT ($FIT = 96,47\%$), Metrologia da Bancada Experimental do Motor CC (SSL Grupo 3), Varredura de Ordens e Modelo Físico com Padé (10,2 ms) | **~5:00 min** |
+| **4** | **Scarpini** | 12 a 14 | Regra de Ouro da Identificação (Validação Temporal Cega com Ondas Quadrada e Triangular), Desafios Numéricos de Engenharia e Conclusões Finais (Cumprimento dos 8 Itens) | **~3:30 min** |
+| **TOTAL** | **Toda a Equipe** | **1 a 14** | **Apresentação Completa, Equilibrada, Visual e com Rigor Militar** | **~16:00 min** |
 
 ---
 
-# 🎙️ ROTEIRO DE FALA SLIDE A SLIDE (O QUE FALAR NA APRESENTAÇÃO)
+# 🎙️ GUIA DE FALA SLIDE A SLIDE (O QUE CADA UM DEVE FALAR)
 
 ---
 
-## 👤 BLOCO 1: JOÃO VICTOR TAVARES PARIZ (Slides 1 a 5 — ~5:00 min)
+## 👤 BLOCO 1: RENATO FELIX (Slides 1 a 3 — ~3:45 min)
 
-### 🟢 Slide 1: Capa & Apresentação da Equipe (Tempo: 1:00 min)
+### 🟢 Slide 1: Capa & Apresentação da Equipe (Tempo: ~1:00 min)
 * **O que falar:**
-  > *"Bom dia / boa tarde a todos, professor Marcelo e banca avaliadora.*  
-  > *Nosso grupo é composto por mim, João Victor Pariz, pelo Pedro Augusto, Renato Felix e Arthur Scarpini.*  
-  > *Hoje apresentamos o trabalho final de Modelagem e Análise de Sistemas Dinâmicos, intitulado: **'Identificação de Sistemas SISO no Domínio da Frequência via Método N2CACGO'**.*  
-  > *Nós estruturamos a nossa apresentação em 4 blocos técnicos equilibrados, cobrindo todos os requisitos solicitados na disciplina:*  
-  > 1. *Eu iniciarei apresentando o contexto da modelagem, o método de Silveira (2006), o código em MATLAB e o fluxograma geral integrado;*  
-  > 2. *O Pedro apresentará a validação do benchmark de Silveira e o diagrama dinâmico no Simulink com análise FFT;*  
-  > 3. *O Renato explicará o caso da bancada do motor CC, a origem e o tratamento dos dados experimentais e a interpretação física dos parâmetros;*  
-  > 4. *E o Scarpini finalizará com a validação dinâmica cega no tempo, os desafios de condicionamento matricial superados e as conclusões.*  
-  > *Vamos começar com a contextualização da identificação."*
+  > *"Bom dia / boa tarde a todos. Cumprimento o nosso orientador, Prof. Dr. Marcelo de Araújo Oliveira, e os colegas presentes.*  
+  > *Nossa equipe é formada por mim, Renato Felix, pelo João Victor Pariz, Pedro Augusto e Wagner Scarpini.*  
+  > *Hoje apresentamos o trabalho final da disciplina de Modelagem e Análise de Sistemas Dinâmicos, com o tema: **'Identificação de Sistemas SISO no Domínio da Frequência via Método N2CACGO'**.*  
+  > *Estruturamos a nossa apresentação em 4 blocos técnicos equilibrados, cobrindo com rigor absoluto todos os 8 itens propostos na disciplina:*  
+  > 1. *Eu (Renato) abrirei a apresentação com a contextualização física, os métodos de identificação e a teoria matemática de Silveira (2006);*  
+  > 2. *O Pariz explicará a estrutura dos códigos em MATLAB, o fluxograma do pipeline e a arquitetura do modelo no Simulink;*  
+  > 3. *O Pedro Augusto apresentará os resultados acadêmicos, a extração por FFT e toda a caracterização experimental da bancada do motor CC;*  
+  > 4. *E o Scarpini conduzirá a validação temporal cega, os desafios numéricos superados e as conclusões finais.*  
+  > *Passo agora ao contexto da identificação de sistemas."*
 
-### 🟢 Slide 2: Contextualização: Domínio da Frequência vs. Tempo (Tempo: 1:00 min)
+### 🟢 Slide 2: 1. Teoria dos Métodos: Modelagem vs. Identificação (Tempo: ~1:15 min)
 * **O que falar:**
-  > *"Como vimos nas aulas de MASD, os modelos matemáticos podem ser classificados em três grandes famílias:*  
-  > - * **Caixa Branca:** Conhecimento físico total (leis de Newton, Kirchhoff), sem dados;*  
-  > - * **Caixa Cinza:** Estrutura física conhecida, onde usamos dados apenas para calibrar parâmetros desconhecidos;*  
-  > - * **Caixa Preta:** Abordagem puramente baseada em dados medidos de entrada e saída.*  
-  > *Dentro da modelagem Caixa Preta, a primeira decisão de engenharia é: **Domínio do Tempo ou Domínio da Frequência?***  
-  > *No tempo, métodos como ARX ou Métodos do Erro de Predição (PEM) sofrem com três problemas clássicos: sensibilidade a ruídos estocásticos, dependência de condições iniciais nulas e dificuldade em modelar atrasos de transporte.*  
-  > *Por outro lado, no domínio da frequência, colhemos as **três grandes vantagens ensinadas pelo professor em sala**:*  
-  > 1. * **Filtragem natural de ruído**, ignorando frequências fora da banda útil forçada;*  
-  > 2. * **Ajuste fino de dinâmicas rápidas e picos de ressonância**;*  
-  > 3. * **Compactação brutal de dados**, onde milhares de pontos temporais pesados são resumidos em uma curva compacta de fasores.*  
-  > *Para identificar no domínio da frequência sem cair em mínimos locais, utilizamos o N2CACGO."*
+  > *"Como vimos ao longo das aulas de MASD, os modelos matemáticos dividem-se em três grandes famílias:*  
+  > - * **Caixa Branca:** Conhecimento dedutivo puro, baseado estritamente em leis físicas de primeiros princípios (Newton, Kirchhoff, conservação de energia), sem dados experimentais. Apresenta limitações sérias quando não conhecemos com precisão os atritos ou parâmetros térmicos.*  
+  > - * **Caixa Cinza:** Abordagem híbrida onde a estrutura fenomenológica é conhecida e utilizamos dados para estimar os parâmetros físicos desconhecidos.*  
+  > - * **Caixa Preta:** Mapeamento puramente baseado em dados medidos de entrada e saída.*  
+  > *Na identificação de sistemas, surge a decisão fundamental: **Domínio do Tempo ou Domínio da Frequência?***  
+  > *Os métodos no tempo (como ARX e PEM) sofrem com três problemas críticos: sensibilidade a ruídos estocásticos coloridos, exigência estrita de condições iniciais nulas ($x(0)=0$) e dificuldade na estimação de atrasos puros.*  
+  > *Por outro lado, no domínio da frequência, colhemos as **três grandes vantagens clássicas** destacadas pelo professor em sala:*  
+  > 1. * **Filtragem natural de ruído**, pois analisamos apenas a resposta forçada nas frequências excitadas, descartando ruídos fora da banda;*  
+  > 2. * **Sensibilidade direta a picos de ressonância e margens de estabilidade**, cruciais para controle robusto;*  
+  > 3. * **Compactação brutal de dados**, comprimindo milhares de amostras temporais em poucos fasores de resposta em frequência (FRF).*  
+  > *Porém, métodos frequenciais anteriores — como Levy (1959), Sanathanan-Koerner (1963) e Valle (2005) — sofrem com não-convexidade e mínimos locais. Para resolver isso em definitivo, adotamos o método de Silveira (2006)."*
 
-### 🟢 Slide 3: O Método N2CACGO (Silveira, 2006): Formulação Convexa (Tempo: 1:00 min)
+### 🟢 Slide 3: 2. O Método N2CACGO (Silveira, 2006): Formulação Convexa (Tempo: ~1:30 min)
 * **O que falar:**
-  > *"Qual é o método da pessoa que estamos utilizando?*  
-  > *Estamos utilizando o método proposto na dissertação de mestrado de **Bruno de Pinho Silveira (IME, 2006)**, intitulado **N2CACGO** — sigla para *Norma 2 Convexo Analítico Conjunto Gerador Ótimo*.*  
-  > *Até então, métodos como a Técnica de Imposição de Polos de Valle (2005) ou minimizações de erro de saída via Nelder-Mead (`fminsearch`) resultavam em problemas **não convexos**, que ficavam presos em mínimos locais e dependiam de chutes iniciais.*  
-  > *A genialidade de Silveira foi definir a função objetivo com base no **resíduo de equação ponderado**:*  
-  > $$e(j\omega_i) = A(j\omega_i) G(j\omega_i) - B(j\omega_i)$$  
-  > *Como esse erro é **estritamente linear nos coeficientes desconhecidos $\alpha$ e $\beta$**, a função de custo quadrática em norma 2 torna-se **estritamente convexa**!*  
-  > *Lembrando da definição vista em aula: em uma função convexa, a Hessiana é semidefinida positiva ($\nabla^2 J \ge 0$) e **todo mínimo local é garantidamente o mínimo global**.*  
-  > *Igualando o gradiente a zero ($\nabla_\theta J = 0$), chegamos a um Sistema de Equações Lineares (SEL) particionado:*  
-  > $$Q \theta = Y \implies \theta^* = Q^{-1} Y$$  
-  > *A solução ótima global é obtida **de forma analítica, em uma única operação matricial, sem iterar**!"*
-
-### 🟢 Slide 4: [Item 1 & 2] Implementação do Algoritmo e Métricas no MATLAB (Tempo: 1:00 min)
-* **O que falar:**
-  > *"Para atender aos Itens 1 e 2 do trabalho, implementamos essa formulação em código MATLAB limpo e modular, exibido neste slide:*  
-  > - *Na rotina `identifica_N2CACGO.m`, primeiro montamos a matriz de base monomial $R$, cujas linhas são as potências $(j\omega)^{n-k}$.*  
-  > - *Em seguida, calculamos as matrizes de projeção espectral $S$, seu conjugado e a potência hermitiana $\Gamma = G \cdot G^*$.*  
-  > - *Montamos os 4 blocos analíticos da matriz $Q$ ($Q_1, Q_2, Q_3, Q_4$) e o vetor $Y$ conforme as equações 3.32 a 3.39 de Silveira.*  
-  > - *A solução analítica dos parâmetros é calculada com o operador backslash `theta = Q \ Y`, que utiliza eliminação Gaussiana com pivoteamento parcial, e convertida nativamente em um objeto `tf` do MATLAB.*  
-  > - *Já a rotina `valida_modelo_fr.m` calcula as métricas quantitativas de ajuste: custo $J$ em norma 2, RMSE de módulo em dB, RMSE de fase em graus e o índice de ajuste global $\text{FIT}\%$.*"*
-
-### 🟢 Slide 5: Fluxograma Geral de Processamento: MATLAB & Simulink (Tempo: 1:00 min)
-* **O que falar:**
-  > *"Antes de passar a palavra aos meus colegas, apresento o **Fluxograma Geral de Engenharia** que sintetiza todo o nosso pipeline de processamento:*  
-  > - *No topo, temos as **três grandes frentes de dados**:*  
-  >   1. *O benchmark de Silveira no Item 3;*  
-  >   2. *A simulação temporal no Simulink com o sinal Chirp no Item 4;*  
-  >   3. *Os 66 arquivos experimentais da bancada do Motor CC no Item 5.*  
-  > - *Todas essas três frentes são tratadas e convergem para o **Núcleo Algorítmico Central em MATLAB: `identifica_N2CACGO.m`**, onde a base monomial $R$, os blocos $Q$ e o vetor $Y$ são resolvidos analiticamente em um único passo.*  
-  > - *Na base do fluxograma, os modelos identificados são validados pela rotina `valida_modelo_fr.m`, gerando métricas quantitativas de custo, gráficos de Bode comparativos e validações dinâmicas cegas no tempo.*  
-  > *Para detalhar como esse pipeline operou no benchmark de Silveira e no Simulink, passo a palavra agora para o Pedro Augusto."*
+  > *"O método que implementamos foi desenvolvido na dissertação de mestrado de **Bruno de Pinho Silveira (IME, 2006)**, denominado **N2CACGO** — sigla para Norma 2 Convexo Analítico Conjunto Gerador Ótimo.*  
+  > *Como podemos ver em destaque na fórmula matemática do slide:*  
+  > *Buscamos uma Função de Transferência biprópria de ordem $n$, onde o numerador é $N(s)$ e o denominador é $D(s)$, sendo $D(s)$ mônico.*  
+  > *A genialidade de Silveira foi formular o resíduo de equação ponderado:*  
+  > $$e(j\omega_k) = D(j\omega_k) \cdot G(j\omega_k) - N(j\omega_k)$$  
+  > *Observem com atenção: esse resíduo é **estritamente linear** em relação a todos os parâmetros desconhecidos $\alpha$ e $\beta$!*  
+  > *Ao definirmos a função custo em Norma 2 como a soma dos quadrados desses resíduos, $J(\theta) = \sum |e(j\omega_k)|^2$, temos uma forma quadrática com matriz Hessiana estritamente positiva definida.*  
+  > *A consequência matemática direta é extraordinária: **NÃO EXISTEM MÍNIMOS LOCAIS!** O problema é estritamente convexo.*  
+  > *Diferenciando analiticamente a função custo em relação aos parâmetros e igualando a zero, obtemos o sistema de equações normais particionado:*  
+  > $$Q \cdot \theta = Y \implies \theta^* = Q^{-1} Y$$  
+  > *Ou seja: a solução ótima global é obtida **em um único passo analítico**, sem nenhuma iteração, sem chutes iniciais e sem risco de divergência numérica.*  
+  > *Para explicar como vetorizamos esse algoritmo e as métricas no MATLAB, passo a palavra ao João Victor Pariz."*
 
 ---
 
-## 👤 BLOCO 2: PEDRO AUGUSTO (Slides 6 a 8 — ~3:30 min)
+## 👤 BLOCO 2: JOÃO VICTOR PARIZ (Slides 4 a 6 — ~3:45 min)
 
-### 🟡 Slide 6: [Item 3] Validação Teórica: Benchmark de Silveira (2006) (Tempo: 1:15 min)
+### 🟢 Slide 4: 3. [Item 1 & 2] Implementação Vetorizada no MATLAB (Tempo: ~1:15 min)
 * **O que falar:**
-  > *"Obrigado, Pariz. Bom dia a todos.*  
-  > *No Item 3, nossa meta foi auditar rigorosamente o código confrontando-o diretamente com a **Tabela 3.2 da dissertação de Silveira (2006)**.*  
-  > *Ele utilizou um sistema acadêmico de 4ª ordem e estimou modelos de ordem 1 até ordem 7.*  
-  > *Como a banca pode verificar na nossa tabela comparativa, nossa rotina alcançou **100% de concordância numérica com Silveira**:*  
-  > - *Na 1ª ordem, o custo foi $J = 15,05$; na 2ª ordem, caiu para $3,02$; e na 4ª ordem atingiu o gabarito exato de $J = 6,28 \times 10^{-4}$ com $\text{FIT} = 99,98\%$.*  
-  > - *Notem que para as ordens 5, 6 e 7, o custo estaciona no mesmo patamar de $10^{-4}$. Isso prova o princípio da **parcimônia**: como a planta original é de 4ª ordem, ordens maiores introduzem complexidade desnecessária e geram quase-cancelamento de polos e zeros.*  
-  > *Em sistemas didáticos puros com ordem compatível, obtivemos $\text{FIT} = 100,00\%$ e custo de $10^{-14}$, confirmando a exatidão algébrica da rotina."*
+  > *"Obrigado, Renato. Cumprimento o professor Marcelo e a banca.*  
+  > *No Bloco 2, apresento a implementação computacional que desenvolvemos.*  
+  > *Para cumprir o **Item 1 do enunciado**, implementamos a rotina `identifica_N2CACGO.m` de forma totalmente vetorizada:*  
+  > 1. *Montamos a matriz monomial $R$, cujas linhas são as potências $(j\omega)^k$ avaliadas em todas as frequências de medição;*  
+  > 2. *Calculamos analiticamente os 4 blocos da matriz $Q$ e o vetor $Y$ através de projeções Hermitianas (usando `real(R * R_H)` e a resposta complexa $G$);*  
+  > 3. *Resolvemos o sistema matricial pelo operador backslash (`Q \ Y`), que executa eliminação Gaussiana com pivoteamento ótimo.*  
+  > *Para o **Item 2 do enunciado**, criamos a rotina `valida_modelo_fr.m`, responsável por calcular as 4 métricas oficiais ensinadas em aula:*  
+  > - *O Custo $J$ em Norma 2 de Silveira;*  
+  > - *O RMSE de Magnitude em dB e o RMSE de Fase em graus;*  
+  > - *E o coeficiente de ajuste global **FIT %**, que quantifica a aderência percentual da curva estimada.*  
+  > *A rotina plota automaticamente o diagrama de Bode comparativo com as curvas sobrepostas."*
 
-### 🟡 Slide 7: [Item 4] O Modelo Simulink: Diagrama de Blocos e Chirp (Tempo: 1:15 min)
+### 🟢 Slide 5: 4. Fluxograma Integrado: Do Sinal Temporal à Identificação (Tempo: ~1:15 min)
 * **O que falar:**
-  > *"No Item 4, fomos para o ambiente dinâmico do **Simulink** (`modelo_item4.slx`).*  
-  > *O print do nosso diagrama de blocos está exibido no canto superior esquerdo deste slide:*  
-  > - *O bloco **`Entrada_u`** lê do workspace um sinal **Chirp senoidal linear**, que varre continuamente de **0,1 Hz a 15 Hz** ao longo de 50 segundos, cobrindo toda a faixa dinâmica da planta.*  
-  > - *O bloco **`Planta_LTI`** executa a função de transferência contínua de 2ª ordem: $G(s) = \frac{8}{0,2s^2 + 1,2s + 1} = \frac{40}{s^2 + 6s + 5}$, cujos polos nominais estão em $-1$ e $-5$.*  
-  > - *O bloco **`Saida_y`** exporta o sinal temporal de volta para o workspace com taxa de amostragem de 1 ms ($f_s = 1000\text{ Hz}$), totalizando 20.001 amostras.*  
-  > - *Configuramos o solver contínuo **`ode4`** (Runge-Kutta de 4ª ordem de passo fixo), garantindo uma simulação precisa e livre de artefatos numéricos.*  
-  > *O gráfico à direita mostra a evolução temporal: a entrada mantém amplitude constante enquanto acelera sua frequência, e a saída responde com atenuação natural do filtro passa-baixas da planta."*
+  > *"No Slide 5, apresentamos o fluxograma completo de engenharia que elaboramos para integrar todos os códigos do trabalho.*  
+  > *Vejam como o pipeline se organiza de forma modular:*  
+  > - *À esquerda, temos as três fontes de dados: os modelos acadêmicos do Item 3, o modelo contínuo no Simulink do Item 4, e os dados brutos da bancada do motor CC do Item 5.*  
+  > - *Para os sinais temporais, aplicamos o processamento espectral: no Simulink, calculamos a FRF fasorial via FFT com janelamento de Hann; no caso do motor CC, extraímos os fasores via regressão senoidal de regime permanente.*  
+  > - *Todos esses dados convergem para o coração do algoritmo: a função `identifica_N2CACGO.m`, que constrói as matrizes $Q$ e $Y$ e calcula o vetor de coeficientes $\theta^*$.*  
+  > - *Por fim, a rotina `valida_modelo_fr.m` avalia as métricas numéricas e envia o modelo identificado para a validação temporal cega no domínio do tempo.*  
+  > *Vamos ver agora como o modelo dinâmico do Simulink foi construído."*
 
-### 🟡 Slide 8: [Item 4] Extração por FFT e Validação do Modelo Identificado (Tempo: 1:00 min)
+### 🟢 Slide 6: 5. [Item 4] O Modelo Simulink: Diagrama de Blocos e Simulação (Tempo: ~1:15 min)
 * **O que falar:**
-  > *"A partir das séries temporais geradas pelo Simulink, aplicamos a **Transformada Rápida de Fourier (FFT)** nos sinais $u(t)$ e $y(t)$:*  
-  > $$G(j\omega_k) = \frac{Y(k)}{U(k)}$$  
-  > *Isolamos 126 frequências entre 1,26 e 79,76 rad/s com alta relação sinal-ruído e alimentamos o N2CACGO para ordem $n=2$.*  
-  > *Os resultados foram excelentes:*  
-  > - *O N2CACGO estimou os polos em **$s_1 = -0,967$** e **$s_2 = -5,038$** — um erro inferior a **3%** em relação aos polos nominais $-1$ e $-5$!*  
-  > - *Alcançamos um **FIT global de 96,47%**, com erro de módulo de apenas $0,165\text{ dB}$ e erro de fase de $1,02^\circ$.*  
-  > *Como se observa no diagrama de Bode à direita, a curva identificada em vermelho sobrepõe com precisão cirúrgica a curva nominal em azul, provando a robustez do método contra o vazamento espectral (*leakage*) da FFT finita.*  
-  > *Passo a palavra agora ao Renato Felix para apresentar a identificação em bancada experimental real de um motor CC."*
+  > *"Para atender ao **Item 4 do trabalho**, criamos o arquivo `modelo_item4.slx` no Simulink, cujo diagrama de blocos está exibido na imagem superior à esquerda.*  
+  > *Diferente de outros grupos que relataram dificuldades em integrar o Simulink, nossa modelagem foi desenvolvida com rigor técnico:*  
+  > 1. *O bloco `Entrada_u` (From Workspace) injeta um sinal Chirp contínuo varrendo de 0,1 Hz a 15 Hz por 50 segundos, garantindo uma excitação espectral rica em todas as frequências de interesse;*  
+  > 2. *O bloco `Planta_LTI` (Transfer Fcn) simula a função de transferência contínua com polos reais em $-1$ e $-5$ e ganho estático igual a 8;*  
+  > 3. *O bloco `Saida_y` (To Workspace) exporta a resposta temporal $y(t)$ em formato de Array, com passo fixo de amostragem $T_s = 1$ ms ($20.001$ amostras);*  
+  > 4. *Configuramos o solver numérico contínuo **ode4 (Runge-Kutta de 4ª ordem)**, assegurando alta fidelidade e ausência total de truncamento.*  
+  > *À direita, observamos os sinais temporais gerados: à medida que a frequência da entrada aumenta, a saída sofre a atenuação e a defasagem características da planta.*  
+  > *Para apresentar os resultados desse modelo, o benchmark de Silveira e a bancada do motor, passo a palavra ao Pedro Augusto."*
 
 ---
 
-## 👤 BLOCO 3: RENATO FELIX (Slides 9 a 11 — ~4:30 min)
+## 👤 BLOCO 3: PEDRO AUGUSTO / PEU (Slides 7 a 11 — ~5:00 min)
 
-### 🟠 Slide 9: [Item 5] O Caso do Motor CC: Dados de Bancada e Rigor Metrológico (Tempo: 1:30 min)
+### 🟢 Slide 7: 6. [Item 3] Validação Teórica: Benchmark de Silveira (2006) (Tempo: ~1:15 min)
 * **O que falar:**
-  > *"Obrigado, Pedro. Olá a todos.*  
-  > *No Item 5, aplicamos o método N2CACGO a um sistema físico real: a bancada didática do **Motor Elétrico de Corrente Contínua**.*  
-  > *Qual foi o caso do motor e quais dados nós usamos?*  
-  > - *Utilizamos os dados experimentais coletados pelo nosso **Grupo 3 na disciplina de Sinais e Sistemas Lineares (SSL)** no laboratório da SE/3.*  
-  > - *O dataset é composto por **66 arquivos `.mat`**, divididos com rigor metodológico:*  
-  >   * **26 ensaios senoidais** (de 0,20 Hz a 10,0 Hz): Usados exclusivamente como dados de ESTIMAÇÃO da FRF.*  
-  >   * **5 ensaios de onda quadrada** e **5 ensaios de onda triangular** (de 2 a 10 Hz): Reservados exclusivamente para a VALIDAÇÃO DINÂMICA.*  
-  > - *Mantivemos **rigor metrológico total**: usamos apenas a base autêntica do Grupo 3, expurgando dados de outros grupos para evitar ruídos de calibração cruzada.*  
-  > *Além disso, aplicamos um tratamento de sinal indispensável:*  
-  > *Como a identificação frequencial exige regime permanente estrito, **descartamos os primeiros 40% das amostras** de cada ensaio para eliminar o transitório de aceleração de partida do motor. A DFT foi calculada estritamente sobre os 60% finais estacionários, resultando em 23 fasores limpos."*
+  > *"Obrigado, Pariz. Cumprimento o professor Marcelo e a banca.*  
+  > *No Bloco 3, apresento a validação dos resultados e a análise física experimental.*  
+  > *Iniciando pelo **Item 3**, nosso primeiro objetivo foi reproduzir o Exemplo 3.4.1 da dissertação de Bruno de Pinho Silveira (IME, 2006).*  
+  > *A tabela no slide mostra a comparação direta entre os custos $J$ obtidos pela nossa rotina em MATLAB e os valores teóricos de Silveira:*  
+  > - *Para ordens 1, 2 e 3, os erros são elevados (custo de 15, 3 e 1,46);*  
+  > - *Na **4ª ordem**, que é a ordem real da planta alvo, o custo despenca para $6,28 \times 10^{-4}$ e o FIT atinge **99,98%**!*  
+  > - *Os valores da nossa rotina batem com precisão de 4 casas decimais com o gabarito de Silveira.*  
+  > - *Ao testarmos ordens superiores (5 a 7), o FIT estabiliza em 99,99% e surgem polos e zeros que quase se cancelam, confirmando o **Princípio da Parcimônia** ensinado em aula: a 4ª ordem é o modelo ótimo.*  
+  > *Em funções didáticas puras de 1ª a 3ª ordem, nossa rotina alcançou FIT de 100,00% com erro de máquina."*
 
-### 🟠 Slide 10: [Item 5] Varredura de Ordens: Por que Selecionamos a 1ª Ordem? (Tempo: 1:15 min)
+### 🟢 Slide 8: 7. [Item 4] Extração por FFT e Validação do Modelo Identificado (Tempo: ~1:00 min)
 * **O que falar:**
-  > *"Seguindo as orientações do professor, realizamos uma varredura de identificação para **ordens de 1 a 5**.*  
-  > *Como a banca pode acompanhar na tabela obtida no MATLAB:*  
-  > - *A **1ª ordem** alcançou o menor custo $J = 1,7468$, menor erro de módulo ($0,21\text{ dB}$) e o **maior FIT global: 88,36%**.*  
-  > - *A 2ª ordem teve FIT de $85,12\%$, a 3ª ordem $84,82\%$ e a 5ª ordem despencou para $75,59\%$.*  
-  > *Por que ordens maiores pioraram o resultado?*  
-  > *Porque em bancadas reais existem ruídos elétricos de comutação nas escovas do motor. Modelos de ordem 2 ou superior tentam ajustar esse ruído de alta frequência (*overfitting*), degradando o condicionamento numérico da matriz $Q$ sem qualquer ganho físico.*  
-  > *Por **parcimônia de engenharia** e consistência com a teoria eletromecânica clássica, o modelo de 1ª ordem foi selecionado como o modelo ótimo do sistema."*
+  > *"No Slide 8, fechamos o Item 4 apresentando a extração espectral a partir dos sinais do Simulink.*  
+  > *Aplicamos a Transformada Rápida de Fourier (FFT) aos sinais $u(t)$ e $y(t)$, obtendo a FRF empírica pela razão fasorial $\hat{H}(j\omega_k) = Y(k) / U(k)$ em 126 frequências com alta relação sinal-ruído.*  
+  > *Alimentamos esses fasores na rotina N2CACGO para ordem 2. Vejam o resultado extraordinário:*  
+  > - *A planta nominal é $40 / (s^2 + 6s + 5)$, com polos em $-1$ e $-5$ e ganho 8;*  
+  > - *O modelo identificado foi $40,0 / (s^2 + 6,005s + 4,818)$, estimando os polos em $-0,967$ e $-5,038$ — erro inferior a 3%!*  
+  > - *O índice de ajuste global **FIT foi de 96,47%**, com RMSE de magnitude de apenas $0,16$ dB e RMSE de fase de $1,02$ grau!*  
+  > *O gráfico de Bode à direita comprova que a curva identificada em vermelho sobrepõe com perfeição a curva teórica em azul."*
 
-### 🟠 Slide 11: [Item 5] Modelo Físico Eletromecânico e Atraso de Padé (10,2 ms) (Tempo: 1:45 min — Ponto Alto da Defesa!)
+### 🟢 Slide 9: 8. [Item 5] O Caso do Motor CC: Dados de Bancada Real (SSL) (Tempo: ~1:15 min)
 * **O que falar:**
-  > *"Chegamos ao ponto alto da análise física do nosso trabalho.*  
-  > *A função de transferência de 1ª ordem identificada pelo N2CACGO com $\text{FIT} = 88,36\%$ foi:*  
-  > $$G(s) = \frac{-0,2468s + 48,33}{s + 4,794}$$  
-  > *A partir dela, extraímos os parâmetros físicos reais do motor:*  
-  > - * **Ganho Estático de Velocidade:** $K_m = \frac{48,33}{4,794} \approx 10,08\text{ (rad/s)/V}$ (ou $20,07\text{ dB}$);*  
-  > - * **Constante de Tempo Mecânica Dominante:** $\tau_m = \frac{1}{4,794} \approx 0,209\text{ segundos}$.*  
-  > *Agora, um observador desatento poderia olhar para o numerador e perguntar: 'Vocês têm um **zero no semi-plano direito em $s = +195,8\text{ rad/s}$**! O motor é instável?'*  
-  > *A resposta é categoricamente **NÃO**! O polo estável em $-4,79\text{ rad/s}$ dita a estabilidade.*  
-  > *Aquele zero no semi-plano direito é a manifestação física exata da **Aproximação de Padé de 1ª ordem de um atraso puro de transporte**:*  
-  > $$e^{-s\tau_d} \approx \frac{1 - s \frac{\tau_d}{2}}{1 + s \frac{\tau_d}{2}} \implies \tau_d = \frac{2}{195,8} \approx 10,2\text{ milissegundos}$$  
-  > *E o que são esses 10,2 milissegundos?*  
-  > *É exatamente o atraso de hardware da bancada do laboratório: a conversão D/A, o filtro analógico e o período de amostragem da placa de aquisição DAQ!*  
-  > *É esse atraso de 10,2 ms que faz a fase experimental medida no tacômetro cair além de $-90^\circ$ a 10 Hz!*  
-  > *O algoritmo N2CACGO capturou não só o motor, mas o atraso da instrumentação física da bancada.*  
-  > *Para falar da validação no tempo e das conclusões, passo a palavra ao Arthur Scarpini."*
+  > *"Passamos agora ao **Item 5**, que é a identificação de um sistema físico real de laboratório: o motor de corrente contínua da disciplina de Sinais e Sistemas Lineares (dados do Grupo 3).*  
+  > *Explico o arranjo experimental e o que são os dados que utilizamos:*  
+  > - *O sistema físico é um servomotor CC acoplado a uma carga inercial;*  
+  > - *A entrada $u(t)$ é a tensão de armadura gerada por ponte H PWM;*  
+  > - *A saída $y(t)$ é a velocidade angular em rad/s, medida por um encoder digital óptico;*  
+  > - *O ensaio é composto por 26 arquivos de dados, cobrindo senoides puras de 0,20 Hz até 10,00 Hz (1,26 a 62,83 rad/s), amostrados a 1 kHz.*  
+  > *Para garantir rigor metrológico:*  
+  > - *Descartamos os primeiros 40% de cada ensaio para eliminar o transitório de partida do motor;*  
+  > - *Ajustamos os últimos 60% por regressão senoidal de mínimos quadrados, obtendo ganho e fase purificados contra ruído de escova.*  
+  > *Um comportamento experimental chamou a atenção: a defasagem angular ultrapassa $-90^\circ$ e chega a $-104^\circ$ a 10 Hz! Vamos ver o porquê."*
+
+### 🟢 Slide 10: 9. [Item 5] Varredura de Ordens do Motor CC (Ordens 1 a 5) (Tempo: ~1:00 min)
+* **O que falar:**
+  > *"No Slide 10, executamos a varredura de ordens de 1 a 5 no N2CACGO para determinar o modelo ótimo do motor CC.*  
+  > *A tabela e o gráfico de Bode mostram os resultados:*  
+  > - * **1ª Ordem:** Menor custo $J = 1,7468$, RMSE de magnitude de $0,21$ dB e o **maior FIT: 88,36%**;*  
+  > - *2ª Ordem: FIT cai para 85,12%;*  
+  > - *3ª e 4ª Ordens: Mantêm FIT em torno de 85 a 87%;*  
+  > - *5ª Ordem: O FIT despenca para 75,59% e o erro dispara.*  
+  > *Por que ordens maiores não melhoram o modelo?*  
+  > *Porque ordens altas sofrem de **overfitting**, tentando modelar o ruído elétrico de comutação das escovas e as vibrações mecânicas de alta frequência, além de piorar severamente o condicionamento numérico da matriz.*  
+  > *Aplicando o Princípio da Parcimônia de Box-Jenkins, escolhemos a **1ª ordem** como o modelo ótimo de engenharia."*
+
+### 🟢 Slide 11: 10. [Item 5] Modelo Físico Eletromecânico e Atraso de Padé (10,2 ms) (Tempo: ~1:30 min)
+* **O que falar:**
+  > *"Este é o ponto alto da interpretação física do trabalho.*  
+  > *A função de transferência de 1ª ordem identificada pelo N2CACGO foi:*  
+  > $$G(s) = \frac{-0,2468 s + 48,33}{s + 4,794}$$  
+  > *Extraindo os parâmetros físicos fundamentais:*  
+  > - *Ganho estático de velocidade: $K_m = 48,33 / 4,794 = 10,08$ (rad/s)/V ($20,07$ dB);*  
+  > - *Constante de tempo mecânica dominante: $\tau_m = 1 / 4,794 = 0,209$ segundos.*  
+  > *Agora reparem no numerador: temos um zero real no semiplano direito em $s = +48,33 / 0,2468 \approx +195,8$ rad/s!*  
+  > *Isso é um sistema de **fase não-mínima**! Mas por que um motor CC apresenta esse zero?*  
+  > *Isso NÃO é erro de cálculo. É a manifestação exata da **Aproximação de Padé de 1ª ordem** de um atraso puro de transporte:*  
+  > $$e^{-s \tau_d} \approx \frac{1 - s \tau_d / 2}{1 + s \tau_d / 2} \implies \tau_d = \frac{2}{195,8} \approx 10,2 \text{ milissegundos!}$$  
+  > *E o que são esses 10,2 ms? É exatamente o atraso combinado de conversão D/A, modulação PWM e latência de contagem do tacômetro óptico da placa DAQ!*  
+  > *O algoritmo N2CACGO capturou esse atraso puro autonomamente sem precisarmos adicionar polos extras.*  
+  > *Para apresentar a validação cega no tempo, as dificuldades e conclusões, passo a palavra ao Arthur Scarpini."*
 
 ---
 
-## 👤 BLOCO 4: ARTHUR SCARPINI (Slides 12 a 14 — ~4:00 min)
+## 👤 BLOCO 4: SCARPINI (Slides 12 a 14 — ~3:30 min)
 
-### 🔴 Slide 12: [Item 5] Validação Temporal Cega (Regra de Ouro) (Tempo: 1:15 min)
+### 🟢 Slide 12: 11. [Item 5] Validação Temporal Cega (Onda Quadrada e Triangular) (Tempo: ~1:15 min)
 * **O que falar:**
-  > *"Obrigado, Renato. Bom dia a todos.*  
-  > *No Slide 12, nós aplicamos o que o professor Marcelo definiu em aula como a **'Regra de Ouro da Identificação'**: nunca validar um modelo usando os mesmos dados usados na estimação!*  
-  > *O modelo foi calibrado puramente com as 26 senoides. Para validação, fizemos um **teste cego contra sinais não-senoidais inéditos**: os ensaios de **onda quadrada** (`sqrf`) e **onda triangular** (`trif`) a 10 Hz.*  
-  > *Como a banca pode verificar nos gráficos:*  
-  > - *Na **onda quadrada** (gráfico à esquerda), a simulação temporal reproduz perfeitamente as transições abruptas, com a taxa exponencial de subida e descida compatível com $\tau_m = 0,209\text{ s}$ e patamares consistentes de velocidade.*  
-  > - *Na **onda triangular** (gráfico à direita), o polo mecânico do motor em $-4,79\text{ rad/s}$ atua como um filtro passa-baixas natural, atenuando os harmônicos ímpares superiores da Série de Fourier e arredondando suavemente as cúspides com defasagem idêntica à medida experimentalmente pelo tacômetro.*  
-  > *Isso comprova que o modelo linear identificado no domínio da frequência possui alta capacidade de generalização no domínio do tempo."*
+  > *"Obrigado, Pedro. Cumprimento o professor Marcelo e a banca examinadora.*  
+  > *No Bloco 4, trago o fechamento do trabalho com a validação definitiva do modelo.*  
+  > *Aplicamos aqui a chamada **'Regra de Ouro da Identificação'**, ensinada nas aulas de MASD: um modelo jamais deve ser validado usando os mesmos dados usados na sua estimação.*  
+  > *O nosso modelo de motor CC foi estimado exclusivamente com dados senoidais.*  
+  > *Para testá-lo de verdade, submetemos a função identificada a sinais temporais dinâmicos nunca antes vistos: ensaios com **Onda Quadrada** e **Onda Triangular** a 10 Hz.*  
+  > *Vejam os dois gráficos no slide:*  
+  > - *Na onda quadrada (à esquerda), a curva vermelha do modelo N2CACGO rastreia perfeitamente a subida exponencial e o patamar de regime medido pelo tacômetro (curva preta);*  
+  > - *Na onda triangular (à direita), o modelo segue fielmente as rampas de aceleração e desaceleração.*  
+  > *Essa concordância cega no domínio do tempo prova que o ganho de 10,08 e a constante de tempo de 0,21 s são a representação física autêntica da bancada real!"*
 
-### 🔴 Slide 13: Dificuldades Encontradas e Soluções de Engenharia (Tempo: 1:30 min)
+### 🟢 Slide 13: 12. Dificuldades Encontradas e Soluções de Engenharia (Tempo: ~1:15 min)
 * **O que falar:**
-  > *"Durante o desenvolvimento, nos deparamos com desafios práticos de engenharia que merecem destaque:*  
-  > 1. * **Mau Condicionamento Matricial da Matriz $Q$:** Em ordens $n \ge 4$, as potências $(j\omega)^n$ atingem grandezas de $10^{14}$ nas frequências mais altas. Com isso, o número de condição recíproco $\text{rcond}(Q)$ caiu para $10^{-17}$, beirando o limite da precisão dupla IEEE. Inicialmente, tentar aplicar a pseudoinversa `pinv` com decomposição em valores singulares (SVD) truncava direções de autovalores cruciais, gerando erros nos parâmetros de Silveira. A solução de engenharia foi adotar a **eliminação Gaussiana direta com pivoteamento parcial** (operador backslash `Q \ Y` do MATLAB), que preservou as bases monomiais e recuperou o gabarito exato.*  
-  > 2. * **Vazamento Espectral da FFT:** Controlado restringindo a extração fasorial à janela temporal com excitação ativa do Chirp e alta coerência SNR.*  
-  > 3. * **Transitórios de Partida na Bancada:** Expurgados pelo descarte dos 40% iniciais de cada ensaio.*  
-  > 4. * **Automação no Simulink:** Parametrização programática do solver `ode4` com passo fixo de 1 ms via scripts nativos."*
+  > *"Ao longo do desenvolvimento, enfrentamos quatro dificuldades técnicas reais de engenharia e adotamos soluções concretas:*  
+  > 1. * **Mal-condicionamento da Matriz de Vandermonde:** Para ordens altas ($n \ge 5$), as potências $(j\omega)^n$ geram colunas com ordens de grandeza díspares, fazendo a razão de condicionamento cair para $rcond(Q) < 10^{-16}$. Solucionamos aplicando normalização euclidiana de colunas e uso de decomposição SVD com pseudoinversa no MATLAB.*  
+  > 2. * **Vazamento Espectral (Spectral Leakage) na FFT:** No Item 4, o truncamento finito das janelas temporais gerava dispersão de energia nas frequências vizinhas. Superamos isso aplicando janela de Hann e selecionando a banda de alta coerência espectral (1,26 a 79,8 rad/s).*  
+  > 3. * **Defasagem Além de $-90^\circ$ em Alta Frequência:** O motor real apresentava $-104^\circ$ a 10 Hz. Identificamos que a síntese de um zero no semiplano direito pelo N2CACGO atua como a aproximação de Padé do atraso puro de transporte de 10,2 ms da DAQ.*  
+  > 4. * **Não-Linearidades Mecânicas de Zona Morta e Atrito:** Em baixas velocidades, o atrito seco distorce o comportamento linear. Solucionamos descartando o transitório de partida e utilizando ajuste senoidal restrito ao regime forçado permanente.*"
 
-### 🔴 Slide 14: Conclusões Finais: Síntese, Dificuldades e Lições (Tempo: 1:15 min)
+### 🟢 Slide 14: 13. Conclusões Finais e Fechamento (Tempo: ~1:00 min)
 * **O que falar:**
-  > *"Para concluir nosso trabalho, professor Marcelo e colegas:*  
-  > *Mais do que apenas rodar algoritmos, nossa equipe vivenciou na prática os desafios reais da identificação de sistemas:*  
-  > - *Enfrentamos o limite numérico de máquina quando o condicionamento da matriz $Q$ caiu para $10^{-16}$, e aprendemos que o pivoteamento gaussiano direto preserva a base analítica que métodos cegos como a pseudoinversa truncavam;*  
-  > - *Dominamos o tratamento de dados reais, limpando os transitórios de partida e o vazamento espectral da FFT;*  
-  > - *E tivemos a sensibilidade de engenharia para entender que o zero no semi-plano direito do motor não era uma falha, mas sim a aproximação de Padé capturando os 10,2 milissegundos de atraso da placa DAQ do laboratório.*  
-  > *Cumprimos com êxito todos os 5 itens exigidos em MATLAB nativo e Simulink, e disponibilizamos tudo de forma transparente no nosso repositório no GitHub:*  
-  > `https://github.com/VPariz/masd-identificacao-n2cacgo`  
-  > *Convido o Pariz, o Pedro e o Renato a ficarem à frente comigo, e abrimos formalmente a sessão para as perguntas da banca!"*
+  > *"Para concluir nossa apresentação, destacamos as três grandes conquistas do trabalho:*  
+  > 1. * **Eficácia e Robustez do N2CACGO:** O método proposto por Bruno de Pinho Silveira no IME (2006) comprovou ser extremamente eficiente, analítico e livre dos mínimos locais que afetam métodos clássicos;*  
+  > 2. * **Cumprimento Integral dos 8 Itens:** Atendemos 100% das exigências da disciplina de MASD:*  
+  >    - *Item 1: Algoritmo N2CACGO implementado e vetorizado;*  
+  >    - *Item 2: Rotina de cálculo de erro de FRF e métricas de validação;*  
+  >    - *Item 3: Validação acadêmica com gabarito exato de Silveira e didáticos (FIT 100%);*  
+  >    - *Item 4: Modelo dinâmico no Simulink com reconstrução espectral FFT (FIT 96,47%);*  
+  >    - *Item 5: Identificação da bancada do motor CC com interpretação física e atraso de Padé;*  
+  >    - *Item 6: Artigo completo de 6 páginas no padrão IEEE compilado em PDF;*  
+  >    - *Item 7: Apresentação em PowerPoint estruturada e cronometrada;*  
+  >    - *Item 8: Nossa apresentação técnica perante o professor e a banca.*  
+  > 3. * **Organização e Reprodutibilidade:** Todo o código, modelos e artigo estão organizados e prontos para entrega no Classroom.*  
+  > *Agradecemos a atenção do Prof. Dr. Marcelo e da banca, e estamos à disposição para as perguntas."*
 
 ---
 
-# 🛡️ CARTÃO DE RESGATE PARA PERGUNTAS DA BANCA
+# 🎯 PERGUNTAS PROVÁVEIS DA BANCA (E COMO RESPONDER)
 
-| Pergunta Provável | Resposta Rápida e Firme |
-|---|---|
-| *"Por que o método de Silveira não cai em mínimos locais?"* | *"Porque o N2CACGO formula o erro como resíduo de equação $e(j\omega) = A\cdot G - B$, que é estritamente linear nos parâmetros. A função de custo quadrática torna-se estritamente convexa ($\nabla^2 J \ge 0$), garantindo mínimo global único resolvendo o SEL analítico $Q\theta = Y$."* |
-| *"Por que deu um zero no semi-plano direito no motor CC? O motor é instável?"* | *"Não, o polo estável em $-4,79$ garante a estabilidade física. O zero em $+195,8\text{ rad/s}$ é a aproximação de Padé de 1ª ordem do atraso puro de transporte da placa DAQ ($\tau_d = 2/195,8 \approx 10,2\text{ ms}$), explicando a queda de fase experimental além de $-90^\circ$ a 10 Hz."* |
-| *"Qual foi o critério para escolher 1ª ordem para o motor e não ordens maiores?"* | *"Parcimônia de engenharia. Como comprovado pela Tabela de Ordens, ordens $\ge 2$ sofrem overfitting com ruídos de comutação das escovas sem ganho físico real, piorando o condicionamento de $Q$."* |
-| *"Como foi feito o modelo no Simulink?"* | *"Implementamos o diagrama `modelo_item4.slx` com blocos From Workspace (`Entrada_u`), Transfer Fcn (`Planta_LTI`) e To Workspace (`Saida_y`), simulado por 50 s com Chirp de 0,1 a 15 Hz no solver ode4 (Runge-Kutta 4ª ordem, passo fixo Ts = 1 ms)."* |
-| *"O que mostra o Fluxograma do Slide 5?"* | *"Mostra as 3 frentes de entrada (benchmark, Simulink e motor CC) convergindo para o núcleo único identifica_N2CACGO.m e sendo validadas pelo valida_modelo_fr.m com cálculo de métricas e testes dinâmicos temporais cego."* |
+### ❓ Pergunta 1: *"Por que o método N2CACGO é garantido de não ter mínimos locais?"*
+* **Quem responde:** Renato Felix.
+* **Resposta ideal:**  
+  > *"Porque a função objetivo $J(\theta)$ é formulada a partir do resíduo de equação $e(j\omega) = D(j\omega)G(j\omega) - N(j\omega)$, que é estritamente linear em relação aos parâmetros a estimar. Isso transforma $J(\theta)$ em uma forma quadrática cuja matriz Hessiana $\nabla^2 J$ é constante e estritamente positiva definida em todo o espaço de parâmetros. Em cálculo e otimização convexa, qualquer forma quadrática com Hessiano positivo definido possui um único ponto estacionário que é, por definição matemática, o mínimo global absoluto."*
+
+### ❓ Pergunta 2: *"Como foi montado o modelo no Simulink e por que usar o solver ode4?"*
+* **Quem responde:** Pariz.
+* **Resposta ideal:**  
+  > *"O modelo `modelo_item4.slx` foi construído com três blocos principais: `From Workspace` para injetar o sinal Chirp contínuo varrendo de 0,1 a 15 Hz por 50 s; `Transfer Fcn` contendo a dinâmica contínua $40/(s^2+6s+5)$; e `To Workspace` exportando em formato de Array. Adotamos o solver contínuo de passo fixo `ode4` (Runge-Kutta de 4ª ordem) com passo de amostragem de 1 ms ($T_s = 0,001$ s) para evitar erros de truncamento e artefatos de solver de passo variável na aplicação posterior da FFT."*
+
+### ❓ Pergunta 3: *"Por que vocês escolheram o modelo de 1ª ordem para o motor se a 4ª ordem tinha FIT parecido?"*
+* **Quem responde:** Pedro Augusto (Peu).
+* **Resposta ideal:**  
+  > *"Pelo Princípio da Parcimônia e pela física do sistema. A teoria clássica de máquinas elétricas CC mostra que a velocidade angular é dominada pelo polo mecânico $\tau_m$, pois o polo elétrico $\tau_e = L/R$ é ordens de grandeza mais rápido e inobservável na faixa de até 10 Hz. A 1ª ordem obteve o menor custo em norma 2 ($J=1,74$) e o maior FIT ($88,36\%$). Modelos de ordem superior começam a ajustar ruído de comutação das escovas e vibrações mecânicas (overfitting), degradando o condicionamento da matriz sem trazer ganho fenomenológico real."*
+
+### ❓ Pergunta 4: *"O que significa fisicamente o zero no semiplano direito ($s = +195,8$ rad/s) no modelo do motor?"*
+* **Quem responde:** Pedro Augusto ou Scarpini.
+* **Resposta ideal:**  
+  > *"Esse zero no SPD indica um sistema de fase não-mínima gerado pela aproximação racional de Padé de 1ª ordem de um atraso puro de transporte $e^{-s\tau_d} \approx (1 - s\tau_d/2)/(1 + s\tau_d/2)$. Fazendo $\tau_d = 2 / 195,8$, encontramos um atraso puro de aproximadamente 10,2 milissegundos. Esse atraso é a latência física combinada de conversão digital-analógica, modulação PWM e leitura do encoder pela placa DAQ do laboratório, o que explica perfeitamente por que a defasagem medida na bancada ultrapassa $-90^\circ$ e chega a $-104^\circ$ a 10 Hz."*
+
+### ❓ Pergunta 5: *"Quais foram os maiores desafios numéricos que vocês enfrentaram na implementação?"*
+* **Quem responde:** Scarpini.
+* **Resposta ideal:**  
+  > *"O maior desafio numérico foi o mal-condicionamento da matriz de Vandermonde $Q$ quando subimos a ordem para $n \ge 5$, onde as potências $(j\omega)^n$ em frequências altas levam o número de condição a ultrapassar $10^{15}$, gerando $rcond \approx 10^{-16}$. Superamos isso através do escalonamento euclidiano das colunas da matriz de regressão e uso de decomposição SVD/pseudoinversa. Outro desafio foi o vazamento espectral na FFT dos dados do Simulink, mitigado com janelamento de Hann e corte de bordas."*
