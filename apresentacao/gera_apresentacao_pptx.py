@@ -2,7 +2,7 @@ import os
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
-from pptx.enum.text import PP_ALIGN
+from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -10,64 +10,113 @@ FIG_DIR = os.path.join(BASE_DIR, 'artigo', 'figuras')
 PPTX_PATH = os.path.join(BASE_DIR, 'apresentacao', 'apresentacao_MASD_N2CACGO_IME.pptx')
 
 prs = Presentation()
-prs.slide_width = Inches(13.333) # 16:9 widescreen
+prs.slide_width = Inches(13.333)   # 16:9 widescreen
 prs.slide_height = Inches(7.5)
 
 # Paleta Institucional IME / Engenharia
-COR_AZUL_ESCURO = RGBColor(15, 34, 64)      # #0F2240 (Navy Primário)
-COR_AZUL_MEDIO  = RGBColor(30, 75, 140)     # #1E4B8C
-COR_DOURADO     = RGBColor(212, 160, 23)    # #D4A017 (Destaque)
-COR_CINZA_FUNDO = RGBColor(245, 247, 250)   # #F5F7FA
-COR_TEXTO_ESCURO= RGBColor(30, 30, 30)
-COR_BRANCO      = RGBColor(255, 255, 255)
-COR_CINZA_BORDA = RGBColor(210, 215, 225)
-COR_VERDE_OK    = RGBColor(20, 120, 50)
-COR_CODE_BG     = RGBColor(238, 242, 246)
-COR_EQUACAO_BG  = RGBColor(232, 240, 254)   # Azul suave para destaque de fórmulas
+COR_AZUL_ESCURO  = RGBColor(15, 34, 64)      # #0F2240 (Navy Primário)
+COR_AZUL_MEDIO   = RGBColor(30, 75, 140)     # #1E4B8C
+COR_DOURADO      = RGBColor(212, 160, 23)    # #D4A017 (Destaque)
+COR_CINZA_FUNDO  = RGBColor(245, 247, 250)   # #F5F7FA
+COR_TEXTO_ESCURO = RGBColor(30, 30, 30)
+COR_BRANCO       = RGBColor(255, 255, 255)
+COR_CINZA_BORDA  = RGBColor(205, 212, 224)
+COR_VERDE_OK     = RGBColor(20, 120, 50)
+COR_VERDE_BG     = RGBColor(232, 246, 236)
+COR_CODE_BG      = RGBColor(238, 242, 246)
+COR_EQUACAO_BG   = RGBColor(232, 240, 254)
+COR_VERMELHO_EQ  = RGBColor(165, 25, 25)
+
 
 def add_header(slide, title_text, subtitle_text="", speaker_name=""):
-    header_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.32), Inches(9.0), Inches(1.15))
+    header_box = slide.shapes.add_textbox(Inches(0.75), Inches(0.28), Inches(9.1), Inches(1.15))
     tf = header_box.text_frame
     tf.word_wrap = True
     tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
 
     p = tf.paragraphs[0]
     p.text = title_text
-    p.font.size = Pt(24)
+    p.font.size = Pt(25)
     p.font.bold = True
     p.font.color.rgb = COR_AZUL_ESCURO
 
     if subtitle_text:
         p2 = tf.add_paragraph()
         p2.text = subtitle_text
-        p2.font.size = Pt(12.5)
+        p2.font.size = Pt(14)
         p2.font.color.rgb = COR_AZUL_MEDIO
         p2.space_before = Pt(3)
 
     if speaker_name:
-        pill = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(9.8), Inches(0.38), Inches(2.7), Inches(0.58))
+        pill = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(9.95), Inches(0.36), Inches(2.63), Inches(0.56))
         pill.fill.solid()
         pill.fill.fore_color.rgb = RGBColor(230, 240, 255)
         pill.line.color.rgb = COR_AZUL_MEDIO
         tf_p = pill.text_frame
         tf_p.word_wrap = True
+        tf_p.vertical_anchor = MSO_ANCHOR.MIDDLE
         tf_p.margin_left = tf_p.margin_top = tf_p.margin_right = tf_p.margin_bottom = 0
         p_sp = tf_p.paragraphs[0]
         p_sp.text = f"👤 {speaker_name}"
-        p_sp.font.size = Pt(11.5)
+        p_sp.font.size = Pt(13)
         p_sp.font.bold = True
         p_sp.font.color.rgb = COR_AZUL_ESCURO
         p_sp.alignment = PP_ALIGN.CENTER
 
-    line = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.48), Inches(11.7), Inches(0.04))
+    line = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.75), Inches(1.42), Inches(11.83), Inches(0.045))
     line.fill.solid()
     line.fill.fore_color.rgb = COR_DOURADO
     line.line.color.rgb = COR_DOURADO
 
+
+def make_card(slide, left, top, width, height, title="", bg_color=COR_CINZA_FUNDO, border_color=COR_CINZA_BORDA, title_size=18):
+    card = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(left), Inches(top), Inches(width), Inches(height))
+    card.adjustments[0] = 0.04
+    card.fill.solid()
+    card.fill.fore_color.rgb = bg_color
+    card.line.color.rgb = border_color
+    tf = card.text_frame
+    tf.word_wrap = True
+    tf.vertical_anchor = MSO_ANCHOR.TOP
+    tf.margin_left = tf.margin_right = Inches(0.28)
+    tf.margin_top = Inches(0.22)
+    tf.margin_bottom = Inches(0.20)
+    if title:
+        p = tf.paragraphs[0]
+        p.text = title
+        p.font.size = Pt(title_size)
+        p.font.bold = True
+        p.font.color.rgb = COR_AZUL_ESCURO
+        p.space_after = Pt(6)
+    return card, tf
+
+
+def add_bullets(tf, items, font_size=15.5, space_before=10, bullet_char="▸ "):
+    for idx, item in enumerate(items):
+        p = tf.paragraphs[0] if (len(tf.paragraphs) == 1 and tf.paragraphs[0].text == "" and idx == 0) else tf.add_paragraph()
+        p.space_before = Pt(space_before)
+        p.line_spacing = 1.15
+        if isinstance(item, tuple):
+            lead, rest = item
+            r0 = p.add_run()
+            r0.text = f"{bullet_char}{lead} "
+            r0.font.size = Pt(font_size)
+            r0.font.bold = True
+            r0.font.color.rgb = COR_AZUL_ESCURO
+            r1 = p.add_run()
+            r1.text = rest
+            r1.font.size = Pt(font_size)
+            r1.font.bold = False
+            r1.font.color.rgb = COR_TEXTO_ESCURO
+        else:
+            p.text = f"{bullet_char}{item}"
+            p.font.size = Pt(font_size)
+            p.font.color.rgb = COR_TEXTO_ESCURO
+
+
 def set_speaker_notes(slide, notes_text):
-    notes_slide = slide.notes_slide
-    tf = notes_slide.notes_text_frame
-    tf.text = notes_text
+    slide.notes_slide.notes_text_frame.text = notes_text
+
 
 # =========================================================================
 # SLIDE 1: CAPA INSTITUCIONAL (RENATO FELIX)
@@ -77,620 +126,596 @@ bg1 = slide1.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, prs.sl
 bg1.fill.solid(); bg1.fill.fore_color.rgb = COR_AZUL_ESCURO
 bg1.line.color.rgb = COR_AZUL_ESCURO
 
-tbox1 = slide1.shapes.add_textbox(Inches(1.0), Inches(0.8), Inches(11.3), Inches(3.6))
+# Faixa dourada lateral esquerda
+bar1 = slide1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.7), Inches(0.75), Inches(0.10), Inches(6.0))
+bar1.fill.solid(); bar1.fill.fore_color.rgb = COR_DOURADO; bar1.line.color.rgb = COR_DOURADO
+
+tbox1 = slide1.shapes.add_textbox(Inches(1.05), Inches(0.72), Inches(11.5), Inches(3.0))
 tf1 = tbox1.text_frame; tf1.word_wrap = True
 
 p = tf1.paragraphs[0]
 p.text = "INSTITUTO MILITAR DE ENGENHARIA • DE/3 • MASD"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_DOURADO
+p.font.size = Pt(17); p.font.bold = True; p.font.color.rgb = COR_DOURADO
 
 p = tf1.add_paragraph()
 p.text = "Identificação de Sistemas SISO no Domínio da Frequência via Método N2CACGO"
-p.font.size = Pt(29); p.font.bold = True; p.font.color.rgb = COR_BRANCO; p.space_before = Pt(8)
+p.font.size = Pt(31); p.font.bold = True; p.font.color.rgb = COR_BRANCO; p.space_before = Pt(10)
 
 p = tf1.add_paragraph()
-p.text = "Fundamentação Convexa de Silveira (2006), Implementação MATLAB/Simulink e Caracterização Experimental de Motor CC"
-p.font.size = Pt(15); p.font.color.rgb = RGBColor(200, 220, 245); p.space_before = Pt(6)
+p.text = "Fundamentação Convexa (Silveira, 2006) • Implementação MATLAB/Simulink • Motor CC Experimental"
+p.font.size = Pt(16); p.font.color.rgb = RGBColor(200, 220, 245); p.space_before = Pt(10)
 
-abox1 = slide1.shapes.add_textbox(Inches(1.0), Inches(4.35), Inches(11.3), Inches(2.8))
+abox1 = slide1.shapes.add_textbox(Inches(1.05), Inches(3.85), Inches(11.5), Inches(3.25))
 tf_a = abox1.text_frame; tf_a.word_wrap = True
 
 p = tf_a.paragraphs[0]
-p.text = "Equipe de Autores (Nomes de Guerra em Destaque):\n" \
-         "• Renato Felix (Renato Costa Félix)  |  • Pariz (João Victor Tavares Pariz)\n" \
-         "• Pedro Augusto / Peu (Pedro Augusto dos Santos Barbosa)  |  • Scarpini (Wagner Scarpini Miranda)\n\n" \
-         "Divisão dos 4 Blocos da Apresentação Técnica (~15 a 17 min):\n" \
-         "1. Teoria dos Métodos e N2CACGO Convexo (Slides 1 a 3) ── 🎤 Renato Felix\n" \
-         "2. Códigos MATLAB, Fluxograma e Modelo Simulink (Slides 4 a 6) ── 🎤 Pariz\n" \
-         "3. Benchmarks Acadêmicos, FFT e Bancada do Motor CC (Slides 7 a 11) ── 🎤 Pedro Augusto (Peu)\n" \
-         "4. Validação Temporal Cega, Dificuldades e Conclusões (Slides 12 a 14) ── 🎤 Scarpini\n\n" \
-         "Orientador: Prof. Dr. Marcelo de Araújo Oliveira  |  Disciplina: Modelagem e Análise de Sistemas Dinâmicos"
-p.font.size = Pt(12); p.font.color.rgb = RGBColor(220, 230, 245)
+p.text = "Equipe:  Renato Felix  |  Pariz  |  Pedro Augusto (Peu)  |  Scarpini"
+p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_DOURADO
+
+blocos_capa = [
+    "1. Renato Felix (Slides 1–3) — Teoria e Formulação Convexa (Silveira, 2006)",
+    "2. Pariz (Slides 4–8) — Códigos MATLAB, Fluxograma, Simulink e Validação dos Códigos",
+    "3. Pedro Augusto (Slides 9–11) — Bancada do Motor CC, Ordens e Atraso de Padé",
+    "4. Scarpini (Slides 12–14) — Validação Temporal Cega, Dificuldades e Conclusões"
+]
+for b in blocos_capa:
+    p = tf_a.add_paragraph()
+    p.text = f"▸  {b}"
+    p.font.size = Pt(15); p.font.color.rgb = COR_BRANCO; p.space_before = Pt(7)
+
+p = tf_a.add_paragraph()
+p.text = "Orientador: Prof. Dr. Marcelo de Araújo Oliveira  •  Engenharia Elétrica (MASD)"
+p.font.size = Pt(14); p.font.color.rgb = RGBColor(190, 210, 235); p.space_before = Pt(14)
 
 set_speaker_notes(slide1,
 """[ORADOR: Renato Felix | ~1:00 min]
-- Bom dia / boa tarde ao Prof. Dr. Marcelo de Araújo Oliveira e aos colegas da banca.
-- Apresente a equipe: Renato Felix, João Victor Pariz, Pedro Augusto e Wagner Scarpini.
-- Apresente o título do trabalho: Identificação de Sistemas SISO no Domínio da Frequência via Método N2CACGO.
-- Explique a divisão dos 4 blocos da apresentação técnica:
-  1) Eu (Renato Felix) abro com a fundamentação de modelagem vs. identificação e a teoria matemática convexa de Silveira (2006);
-  2) O Pariz explicará a estrutura dos códigos em MATLAB, o fluxograma geral integrado e a montagem do modelo no Simulink;
-  3) O Pedro Augusto apresentará a validação do benchmark de Silveira, a reconstrução espectral via FFT e toda a parte experimental do motor CC;
-  4) E o Scarpini conduzirá a validação temporal cega no motor com ondas quadrada e triangular, as dificuldades numéricas e as conclusões finais.
-- Vamos iniciar direto pela teoria dos métodos de identificação.""")
+Bom dia / boa tarde a todos. Cumprimento o Prof. Dr. Marcelo de Araújo Oliveira e os colegas da banca.
+Nossa equipe é formada por Renato Costa Félix, João Victor Tavares Pariz, Pedro Augusto dos Santos Barbosa e Wagner Scarpini Miranda.
+Hoje apresentamos o trabalho final de MASD sobre Identificação de Sistemas SISO no Domínio da Frequência pelo Método N2CACGO, de Silveira (2006).
+Dividimos a apresentação em 4 blocos:
+1) Eu (Renato Felix) abro com a teoria de modelagem/identificação e a formulação matemática convexa;
+2) O Pariz apresenta os códigos MATLAB, o fluxograma, o modelo Simulink e as validações computacionais de Silveira e da FFT como evidência direta de funcionamento dos códigos;
+3) O Pedro Augusto apresenta o estudo experimental completo do motor CC real da bancada de SSL;
+4) E o Scarpini fecha com a validação temporal cega, os desafios numéricos superados e as conclusões finais.""")
+
 
 # =========================================================================
 # SLIDE 2: TEORIA DOS MÉTODOS (RENATO FELIX)
 # =========================================================================
 slide2 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide2, "1. Teoria dos Métodos: Modelagem vs. Identificação", 
-           "Classificação de modelos (Caixa Branca/Cinza/Preta) e vantagens da abordagem frequencial", 
+add_header(slide2, "1. Teoria: Modelagem vs. Domínio da Frequência",
+           "Classificação de modelos (MASD) e vantagens sobre métodos temporais",
            "Renato Felix")
 
-c2_1 = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.6), Inches(5.1))
-c2_1.fill.solid(); c2_1.fill.fore_color.rgb = COR_CINZA_FUNDO; c2_1.line.color.rgb = COR_CINZA_BORDA
-tf = c2_1.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Tipologia de Modelos Dinâmicos"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+_, tf21 = make_card(slide2, 0.75, 1.72, 5.72, 5.25, "Tipologia & Gargalos no Tempo", title_size=19)
+add_bullets(tf21, [
+    ("Caixa Branca:", "Leis físicas puras (Newton/Kirchhoff), sem dados."),
+    ("Caixa Cinza:", "Estrutura física conhecida + ajuste de parâmetros."),
+    ("Caixa Preta:", "Mapeamento empírico estrito entrada–saída."),
+    ("Gargalo — Ruído Colorido:", "Polariza covariâncias no tempo (ARX/PEM)."),
+    ("Gargalo — x(0) e Atrasos:", "Exige repouso x(0)=0 e infla ordem discreta.")
+], font_size=15.5, space_before=13)
 
-items_21 = [
-    "Classificação Canônica de Modelos (Aulas MASD):\n  • Caixa Branca (Dedutivo Puro): Leis físicas de primeiros princípios (Newton, Kirchhoff). Sem dados empíricos. Limitado por incertezas paramétricas.\n  • Caixa Cinza (Híbrido): Estrutura fenomenológica conhecida com estimação estatística de parâmetros desconhecidos (ex: resistência de armadura e inércia do rotor).\n  • Caixa Preta (Empírico): Mapeamento matemático estrito de entrada-saída.",
-    "Gargalos do Domínio do Tempo (ARX, ARMAX, PEM):\n  • Ruído Colorido: Vulnerabilidade crítica a ruídos estocásticos que polarizam as matrizes de covariância.\n  • Condições Iniciais: Exigência estrita de repouso prévio x(0) = 0. Transitórios iniciais geram viés sistemático.\n  • Atraso de Transporte: Dificuldade em estimar atrasos puros sem sobreparametrizar desnecessariamente o modelo discreto."
-]
-for it in items_21:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(8)
-
-c2_2 = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.9), Inches(1.8), Inches(5.6), Inches(5.1))
-c2_2.fill.solid(); c2_2.fill.fore_color.rgb = COR_CINZA_FUNDO; c2_2.line.color.rgb = COR_CINZA_BORDA
-tf = c2_2.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Por que Domínio da Frequência?"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
-
-items_22 = [
-    "1. Filtragem Natural Fora da Banda:\n  A FRF avalia apenas a resposta forçada em frequências discretas ωk, rejeitando integralmente ruídos e perturbações fora da banda excitada.",
-    "2. Alta Precisão em Ressonâncias e Amortecimento:\n  Ajuste direto do módulo e da defasagem angular nas frequências críticas de crossover do sistema de controle.",
-    "3. Compactação Espectral Brutal:\n  Milhares de amostras temporais brutas são comprimidas em alguns fasores de alta relação sinal-ruído (SNR).",
-    "O Dilema dos Métodos Frequenciais Clássicos:\n  • Levy (1959) e Sanathanan-Koerner (1963): Sofrem de ponderação distorcida e dependem de iterações.\n  • Valle (2005) e Nelder-Mead: Otimizações não-convexas sujeitas a mínimos locais espúrios!"
-]
-for it in items_22:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(8)
+_, tf22 = make_card(slide2, 6.85, 1.72, 5.72, 5.25, "Por que Domínio da Frequência?", title_size=19)
+add_bullets(tf22, [
+    ("1. Filtragem Natural:", "Rejeita ruídos fora das frequências ωₖ excitadas."),
+    ("2. Alta Precisão Modal:", "Captura exata de ressonâncias e fase crítica."),
+    ("3. Compactação Espectral:", "Milhares de amostras → poucos fasores FRF."),
+    ("Levy (1959) e S-K (1963):", "Ponderação distorcida e dependência iterativa."),
+    ("Valle (2005) / Não-Convexos:", "Otimização iterativa sujeita a mínimos locais.")
+], font_size=15.5, space_before=13)
 
 set_speaker_notes(slide2,
 """[ORADOR: Renato Felix | ~1:15 min]
-- Conceitue as três abordagens fundamentais: Caixa Branca, Caixa Cinza e Caixa Preta, exatamente como o Prof. Marcelo ensina no curso.
-- Enfatize por que a identificação no domínio da frequência é superior para sistemas de controle:
-  1) Filtragem inerente de ruídos fora da banda útil;
-  2) Sensibilidade direta a picos de ressonância e margens de estabilidade;
-  3) Compactação de dados pesados em poucos fasores precisos.
-- Mencione os métodos clássicos de Levy e Sanathanan-Koerner e aponte que métodos de otimização genéricos não-convexos caem em armadilhas de mínimos locais.""")
+Como vimos nas aulas do Prof. Marcelo, dividimos modelos em três categorias:
+- Caixa Branca: puramente dedutivo por leis físicas (Newton, Kirchhoff), sem uso de dados experimentais, limitado por atritos e parâmetros incertos;
+- Caixa Cinza: combina estrutura fenomenológica conhecida com estimação paramétrica por dados;
+- Caixa Preta: mapeamento estritamente empírico entrada-saída.
+Ao identificar no domínio do tempo (ARX, ARMAX, PEM), enfrentamos três gargalos clássicos: polarização por ruído colorido, exigência estrita de estado inicial nulo x(0) = 0 e dificuldade para estimar atrasos puros sem superparametrizar.
+Já no domínio da frequência, temos as três grandes vantagens ensinadas no curso:
+1) Filtragem natural de ruídos fora da banda excitada;
+2) Sensibilidade direta a picos de ressonância e margens de estabilidade;
+3) Compactação brutal de milhares de amostras em poucos fasores da FRF.
+O problema é que métodos clássicos como Levy (1959), Sanathanan-Koerner (1963) e Valle (2005) são não-convexos ou iterativos, ficando presos em mínimos locais. Para resolver isso em definitivo, adotamos o método de Silveira (2006).""")
+
 
 # =========================================================================
-# SLIDE 3: O MÉTODO N2CACGO DE SILVEIRA (2006) - FORMULAÇÃO DESTACADA E GRANDE
+# SLIDE 3: O MÉTODO N2CACGO DE SILVEIRA (2006) (RENATO FELIX)
 # =========================================================================
 slide3 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide3, "2. O Método N2CACGO (Silveira, 2006): Formulação Convexa", 
-           "Estrutura polinomial, resíduo de equação estritamente linear e solução analítica global única", 
+add_header(slide3, "2. Método N2CACGO (Silveira, 2006): Formulação Convexa",
+           "Resíduo linear, funcional estritamente convexo e solução fechada em passo único",
            "Renato Felix")
 
-# Card Superior Esquerdo: Formulação Matemática em DESTAQUE GRANDE
-c3_eq = slide3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(6.0), Inches(5.1))
-c3_eq.fill.solid(); c3_eq.fill.fore_color.rgb = COR_EQUACAO_BG; c3_eq.line.color.rgb = COR_AZUL_MEDIO
-tf = c3_eq.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-
-p = tf.paragraphs[0]; p.text = "Formulação Matemática do Modelo"
-p.font.size = Pt(17); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
-
-eq_texts = [
-    ("Função de Transferência Biprópria:", Pt(12), False, COR_TEXTO_ESCURO),
-    ("Ge(s) = N(s) / D(s)", Pt(20), True, COR_AZUL_ESCURO),
-    ("N(s) = α₀ sⁿ + α₁ sⁿ⁻¹ + ... + αₙ\nD(s) = sⁿ + β₁ sⁿ⁻¹ + ... + βₙ  (D monic)", Pt(14), True, RGBColor(10, 50, 110)),
-    ("Resíduo Linear de Equação (Silveira, 2006):", Pt(12), False, COR_TEXTO_ESCURO),
-    ("e(jωₖ) = D(jωₖ) · G(jωₖ) − N(jωₖ)", Pt(18), True, RGBColor(160, 20, 20)),
-    ("Funcional de Custo Quadrático Convexo:", Pt(12), False, COR_TEXTO_ESCURO),
-    ("J(θ) = ∑ | e(jωₖ) |² = || D · G − N ||₂²", Pt(18), True, COR_AZUL_ESCURO),
-    ("Vetor de Parâmetros Ótimos:  θ = [α₀, ..., αₙ, β₁, ..., βₙ]ᵀ  ∈  ℝ^(2n+1)", Pt(11.5), False, COR_TEXTO_ESCURO)
+_, tf31 = make_card(slide3, 0.75, 1.72, 6.05, 5.25, "Formulação Matemática", bg_color=COR_EQUACAO_BG, border_color=COR_AZUL_MEDIO, title_size=19)
+eq_items = [
+    ("Função de Transferência Biprópria:", 14.5, False, COR_TEXTO_ESCURO, 8),
+    ("Ge(s) = N(s) / D(s)    (D mônico)", 22, True, COR_AZUL_ESCURO, 4),
+    ("Resíduo Linear de Equação:", 14.5, False, COR_TEXTO_ESCURO, 14),
+    ("e(jωₖ) = D(jωₖ)·G(jωₖ) − N(jωₖ)", 20, True, COR_VERMELHO_EQ, 4),
+    ("Custo Quadrático em Norma 2:", 14.5, False, COR_TEXTO_ESCURO, 14),
+    ("J(θ) = ∑ |e(jωₖ)|² = || D·G − N ||₂²", 20, True, COR_AZUL_ESCURO, 4),
+    ("θ = [α₀…αₙ, β₁…βₙ]ᵀ  ∈  ℝ^(2n+1)", 15, True, COR_AZUL_MEDIO, 12)
 ]
-for t, sz, bld, col in eq_texts:
-    p = tf.add_paragraph(); p.text = t
-    p.font.size = sz; p.font.bold = bld; p.font.color.rgb = col; p.space_before = Pt(6)
+for txt, sz, bld, col, sb in eq_items:
+    p = tf31.add_paragraph()
+    p.text = txt
+    p.font.size = Pt(sz); p.font.bold = bld; p.font.color.rgb = col; p.space_before = Pt(sb)
 
-# Card Direito: Garantia de Convexidade e SEL Analítico
-c3_sel = slide3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.1), Inches(1.8), Inches(5.4), Inches(5.1))
-c3_sel.fill.solid(); c3_sel.fill.fore_color.rgb = COR_CINZA_FUNDO; c3_sel.line.color.rgb = COR_CINZA_BORDA
-tf = c3_sel.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Garantia de Convexidade e Solução Única"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+_, tf32 = make_card(slide3, 7.10, 1.72, 5.47, 5.25, "Convexidade e Solução Única", title_size=19)
+add_bullets(tf32, [
+    ("Resíduo Linear em θ:", "Forma quadrática estritamente convexa."),
+    ("Hessiana Definida Positiva:", "∇²J(θ) > 0 → ZERO mínimos locais."),
+    ("Condição ∂J/∂θ = 0:", "Conduz ao SEL particionado analítico:"),
+], font_size=15.5, space_before=8)
 
-items_3sel = [
-    "Propriedade de Convexidade Estrita:\n  Como o resíduo e(jωk) é ESTRITAMENTE LINEAR nos coeficientes α e β, o funcional J(θ) é uma forma quadrática estritamente convexa.\n  • Matriz Hessiana: ∇²J(θ) > 0 (positiva definida).\n  • Consequência: ZERO mínimos locais! O ponto estacionário é o MÍNIMO GLOBAL ÚNICO.",
-    "Sistema de Equações Lineares (SEL Particionado):\n  Derivando analiticamente ∂J/∂θ = 0 obtém-se o sistema:\n  [ Q₁   −Q₂ ] [ α ]   [ Y₁ ]\n  [ Q₃   −Q₄ ] [ β ] = [ Y₂ ]   ==>   Q · θ = Y",
-    "Solução Fechada Sem Iteração:\n  θ* = Q⁻¹ · Y  (calculado em UM ÚNICO PASSO via eliminação Gaussiana, livre de divergência numérica!).",
-    "Transição de Fala:\n  'Para detalhar como esse algoritmo analítico e as métricas de validação foram implementados em MATLAB, passo a palavra ao João Victor Pariz.'"
-]
-for it in items_3sel:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(11.8); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(6)
+p_sel = tf32.add_paragraph()
+p_sel.text = "    Q · θ = Y   ⟹   θ* = Q⁻¹ · Y"
+p_sel.font.size = Pt(20); p_sel.font.bold = True; p_sel.font.color.rgb = COR_AZUL_MEDIO; p_sel.space_before = Pt(10); p_sel.space_after = Pt(6)
+
+add_bullets(tf32, [
+    ("Passo Único Sem Iteração:", "Resolvido direto por eliminação Gaussiana."),
+    ("Sem Chute Inicial:", "Imune a divergência numérica.")
+], font_size=15.5, space_before=7)
 
 set_speaker_notes(slide3,
-"""[ORADOR: Renato Felix | ~1:30 min - Destaque Teórico da Apresentação!]
-- Enfatize com clareza a formulação matemática da dissertação de Bruno de Pinho Silveira (IME, 2006):
-  * O resíduo e(jw) = D(jw)*G(jw) - N(jw) é estritamente LINEAR nos parâmetros theta.
-  * O funcional J(theta) em Norma 2 é uma forma quadrática ESTRITAMENTE CONVEXA com Hessiano positivo definido.
-  * Isso garante matematicamente que NÃO EXISTEM MÍNIMOS LOCAIS!
-  * A condição de otimalidade grad(J) = 0 conduz diretamente ao sistema linear de equações normais Q*theta = Y.
-  * A solução ótima global theta* = Q^-1 * Y é obtida analiticamente em um único passo, sem buscas iterativas.
-- Conclua sua fala e passe a palavra: 'Para detalhar como esse algoritmo analítico e as métricas de validação foram implementados em MATLAB, passo a palavra ao João Victor Pariz.'""")
+"""[ORADOR: Renato Felix | ~1:30 min - Destaque Teórico]
+O método que implementamos vem da dissertação de Bruno de Pinho Silveira (IME, 2006), chamado N2CACGO — Norma 2 Convexo Analítico Conjunto Gerador Ótimo.
+Buscamos uma função de transferência biprópria N(s)/D(s) com denominador mônico.
+A sacada fundamental está no resíduo de equação e(jw_k) = D(jw_k)*G(jw_k) - N(jw_k), que é ESTRITAMENTE LINEAR nos parâmetros desconhecidos alfa e beta!
+Ao somar os quadrados desse resíduo no funcional J(theta), obtemos uma forma quadrática com matriz Hessiana estritamente positiva definida (grad^2 J > 0).
+Isso garante matematicamente a propriedade de convexidade estrita: para qualquer combinação convexa no espaço de parâmetros, não existem mínimos locais — há um único mínimo global!
+Igualando o gradiente a zero, chegamos ao sistema linear particionado Q*theta = Y, resolvido em UM ÚNICO PASSO por eliminação Gaussiana (theta* = Q^-1 Y), sem iterações nem chute inicial.
+Agora passo a palavra ao Pariz, que mostrará a implementação desses códigos no MATLAB e no Simulink junto com as suas validações.""")
+
 
 # =========================================================================
-# SLIDE 4: CÓDIGOS MATLAB (PARIZ)
+# SLIDE 4: CÓDIGOS MATLAB [ITENS 1 e 2] (PARIZ)
 # =========================================================================
 slide4 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide4, "3. [Item 1 & 2] Implementação Vetorizada no MATLAB", 
-           "Estrutura modular do script identifica_N2CACGO.m e da rotina valida_modelo_fr.m", 
+add_header(slide4, "3. [Itens 1 & 2] Rotinas Vetorizadas no MATLAB",
+           "Implementação analítica (identifica_N2CACGO.m) e métricas oficiais (valida_modelo_fr.m)",
            "Pariz")
 
-c4_1 = slide4.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(6.0), Inches(5.1))
-c4_1.fill.solid(); c4_1.fill.fore_color.rgb = COR_CODE_BG; c4_1.line.color.rgb = COR_CINZA_BORDA
-tf = c4_1.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.2)
-p = tf.paragraphs[0]; p.text = "Estrutura do Código: identifica_N2CACGO.m"
-p.font.size = Pt(15); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+_, tf41 = make_card(slide4, 0.75, 1.72, 6.20, 5.25, "identifica_N2CACGO.m (Núcleo Analítico)", bg_color=COR_CODE_BG, title_size=18)
+code_clean = """R(k+1,:) = (1i*w').^(n-k);  % Base monomial
+S = diag(H);  Gamma = diag(H.*conj(H));
 
-code_snippet = """function [sys_id, theta, J] = identifica_N2CACGO(w, H_med, n)
-  % 1. Matriz de base polinomial monomial R: (n+1) x m
-  R = zeros(n+1, m);
-  for k = 0:n
-      R(k+1, :) = (1i * w.').^(n - k);
-  end
+Q1 = real(R * R');
+Q2 = real(R * S' * R(2:n+1,:)');
+Q3 = real(R(2:n+1,:) * S * R');
+Q4 = real(R(2:n+1,:) * Gamma * R(2:n+1,:)');
 
-  % 2. Projeções e matrizes de dados espectrais
-  S = diag(H_med);  S_conj = diag(conj(H_med));
-  Gamma = diag(H_med .* conj(H_med));
-  R_H = R';
+Q = [Q1, -Q2; Q3, -Q4];
+theta = Q \\ Y;   % Passo único (LU)
+sys = tf(theta(1:n+1)', [1, theta(n+2:end)']);"""
+p_code = tf41.add_paragraph()
+p_code.text = code_clean
+p_code.font.size = Pt(12.5); p_code.font.name = "Consolas"; p_code.font.bold = True; p_code.font.color.rgb = RGBColor(10, 40, 95)
+p_code.space_before = Pt(10); p_code.line_spacing = 1.25
 
-  % 3. Montagem dos 4 blocos analíticos de Q e Y
-  Q1 = real(R * R_H);
-  Q2 = real(R * S_conj * R_H(:, 2:n+1));
-  Q3 = real(R(2:n+1, :) * S * R_H);
-  Q4 = real(R(2:n+1, :) * Gamma * R_H(:, 2:n+1));
-  Q  = [Q1, -Q2; Q3, -Q4];
-  Y  = real([R * S_conj; R(2:n+1, :) * Gamma] * (1i*w).^n);
-
-  % 4. Resolução analítica por Eliminação Gaussiana
-  theta = Q \\ Y;
-  sys_id = tf(theta(1:n+1)', [1, theta(n+2:end)']);
-end"""
-p2 = tf.add_paragraph(); p2.text = code_snippet
-p2.font.size = Pt(9.2); p2.font.name = "Consolas"; p2.font.color.rgb = RGBColor(10, 40, 90); p2.space_before = Pt(4)
-
-c4_2 = slide4.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.1), Inches(1.8), Inches(5.4), Inches(5.1))
-c4_2.fill.solid(); c4_2.fill.fore_color.rgb = COR_CINZA_FUNDO; c4_2.line.color.rgb = COR_CINZA_BORDA
-tf = c4_2.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Rotina de Validação: valida_modelo_fr.m"
-p.font.size = Pt(15); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
-
-items_42 = [
-    "Entradas da Rotina de Validação:\n  • Vetor de frequências angulares ω [rad/s].\n  • Resposta em frequência experimental G_med(jω).\n  • Objeto tf retornado pelo N2CACGO.",
-    "Métricas de Avaliação Oficial (Aulas MASD):\n  1. Custo J em Norma 2 (Silveira 2006):\n     J = || G_med(jω) − G_id(jω) ||₂\n  2. RMSE de Magnitude em dB:\n     RMSE_mag = √[ (1/m) ∑ (20 log₁₀ |G_med/G_id|)² ]\n  3. RMSE de Fase em graus:\n     RMSE_fase = √[ (1/m) ∑ (∠G_med − ∠G_id)² ]\n  4. Coeficiente de Ajuste Global (FIT %):\n     FIT = [ 1 − ||G_med − G_id|| / ||G_med − G_médio|| ] × 100%",
-    "Diagnóstico e Plots Automatizados:\n  Gera diagramas de Bode comparativos com magnitude e fase sobrepostas para inspeção visual imediata."
-]
-for it in items_42:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(11.8); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(6)
+_, tf42 = make_card(slide4, 7.20, 1.72, 5.37, 5.25, "valida_modelo_fr.m (Métricas MASD)", title_size=18)
+add_bullets(tf42, [
+    ("Custo Norma 2:", "J = || G_med − G_id ||₂"),
+    ("RMSE Magnitude:", "Erro quadrático médio em dB"),
+    ("RMSE Fase:", "Desvio angular médio em graus"),
+    ("Ajuste Global (FIT %):", "(1 − ||ΔG|| / ||G_med − Ḡ||) × 100%"),
+    ("Diagnóstico Visual:", "Plota Bode comparativo automático")
+], font_size=15.5, space_before=15)
 
 set_speaker_notes(slide4,
 """[ORADOR: Pariz | ~1:15 min]
-- Agradeça ao Renato e apresente a arquitetura dos códigos em MATLAB:
-  1) No Item 1, implementamos a rotina identifica_N2CACGO.m vetorizada, sem laços de otimização;
-  2) Construímos a matriz de base polinomial monomial R com as potências (j*w)^k;
-  3) Montamos os quatro blocos da matriz Q e o vetor Y usando projeções Hermitianas (real(R*R_H));
-  4) Resolvemos o sistema com o operador backslash (Q \\ Y), que executa a fatoração LU com pivoteamento ótimo.
-- No Item 2, criamos a rotina valida_modelo_fr.m, que computa as métricas ensinadas pelo professor: o custo J, os RMSEs de magnitude e fase e o FIT percentual oficial.""")
+Obrigado, Renato. Cumprimento o professor Marcelo e os colegas.
+No Bloco 2, apresento toda a nossa arquitetura computacional em MATLAB e Simulink, além das validações que comprovam o funcionamento dos códigos.
+Começando pelos Itens 1 e 2 no MATLAB:
+- Em identifica_N2CACGO.m, implementamos o algoritmo de forma 100% vetorizada, sem laços de busca: montamos a base monomial R = (j*w)^(n-k), construímos os quatro blocos reais Q1 a Q4 via projeções Hermitianas, e resolvemos Q * theta = Y em um único passo com o operador backslash (fatoração LU com pivoteamento ótimo).
+- Em valida_modelo_fr.m, avaliamos qualquer modelo identificado pelas 4 métricas oficiais vistas em sala: o custo J em norma 2, o RMSE de módulo em dB, o RMSE de fase em graus e o índice FIT percentual, gerando automaticamente o diagrama de Bode sobreposto.""")
+
 
 # =========================================================================
-# SLIDE 5: FLUXOGRAMA INTEGRADO: MATLAB & SIMULINK (PARIZ)
+# SLIDE 5: FLUXOGRAMA INTEGRADO MATLAB & SIMULINK (PARIZ)
 # =========================================================================
 slide5 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide5, "4. Fluxograma Integrado: Do Sinal Temporal à Identificação", 
-           "Visão holística da arquitetura de processamento computacional integrando MATLAB e Simulink", 
+add_header(slide5, "4. Fluxograma Integrado: MATLAB & Simulink",
+           "Pipeline completo das fontes de dados (Itens 3, 4 e 5) até a validação final",
            "Pariz")
 
 img_fluxo = os.path.join(FIG_DIR, 'fluxograma_matlab_simulink.png')
 if os.path.exists(img_fluxo):
-    slide5.shapes.add_picture(img_fluxo, Inches(0.8), Inches(1.65), Inches(11.733), Inches(5.4))
+    slide5.shapes.add_picture(img_fluxo, Inches(0.75), Inches(1.62), Inches(11.83), Inches(5.45))
 
 set_speaker_notes(slide5,
-"""[ORADOR: Pariz | ~1:15 min]
-- Apresente o fluxograma geral que desenvolvemos para amarrar todas as etapas do trabalho:
-  1) Três Fontes de Dados de Entrada:
-     - Modelos didáticos e benchmark de Silveira (Item 3);
-     - Simulação dinâmica com excitação Chirp no Simulink (Item 4);
-     - Ensaios experimentais senoidais do motor CC da bancada de SSL (Item 5);
-  2) Processamento Espectral Intermediário:
-     - No caso dos sinais temporais do Simulink, passamos pelo cálculo da FRF via razão de FFTs Y(k)/U(k);
-     - No caso do motor, extraímos ganho e fase no regime permanente de cada senoide;
-  3) Núcleo Algorítmico Central: N2CACGO em MATLAB:
-     - Montagem das matrizes Q e Y;
-     - Resolução analítica em passo único;
-  4) Rotina de Validação e Diagnóstico:
-     - Cálculo de J, RMSE, FIT e validação cega com sinais temporais no motor.""")
+"""[ORADOR: Pariz | ~1:00 min]
+No Slide 5 vemos o fluxograma completo integrando todas as etapas do trabalho:
+1) À esquerda entram as três fontes de dados: benchmarks acadêmicos (Item 3), sinais do modelo dinâmico no Simulink (Item 4) e ensaios experimentais do motor CC (Item 5);
+2) No centro-esquerda fazemos o pré-processamento espectral — razão de FFTs com janela de Hann no Simulink e regressão senoidal de mínimos quadrados no motor CC;
+3) Todos os fasores convergem para o núcleo identifica_N2CACGO.m e são auditados por valida_modelo_fr.m;
+4) Agora vou mostrar as duas evidências diretas de que esse código funciona na prática: primeiro validando o MATLAB contra a dissertação de Silveira (Item 3), e depois montando e validando o Simulink (Item 4).""")
+
 
 # =========================================================================
-# SLIDE 6: O MODELO SIMULINK COM O PRINT DO DIAGRAMA (PARIZ)
+# SLIDE 6: VALIDAÇÃO DO CÓDIGO MATLAB — SILVEIRA 2006 [ITEM 3] (PARIZ)
 # =========================================================================
 slide6 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide6, "5. [Item 4] O Modelo Simulink: Diagrama de Blocos e Simulação", 
-           "Estrutura do modelo_item4.slx, solver contínuo de passo fixo ode4 e geração dos sinais", 
+add_header(slide6, "5. [Item 3] Validação do Código MATLAB: Benchmark Silveira",
+           "Evidência exata contra a Tabela 3.2 de Silveira (2006) — Ordens 1 a 7 e sistemas didáticos",
            "Pariz")
 
-# Imagem do Diagrama de Blocos do Simulink no topo/esquerda
-img_sim_diag = os.path.join(FIG_DIR, 'simulink_diagrama_blocos.png')
-if os.path.exists(img_sim_diag):
-    slide6.shapes.add_picture(img_sim_diag, Inches(0.8), Inches(1.75), Inches(6.0), Inches(2.25))
-
-# Imagem dos Sinais Temporais à direita
-img_chirp = os.path.join(FIG_DIR, 'item4_simulink_sinais_temporais.png')
-if os.path.exists(img_chirp):
-    slide6.shapes.add_picture(img_chirp, Inches(7.1), Inches(1.75), Inches(5.4), Inches(5.0))
-
-# Card explicativo embaixo do print do Simulink
-c6_desc = slide6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(4.15), Inches(6.0), Inches(2.6))
-c6_desc.fill.solid(); c6_desc.fill.fore_color.rgb = COR_CINZA_FUNDO; c6_desc.line.color.rgb = COR_CINZA_BORDA
-tf = c6_desc.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.2)
-p = tf.paragraphs[0]; p.text = "Detalhes Técnicos do Modelo Simulink"
-p.font.size = Pt(14); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
-
-items_6desc = [
-    "1. Bloco Entrada_u (From Workspace): Injeta sinal Chirp linear de 0,1 Hz a 15 Hz por 50 s gerado no MATLAB.",
-    "2. Bloco Planta_LTI (Transfer Fcn): Implementa a dinâmica contínua G(s) = 8 / (0,2 s² + 1,2 s + 1) = 40 / (s² + 6 s + 5).",
-    "3. Bloco Saida_y (To Workspace): Registra a série temporal de saída com Ts = 1 ms (20.001 amostras em formato Array).",
-    "4. Solver Contínuo ode4: Algoritmo Runge-Kutta de 4ª ordem com passo fixo (dt = 0,001 s), garantindo precisão absoluta sem truncamento.",
-    "Transição de Fala: 'Para apresentar os resultados desse modelo Simulink, a validação acadêmica de Silveira e o caso do motor CC, passo a palavra ao Pedro Augusto.'"
-]
-for it in items_6desc:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(10.5); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(3)
-
-set_speaker_notes(slide6,
-"""[ORADOR: Pariz | ~1:15 min]
-- Apresente o modelo do Simulink exibido no slide (modelo_item4.slx):
-  * O bloco Entrada_u injeta o sinal Chirp contínuo varrendo de 0,1 a 15 Hz por 50 segundos;
-  * O bloco Planta_LTI executa a dinâmica contínua da planta com polos em -1 e -5 e ganho 8;
-  * O bloco Saida_y exporta a série temporal y(t) de volta ao Workspace via To Workspace em formato de Array;
-  * Usamos o solver contínuo de passo fixo ode4 (Runge-Kutta de 4ª ordem), garantindo alta fidelidade sem ruídos numéricos.
-- Destaque que enquanto outros grupos relataram dificuldade em montar o Simulink, nosso modelo funcionou perfeitamente e forneceu dados ideais para a FFT.
-- Passe a palavra: 'Para apresentar a validação teórica de Silveira, os resultados espectrais da FFT e o caso do motor CC, passo a palavra ao Pedro Augusto.'""")
-
-# =========================================================================
-# SLIDE 7: BENCHMARK SILVEIRA 2006 (PEDRO AUGUSTO)
-# =========================================================================
-slide7 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide7, "6. [Item 3] Validação Teórica: Benchmark de Silveira (2006)", 
-           "Reprodução exata da Tabela 3.2 da dissertação de mestrado (Ordens 1 a 7)", 
-           "Pedro Augusto")
-
-table_shape = slide7.shapes.add_table(8, 5, Inches(0.8), Inches(1.8), Inches(6.5), Inches(4.9))
+table_shape = slide6.shapes.add_table(8, 5, Inches(0.75), Inches(1.75), Inches(6.65), Inches(4.55))
 table = table_shape.table
-col_w = [Inches(1.1), Inches(1.4), Inches(1.4), Inches(1.2), Inches(1.4)]
+col_w = [Inches(1.05), Inches(1.55), Inches(1.55), Inches(1.05), Inches(1.45)]
 for i, w in enumerate(col_w):
     table.columns[i].width = w
 
-headers = ["Ordem", "J (Nossa Rotina)", "J1 (Silveira)", "FIT (%)", "Concordância"]
+headers = ["Ordem", "J (Nosso)", "J₁ (Tese)", "FIT", "Análise"]
 for j, h in enumerate(headers):
     cell = table.cell(0, j)
     cell.fill.solid(); cell.fill.fore_color.rgb = COR_AZUL_ESCURO
+    cell.vertical_anchor = MSO_ANCHOR.MIDDLE
     p = cell.text_frame.paragraphs[0]
-    p.text = h; p.font.size = Pt(11); p.font.bold = True; p.font.color.rgb = COR_BRANCO
+    p.text = h; p.font.size = Pt(14); p.font.bold = True; p.font.color.rgb = COR_BRANCO
     p.alignment = PP_ALIGN.CENTER
 
 dados_silv = [
-    ("1ª Ordem", "1,5053 × 10¹", "1,5126 × 10¹", "0,00%", "Concordância"),
-    ("2ª Ordem", "3,0266 × 10⁰", "3,0180 × 10⁰", "11,28%", "Concordância"),
-    ("3ª Ordem", "1,4590 × 10⁰", "1,4660 × 10⁰", "57,23%", "Concordância"),
-    ("4ª Ordem", "6,2899 × 10⁻⁴", "6,3200 × 10⁻⁴", "99,98%", "Gabarito Exato"),
-    ("5ª Ordem", "3,7432 × 10⁻⁴", "3,7950 × 10⁻⁴", "99,99%", "Quase-Canc."),
-    ("6ª Ordem", "3,5334 × 10⁻⁴", "6,3060 × 10⁻⁴", "99,99%", "Superdimens."),
-    ("7ª Ordem", "3,8655 × 10⁻⁴", "3,4390 × 10⁻⁴", "99,99%", "Superdimens.")
+    ("1ª", "1,505 × 10¹", "1,513 × 10¹", "0,0%", "Sub-ord."),
+    ("2ª", "3,027 × 10⁰", "3,018 × 10⁰", "11,3%", "Sub-ord."),
+    ("3ª", "1,459 × 10⁰", "1,466 × 10⁰", "57,2%", "Sub-ord."),
+    ("4ª", "6,290 × 10⁻⁴", "6,320 × 10⁻⁴", "99,98%", "Ótima"),
+    ("5ª", "3,743 × 10⁻⁴", "3,795 × 10⁻⁴", "99,99%", "Canc."),
+    ("6ª", "3,533 × 10⁻⁴", "6,306 × 10⁻⁴", "99,99%", "Super."),
+    ("7ª", "3,866 × 10⁻⁴", "3,439 × 10⁻⁴", "99,99%", "Super.")
 ]
 for i, row in enumerate(dados_silv):
+    is_opt = (row[4] == "Ótima")
     for j, val in enumerate(row):
         cell = table.cell(i+1, j)
         cell.fill.solid()
-        cell.fill.fore_color.rgb = RGBColor(235, 245, 235) if "Gabarito" in row[4] else COR_CINZA_FUNDO
+        cell.fill.fore_color.rgb = COR_VERDE_BG if is_opt else COR_CINZA_FUNDO
+        cell.vertical_anchor = MSO_ANCHOR.MIDDLE
         p = cell.text_frame.paragraphs[0]
-        p.text = val; p.font.size = Pt(10.5); p.font.color.rgb = COR_TEXTO_ESCURO
-        if j == 4 and "Gabarito" in val:
-            p.font.bold = True; p.font.color.rgb = COR_VERDE_OK
+        p.text = val; p.font.size = Pt(13.5)
+        p.font.color.rgb = COR_VERDE_OK if is_opt else COR_TEXTO_ESCURO
+        p.font.bold = is_opt
         p.alignment = PP_ALIGN.CENTER
+
+# Faixa resumo embaixo da tabela
+_, tf6_b = make_card(slide6, 0.75, 6.42, 6.65, 0.65, bg_color=COR_EQUACAO_BG, border_color=COR_AZUL_MEDIO)
+tf6_b.vertical_anchor = MSO_ANCHOR.MIDDLE
+tf6_b.margin_top = Inches(0.06); tf6_b.margin_bottom = Inches(0.06)
+p6b = tf6_b.paragraphs[0]
+p6b.text = "✓ Sistemas didáticos (1ª–3ª ordem): FIT = 100,00% (erro nulo)"
+p6b.font.size = Pt(14); p6b.font.bold = True; p6b.font.color.rgb = COR_AZUL_ESCURO; p6b.alignment = PP_ALIGN.CENTER
 
 img_silv = os.path.join(FIG_DIR, 'item3_exemplo_silveira_bode.png')
 if os.path.exists(img_silv):
-    slide7.shapes.add_picture(img_silv, Inches(7.5), Inches(1.8), Inches(5.0), Inches(4.9))
+    slide6.shapes.add_picture(img_silv, Inches(7.60), Inches(1.75), Inches(5.00), Inches(5.30))
+
+set_speaker_notes(slide6,
+"""[ORADOR: Pariz | ~1:15 min - Evidência 1 do Código MATLAB]
+Esta é a primeira evidência concreta de que nossas rotinas MATLAB estão corretas: no Item 3 reproduzimos o Exemplo 3.4.1 da tese de Silveira (2006).
+Olhem na tabela comparativa:
+- De 1ª a 3ª ordem, o modelo é insuficiente (erro alto e FIT de até 57%);
+- Na 4ª ordem — que é a ordem exata da planta da tese — o custo J cai quatro ordens de grandeza para 6,29e-4, batendo na casa decimal com o gabarito J1 = 6,32e-4 da dissertação, e alcançando FIT = 99,98%!
+- De 5ª a 7ª ordem surgem pares polo-zero de quase-cancelamento, comprovando o princípio da parcimônia: 4ª ordem é a ótima.
+- Além disso, validamos sistemas didáticos puros de 1ª, 2ª e 3ª ordem com FIT de 100,00%, confirmando que identifica_N2CACGO.m e valida_modelo_fr.m operam sem erros.""")
+
+
+# =========================================================================
+# SLIDE 7: MODELO SIMULINK [ITEM 4] (PARIZ)
+# =========================================================================
+slide7 = prs.slides.add_slide(prs.slide_layouts[6])
+add_header(slide7, "6. [Item 4] Arquitetura do Modelo no Simulink",
+           "Diagrama modelo_item4.slx, solver contínuo ode4 e sinais temporais",
+           "Pariz")
+
+img_sim_diag = os.path.join(FIG_DIR, 'simulink_diagrama_blocos.png')
+if os.path.exists(img_sim_diag):
+    slide7.shapes.add_picture(img_sim_diag, Inches(0.75), Inches(1.72), Inches(6.05), Inches(2.35))
+
+img_chirp = os.path.join(FIG_DIR, 'item4_simulink_sinais_temporais.png')
+if os.path.exists(img_chirp):
+    slide7.shapes.add_picture(img_chirp, Inches(7.05), Inches(1.72), Inches(5.53), Inches(5.25))
+
+_, tf7_desc = make_card(slide7, 0.75, 4.22, 6.05, 2.75, "Especificação da Simulação", title_size=17.5)
+add_bullets(tf7_desc, [
+    ("Entrada_u:", "Chirp 0,1 → 15 Hz por 50 s (From Workspace)."),
+    ("Planta_LTI:", "G(s) = 40 / (s² + 6s + 5) (polos −1 e −5)."),
+    ("Saida_y:", "Exportação Array, Ts = 1 ms (20.001 pts)."),
+    ("Solver ode4:", "Runge-Kutta 4ª ordem (passo fixo 0,001 s).")
+], font_size=14.5, space_before=7)
 
 set_speaker_notes(slide7,
-"""[ORADOR: Pedro Augusto | ~1:15 min]
-- Agradeça ao Pariz e apresente os resultados acadêmicos do Item 3:
-- Mostre a tabela de confronto direto: reproduzimos com absoluta fidelidade a Tabela 3.2 da dissertação de Bruno de Pinho Silveira (IME, 2006).
-- Explique o princípio da parcimônia:
-  * A planta-alvo de Silveira é de 4ª ordem;
-  * Até a 3ª ordem, o erro é alto (FIT de 57%);
-  * Na 4ª ordem, o erro despenca para 6,28e-4 e o FIT atinge 99,98%!
-  * As ordens 5 a 7 trazem apenas polos e zeros que quase se cancelam, confirmando que a 4ª ordem é a ordem ótima.
-- Além disso, testamos sistemas didáticos puros de 1ª, 2ª e 3ª ordem, obtendo FIT de 100% e erro numérico residual nulo.""")
+"""[ORADOR: Pariz | ~1:10 min]
+Passando ao Item 4, aqui está o nosso modelo funcional construído no Simulink (modelo_item4.slx):
+- O bloco Entrada_u (From Workspace) injeta um sinal Chirp linear varrendo de 0,1 Hz a 15 Hz durante 50 segundos para excitar toda a banda dinâmica;
+- O bloco Planta_LTI implementa a planta contínua 40 / (s^2 + 6s + 5), com polos em -1 e -5 e ganho estático 8;
+- O bloco Saida_y registra a resposta y(t) em Array com passo fixo Ts = 1 ms;
+- Utilizamos o solver contínuo ode4 (Runge-Kutta de 4ª ordem), evitando distorções de passo variável para a etapa seguinte da FFT.
+À direita vemos os sinais temporais simulados, exibindo a atenuação progressiva da saída conforme a frequência sobe.""")
+
 
 # =========================================================================
-# SLIDE 8: RESULTADOS SIMULINK E FFT (PEDRO AUGUSTO)
+# SLIDE 8: VALIDAÇÃO DO SIMULINK VIA FFT [ITEM 4] (PARIZ)
 # =========================================================================
 slide8 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide8, "7. [Item 4] Extração por FFT e Validação do Modelo Identificado", 
-           "Processamento espectral de 126 fasores e recuperação analítica com FIT de 96,47%", 
-           "Pedro Augusto")
+add_header(slide8, "7. [Item 4] Validação do Simulink e FFT (FIT = 96,47%)",
+           "Evidência final do código: recuperação analítica da planta a partir de u(t) e y(t)",
+           "Pariz")
 
-c8_1 = slide8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.6), Inches(5.0))
-c8_1.fill.solid(); c8_1.fill.fore_color.rgb = COR_CINZA_FUNDO; c8_1.line.color.rgb = COR_CINZA_BORDA
-tf = c8_1.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Extração Espectral e Parâmetros Obtidos"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+_, tf81 = make_card(slide8, 0.75, 1.72, 5.75, 5.25, "Resultados da Extração via FFT", title_size=18.5)
+add_bullets(tf81, [
+    ("FRF Empírica:", "G_med = FFT{y} / FFT{u} (126 fasores úteis)."),
+    ("Banda Analisada:", "1,26 a 79,76 rad/s (janela de Hann)."),
+], font_size=15.5, space_before=10)
 
-items_81 = [
-    "Extração Espectral via FFT:\n  G_med(jωₖ) = FFT{y(t)} / FFT{u(t)} = Y(k) / U(k)\n  Isolaram-se 126 frequências entre 1,26 e 79,76 rad/s com coerência SNR elevada.",
-    "Modelo Identificado pelo N2CACGO:\n  G_id(s) = 40,0 / (s² + 6,005 s + 4,818)\n  (Planta Nominal: 40 / (s² + 6,000 s + 5,000)).",
-    "Exatidão dos Polos e Ganho:\n  • Polos Estimados: s₁ = −0,967 e s₂ = −5,038\n    (Nominais: −1,000 e −5,000 — erro < 3%).\n  • Ganho Estático: 8,30 (Nominal: 8,00).",
-    "Métricas de Ajuste Espectral:\n  • FIT Global: 96,47%\n  • RMSE de Módulo: 0,165 dB\n  • RMSE de Fase: 1,025 graus\n  A pequena dispersão decorre do vazamento espectral natural da FFT finita."
-]
-for it in items_81:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(7)
+p_gid = tf81.add_paragraph()
+p_gid.text = "G_id(s) = 40,0 / (s² + 6,005s + 4,818)"
+p_gid.font.size = Pt(18); p_gid.font.bold = True; p_gid.font.color.rgb = COR_AZUL_MEDIO; p_gid.space_before = Pt(14); p_gid.space_after = Pt(8)
+
+add_bullets(tf81, [
+    ("Polos Recuperados:", "−0,967 e −5,038 (reais: −1 e −5 | erro < 3%)."),
+    ("Ganho Estático:", "8,30 (nominal: 8,00)."),
+    ("Métricas Finais:", "FIT = 96,47% | RMSE = 0,165 dB | Fase = 1,03°.")
+], font_size=15.5, space_before=10)
 
 img_fft = os.path.join(FIG_DIR, 'item4_simulink_bode_validacao.png')
 if os.path.exists(img_fft):
-    slide8.shapes.add_picture(img_fft, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0))
+    slide8.shapes.add_picture(img_fft, Inches(6.75), Inches(1.72), Inches(5.83), Inches(5.25))
 
 set_speaker_notes(slide8,
-"""[ORADOR: Pedro Augusto | ~1:00 min]
-- Apresente os resultados espectrais da simulação do Simulink:
-  * Calculamos a FRF estimada através da razão fasorial Y(k)/U(k);
-  * O algoritmo N2CACGO ajustou uma função de 2ª ordem que recuperou os polos nominais em -1 e -5 com menos de 3% de discrepância;
-  * Obtivemos um FIT excelente de 96,47%, com RMSE de módulo de 0,16 dB e RMSE de fase de apenas 1 grau;
-  * O gráfico de Bode à direita comprova a perfeita superposição entre o modelo identificado e a planta real.""")
+"""[ORADOR: Pariz | ~1:15 min - Evidência 2 do Código & Simulink]
+E aqui está a validação que fecha o ciclo do nosso código Simulink + FFT + N2CACGO:
+Pegamos os vetores u(t) e y(t) exportados pelo Simulink, aplicamos a janela de Hann e calculamos a FRF pela razão fasorial Y(k)/U(k) em 126 frequências de alta coerência.
+Alimentando esses dados espectrais na nossa rotina identifica_N2CACGO.m para 2ª ordem, recuperamos G_id(s) = 40,0 / (s^2 + 6,005s + 4,818), com polos estimados em -0,967 e -5,038 — erro menor que 3% frente à planta nominal (-1 e -5)!
+Na nossa rotina de validação obtivemos FIT de 96,47%, RMSE de magnitude de apenas 0,165 dB e RMSE de fase de 1,03 grau, como comprova a sobreposição no diagrama de Bode à direita.
+Com os códigos MATLAB e o modelo Simulink devidamente validados, passo a palavra ao Pedro Augusto para apresentar o estudo experimental completo do Motor CC real.""")
+
 
 # =========================================================================
-# SLIDE 9: O CASO DO MOTOR CC E OS DADOS EXPERIMENTAIS (PEDRO AUGUSTO)
+# SLIDE 9: BANCADA REAL DO MOTOR CC [ITEM 5] (PEDRO AUGUSTO)
 # =========================================================================
 slide9 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide9, "8. [Item 5] O Caso do Motor CC: Dados de Bancada Real (SSL)", 
-           "Origem dos dados do Grupo 3 de SSL: 26 ensaios senoidais puros e rigor metrológico", 
+add_header(slide9, "8. [Item 5] Motor CC Real: Dados de Bancada (Grupo 3 SSL)",
+           "Protocolo experimental com 26 ensaios senoidais e extração em regime permanente",
            "Pedro Augusto")
 
-c9_1 = slide9.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.6), Inches(5.0))
-c9_1.fill.solid(); c9_1.fill.fore_color.rgb = COR_CINZA_FUNDO; c9_1.line.color.rgb = COR_CINZA_BORDA
-tf = c9_1.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Origem e Características dos Dados"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+_, tf91 = make_card(slide9, 0.75, 1.72, 5.72, 5.25, "Aquisição Experimental (Bancada)", title_size=18.5)
+add_bullets(tf91, [
+    ("Planta Física:", "Motor CC + carga inercial (SSL Grupo 3)."),
+    ("Entrada / Saída:", "Tensão PWM u(t) → velocidade ω(t) por tacômetro."),
+    ("Varredura:", "26 senoides puras de 0,20 Hz a 10,0 Hz."),
+    ("Amostragem:", "fs = 1 kHz (10.000 amostras por ensaio)."),
+    ("Corte Transitório:", "Descartados 40% iniciais; usados últimos 60%.")
+], font_size=15.5, space_before=13)
 
-items_91 = [
-    "Contexto da Bancada Física (Grupo 3 - SSL):\n  • Planta: Motor de Corrente Contínua (CC) acoplado a carga inercial.\n  • Entrada u(t): Tensão de armadura sintetizada por gerador de sinais e amplificada por ponte H PWM.\n  • Saída y(t): Velocidade angular mensurada por tacômetro digital ótico (pulsos por rotação).",
-    "Protocolo Metrológico de Varredura:\n  • 26 ensaios senoidais puros com frequências varrendo de 0,20 Hz a 10,00 Hz (1,26 a 62,83 rad/s).\n  • Amostragem digital com frequência fs = 1 kHz.\n  • Cada ensaio contém 10.000 amostras temporais por canal.",
-    "Tratamento Rigoroso de Regime Permanente:\n  Para eliminar transitórios de partida e distorções iniciais, descartamos os primeiros 40% de cada ensaio e processamos apenas os últimos 60% via regressão senoidal de mínimos quadrados."
-]
-for it in items_91:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(7)
+_, tf92 = make_card(slide9, 6.85, 1.72, 5.72, 5.25, "Extração Fasorial da FRF", title_size=18.5)
+add_bullets(tf92, [
+    ("Ajuste Senoidal:", "Regressão de mínimos quadrados em regime:"),
+], font_size=15.5, space_before=12)
 
-c9_2 = slide9.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0))
-c9_2.fill.solid(); c9_2.fill.fore_color.rgb = COR_CINZA_FUNDO; c9_2.line.color.rgb = COR_CINZA_BORDA
-tf = c9_2.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Extração dos Fasores de Resposta em Frequência"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+p_frf = tf92.add_paragraph()
+p_frf.text = "  G_med(jωₖ) = (Aᵧ / Aᵤ) · exp( j(ϕᵧ − ϕᵤ) )"
+p_frf.font.size = Pt(17.5); p_frf.font.bold = True; p_frf.font.color.rgb = COR_AZUL_MEDIO; p_frf.space_before = Pt(10); p_frf.space_after = Pt(10)
 
-items_92 = [
-    "Ajuste Senoidal de Mínimos Quadrados:\n  Para cada frequência ωₖ, ajustou-se analiticamente:\n  u(t) = Aᵤ · cos(ωₖ t + ϕᵤ)\n  y(t) = Aᵧ · cos(ωₖ t + ϕᵧ)",
-    "Fasor Experimental da FRF:\n  G_med(jωₖ) = (Aᵧ / Aᵤ) · exp( j(ϕᵧ − ϕᵤ) )\n  Esse procedimento garante imunidade contra distorções harmônicas e ruído de comutação das escovas.",
-    "Comportamento Físico Observado:\n  • Em baixas frequências (0,2 Hz): Ganho estático próximo de 10 (rad/s)/V (+20 dB).\n  • Frequência de corte a ~4,8 rad/s (0,76 Hz): Decaimento de magnitude de −20 dB/década.\n  • Defasagem angular ultrapassa −90° em altas frequências, atingindo −104° a 10 Hz! (Mistério físico explicado no Slide 11!)."
-]
-for it in items_92:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(7)
+add_bullets(tf92, [
+    ("Imunidade a Ruído:", "Rejeita harmônicos e ruído de comutação."),
+    ("Ganho Estático:", "≈ 10 (rad/s)/V (+20 dB) em baixa frequência."),
+    ("Corte e Fase:", "fc ≈ 0,76 Hz; fase atinge −104° em 10 Hz!")
+], font_size=15.5, space_before=12)
 
 set_speaker_notes(slide9,
 """[ORADOR: Pedro Augusto | ~1:15 min]
-- Explique a origem física dos dados experimentais do Item 5:
-  * Foram coletados na disciplina de Sinais e Sistemas Lineares (SSL) pelo Grupo 3;
-  * A entrada é a tensão de armadura e a saída é a velocidade angular do rotor;
-  * O ensaio envolveu 26 senoides de 0,2 a 10 Hz;
-  * Para ter rigor metrológico absoluto, eliminamos os transitórios iniciais e extraímos o ganho e a fase no regime permanente usando ajuste senoidal de mínimos quadrados;
-  * Chame atenção para a defasagem que ultrapassa -90 graus a 10 Hz, que será o grande destaque da física.""")
+Obrigado, Pariz. Cumprimento o professor Marcelo e a banca.
+No Bloco 3, aplicamos o algoritmo validado a uma planta física real: o motor de corrente contínua da bancada de Sinais e Sistemas Lineares (dados do Grupo 3).
+A entrada é a tensão de armadura via ponte H PWM e a saída é a velocidade angular lida por tacômetro óptico.
+Foram processados 26 ensaios senoidais de 0,20 Hz a 10 Hz amostrados a 1 kHz.
+Para eliminar o transitório de partida e efeitos de atrito estático inicial, descartamos os primeiros 40% de cada registro e aplicamos regressão senoidal de mínimos quadrados nos 60% finais, extraindo amplitude e fase imunes a ruído.
+Um detalhe físico importante apareceu na leitura: a defasagem passa de -90 graus e chega a -104 graus em 10 Hz — veremos a explicação física exata no Slide 11.""")
+
 
 # =========================================================================
-# SLIDE 10: VARREDURA DE ORDENS DO MOTOR CC (PEDRO AUGUSTO)
+# SLIDE 10: VARREDURA DE ORDENS DO MOTOR CC [ITEM 5] (PEDRO AUGUSTO)
 # =========================================================================
 slide10 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide10, "9. [Item 5] Varredura de Ordens do Motor CC (Ordens 1 a 5)", 
-           "Aplicação do princípio da parcimônia de Box-Jenkins e análise comparativa de desempenho", 
+add_header(slide10, "9. [Item 5] Varredura de Ordens do Motor CC (n = 1 a 5)",
+           "Critério de parcimônia de Box-Jenkins na seleção da ordem física dominante",
            "Pedro Augusto")
 
-c10_tab = slide10.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.6), Inches(5.0))
-c10_tab.fill.solid(); c10_tab.fill.fore_color.rgb = COR_CINZA_FUNDO; c10_tab.line.color.rgb = COR_CINZA_BORDA
-tf = c10_tab.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Desempenho por Ordem (N2CACGO)"
-p.font.size = Pt(15); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+tab10_shape = slide10.shapes.add_table(6, 4, Inches(0.75), Inches(1.75), Inches(5.75), Inches(3.25))
+tab10 = tab10_shape.table
+for i, w in enumerate([Inches(1.25), Inches(1.50), Inches(1.50), Inches(1.50)]):
+    tab10.columns[i].width = w
 
-items_10tab = [
-    "Tabela Comparativa Obtida no MATLAB:\n  • 1ª Ordem: J = 1,7468 | RMSE = 0,21 dB | FIT = 88,36%\n  • 2ª Ordem: J = 2,2320 | RMSE = 0,22 dB | FIT = 85,12%\n  • 3ª Ordem: J = 2,2780 | RMSE = 0,31 dB | FIT = 84,82%\n  • 4ª Ordem: J = 1,8653 | RMSE = 0,21 dB | FIT = 87,57%\n  • 5ª Ordem: J = 3,6628 | RMSE = 0,68 dB | FIT = 75,59%",
-    "Por que Não Escolher Ordem Maior?\n  • Overfitting: Ordens ≥ 2 tentam modelar o ruído elétrico de comutação das escovas sem ganho físico real.\n  • Degradação Numérica: O condicionamento de Q piora drasticamente sem melhorar o FIT.",
-    "Decisão de Engenharia:\n  A 1ª ordem foi selecionada por parcimônia e coerência com a teoria clássica de máquinas elétricas CC."
+for j, h in enumerate(["Ordem", "Custo J", "RMSE Mag", "FIT (%)"]):
+    cell = tab10.cell(0, j)
+    cell.fill.solid(); cell.fill.fore_color.rgb = COR_AZUL_ESCURO
+    cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+    p = cell.text_frame.paragraphs[0]
+    p.text = h; p.font.size = Pt(14); p.font.bold = True; p.font.color.rgb = COR_BRANCO; p.alignment = PP_ALIGN.CENTER
+
+rows10 = [
+    ("1ª Ordem", "1,7468", "0,21 dB", "88,36%"),
+    ("2ª Ordem", "2,2320", "0,22 dB", "85,12%"),
+    ("3ª Ordem", "2,2780", "0,31 dB", "84,82%"),
+    ("4ª Ordem", "1,8653", "0,21 dB", "87,57%"),
+    ("5ª Ordem", "3,6628", "0,68 dB", "75,59%")
 ]
-for it in items_10tab:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(7)
+for i, r in enumerate(rows10):
+    is_best = (i == 0)
+    for j, v in enumerate(r):
+        cell = tab10.cell(i+1, j)
+        cell.fill.solid()
+        cell.fill.fore_color.rgb = COR_VERDE_BG if is_best else COR_CINZA_FUNDO
+        cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+        p = cell.text_frame.paragraphs[0]
+        p.text = v; p.font.size = Pt(14); p.font.bold = is_best
+        p.font.color.rgb = COR_VERDE_OK if is_best else COR_TEXTO_ESCURO
+        p.alignment = PP_ALIGN.CENTER
+
+_, tf10_note = make_card(slide10, 0.75, 5.18, 5.75, 1.80, "Decisão de Engenharia", title_size=17)
+add_bullets(tf10_note, [
+    ("Melhor Ajuste:", "1ª ordem vence em J (1,75) e FIT (88,36%)."),
+    ("Ordens ≥ 2:", "Overfitting no ruído de escovas e mau condicionamento.")
+], font_size=14.5, space_before=6)
 
 img_motor_todas = os.path.join(FIG_DIR, 'item5_motor_bode_todas_ordens.png')
 if os.path.exists(img_motor_todas):
-    slide10.shapes.add_picture(img_motor_todas, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0))
+    slide10.shapes.add_picture(img_motor_todas, Inches(6.75), Inches(1.75), Inches(5.83), Inches(5.23))
 
 set_speaker_notes(slide10,
-"""[ORADOR: Pedro Augusto | ~1:15 min]
-- Mostre a tabela e o gráfico de varredura de ordens de 1 a 5:
-  * A 1ª ordem obteve o menor custo J (1,74) e o maior FIT (88,36%);
-  * Ordens mais altas tentam ajustar o ruído mecânico e elétrico das escovas (overfitting), degradando o condicionamento numérico da matriz Q;
-  * Pelo princípio da parcimônia ensinado em MASD, selecionamos a 1ª ordem para representar a dinâmica dominante do motor.""")
+"""[ORADOR: Pedro Augusto | ~1:00 min]
+No Slide 10 avaliamos ordens de 1 a 5 para o motor CC usando a nossa rotina no MATLAB:
+- A 1ª ordem obteve o menor custo em norma 2 (J = 1,7468), menor erro de magnitude (0,21 dB) e o maior FIT: 88,36%!
+- A partir da 2ª ordem, o FIT cai (85% na 2ª/3ª, 75,6% na 5ª ordem), porque polos extras apenas ajustam ruído de comutação das escovas (overfitting) e pioram o condicionamento da matriz Q.
+- Seguindo o princípio da parcimônia, escolhemos a 1ª ordem como representação física ótima do motor.""")
+
 
 # =========================================================================
-# SLIDE 11: MODELO FÍSICO DO MOTOR E O ATRASO DE PADÉ (PEDRO AUGUSTO)
+# SLIDE 11: MODELO FÍSICO DO MOTOR E ATRASO DE PADÉ [ITEM 5] (PEDRO AUGUSTO)
 # =========================================================================
 slide11 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide11, "10. [Item 5] Modelo Físico Eletromecânico e Atraso de Padé (10,2 ms)", 
-           "Interpretação física dos parâmetros e explicação do zero no semi-plano direito", 
+add_header(slide11, "10. [Item 5] Modelo Físico e Atraso de Padé (10,2 ms)",
+           "Interpretação eletromecânica e explicação física do zero no semiplano direito",
            "Pedro Augusto")
 
-c11_1 = slide11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.6), Inches(5.0))
-c11_1.fill.solid(); c11_1.fill.fore_color.rgb = COR_CINZA_FUNDO; c11_1.line.color.rgb = COR_CINZA_BORDA
-tf = c11_1.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Modelo Físico Identificado (FIT = 88,36%)"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+_, tf11 = make_card(slide11, 0.75, 1.72, 5.75, 5.25, "Modelo Ótimo (FIT = 88,36%)", title_size=18.5)
 
-items_111 = [
-    "Função de Transferência Ótima:\n  G_motor(s) = (−0,2468 s + 48,33) / (s + 4,794)",
-    "Parâmetros Físicos Eletromecânicos:\n  • Ganho de Velocidade:\n    Km = 48,33 / 4,794 = 10,08 (rad/s)/V (20,07 dB).\n  • Constante de Tempo Mecânica Dominante:\n    τm = 1 / 4,794 = 0,209 segundos.",
-    "O Ponto Alto Técnico: Zero no SPD (s = +195,8 rad/s):\n  NÃO é instabilidade nem erro de modelagem! É a representação exata da APROXIMAÇÃO DE PADÉ de 1ª ordem de um atraso puro de transporte:\n  e^(−s·τd) ≈ (1 − s·τd/2) / (1 + s·τd/2)\n  ==> τd = 2 / 195,8 ≈ 10,2 milissegundos!",
-    "Significado Físico Real:\n  Os 10,2 ms correspondem perfeitamente ao atraso de conversão D/A, filtro e amostragem da placa de aquisição DAQ!",
-    "Transição de Fala: 'Para apresentar a validação cega no tempo contra sinais inéditos, as dificuldades superadas e as conclusões, passo a palavra ao Arthur Scarpini.'"
-]
-for it in items_111:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(11.5); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(5)
+p_gm = tf11.add_paragraph()
+p_gm.text = "G(s) = (−0,2468s + 48,33) / (s + 4,794)"
+p_gm.font.size = Pt(18); p_gm.font.bold = True; p_gm.font.color.rgb = COR_AZUL_MEDIO; p_gm.space_before = Pt(8); p_gm.space_after = Pt(10)
+
+add_bullets(tf11, [
+    ("Ganho Estático:", "Km = 48,33 / 4,794 = 10,08 (rad/s)/V."),
+    ("Constante Mecânica:", "τm = 1 / 4,794 = 0,209 segundos."),
+    ("Zero no SPD (+195,8 rad/s):", "Fase não-mínima = Aprox. de Padé:")
+], font_size=15.5, space_before=10)
+
+p_pade = tf11.add_paragraph()
+p_pade.text = "  e^(−s·τd) ≈ (1 − s·τd/2)/(1 + s·τd/2)  ⟹  τd ≈ 10,2 ms"
+p_pade.font.size = Pt(15); p_pade.font.bold = True; p_pade.font.color.rgb = COR_VERMELHO_EQ; p_pade.space_before = Pt(10); p_pade.space_after = Pt(8)
+
+add_bullets(tf11, [
+    ("Significado Real:", "Latência D/A, PWM e leitura da placa DAQ.")
+], font_size=15.5, space_before=6)
 
 img_motor_melhor = os.path.join(FIG_DIR, 'item5_motor_melhor_modelo_bode.png')
 if os.path.exists(img_motor_melhor):
-    slide11.shapes.add_picture(img_motor_melhor, Inches(6.8), Inches(1.8), Inches(5.7), Inches(5.0))
+    slide11.shapes.add_picture(img_motor_melhor, Inches(6.75), Inches(1.72), Inches(5.83), Inches(5.25))
 
 set_speaker_notes(slide11,
-"""[ORADOR: Pedro Augusto | ~1:45 min - Ponto Alto da Apresentação!]
-- Apresente o modelo físico final: Km = 10,08 (rad/s)/V e tau_m = 0,209 s (FIT de 88,36%).
-- Mostre a curva de Bode à direita: a adesão experimental é excepcional!
-- Destaque com firmeza o zero no SPD em s = +195,8 rad/s:
-  * Não é instabilidade física (o polo mecânico estável em -4,79 domina a dinâmica);
-  * É a aproximação de Padé de 1ª ordem de um atraso puro de transporte de ~10,2 ms;
-  * Esse atraso de 10,2 ms é o tempo de conversão e amostragem da placa DAQ do laboratório e explica perfeitamente a defasagem além de -90 graus a 10 Hz!
-- Transição de fala: 'Para apresentar a validação no tempo contra sinais inéditos, as dificuldades superadas e as conclusões, passo a palavra ao Scarpini.'""")
+"""[ORADOR: Pedro Augusto | ~1:30 min - Ponto Alto Físico]
+Aqui está o resultado físico mais interessante do trabalho.
+A função identificada de 1ª ordem é G(s) = (-0,2468s + 48,33) / (s + 4,794):
+- O ganho estático vale Km = 10,08 (rad/s)/V (20,07 dB);
+- A constante de tempo mecânica dominante é tau_m = 0,209 s (polo em -4,794 rad/s).
+Agora reparem no numerador: apareceu um zero real positivo em s = +195,8 rad/s!
+Longe de ser um erro numérico, esse zero no semiplano direito é a aproximação de Padé de 1ª ordem de um atraso puro de transporte: tau_d = 2 / 195,8 = 10,2 milissegundos!
+Fisicamente, esses 10,2 ms representam exatamente o atraso acumulado de conversão D/A, modulação PWM e leitura do encoder pela placa DAQ do laboratório — e explicam com perfeição por que a fase medida atingia -104 graus a 10 Hz!
+Para apresentar a validação temporal cega contra sinais inéditos, as dificuldades enfrentadas e as conclusões finais, passo a palavra ao Scarpini.""")
+
 
 # =========================================================================
 # SLIDE 12: VALIDAÇÃO TEMPORAL CEGA (SCARPINI)
 # =========================================================================
 slide12 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide12, "11. [Item 5] Validação Temporal Cega (Onda Quadrada e Triangular)", 
-           "Aplicação da 'Regra de Ouro da Identificação': modelo validado contra dados nunca vistos", 
+add_header(slide12, "11. [Item 5] Validação Temporal Cega do Motor CC",
+           "Aplicação da 'Regra de Ouro da Identificação' com ondas quadrada e triangular (10 Hz)",
            "Scarpini")
 
 img_sqr = os.path.join(FIG_DIR, 'item5_motor_validacao_onda_quadrada.png')
 if os.path.exists(img_sqr):
-    slide12.shapes.add_picture(img_sqr, Inches(0.8), Inches(1.75), Inches(5.7), Inches(3.8))
+    slide12.shapes.add_picture(img_sqr, Inches(0.75), Inches(1.65), Inches(5.75), Inches(3.95))
 
 img_tri = os.path.join(FIG_DIR, 'item5_motor_validacao_onda_triangular.png')
 if os.path.exists(img_tri):
-    slide12.shapes.add_picture(img_tri, Inches(6.8), Inches(1.75), Inches(5.7), Inches(3.8))
+    slide12.shapes.add_picture(img_tri, Inches(6.82), Inches(1.65), Inches(5.75), Inches(3.95))
 
-c12_desc = slide12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(5.7), Inches(11.7), Inches(1.4))
-c12_desc.fill.solid(); c12_desc.fill.fore_color.rgb = COR_CINZA_FUNDO; c12_desc.line.color.rgb = COR_CINZA_BORDA
-tf = c12_desc.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.15)
-p = tf.paragraphs[0]; p.text = "A 'Regra de Ouro da Identificação' (Slides de Aula MASD):"
-p.font.size = Pt(13); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
-
-items_12desc = [
-    "• Validação com Conjunto de Teste Independente: O modelo estimado exclusivamente a partir de dados senoidais foi submetido a entradas temporais inéditas de Onda Quadrada e Onda Triangular (10 Hz).",
-    "• Fidelidade Dinâmica: As curvas vermelhas (modelo N2CACGO) rastreiam com extrema precisão a subida exponencial, o valor de regime permanente e o amortecimento real medido pelo sensor óptico (curvas pretas), sem divergência!"
-]
-for it in items_12desc:
-    p = tf.add_paragraph(); p.text = it
-    p.font.size = Pt(11); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(2)
+_, tf12 = make_card(slide12, 0.75, 5.75, 11.83, 1.32, bg_color=COR_EQUACAO_BG, border_color=COR_AZUL_MEDIO)
+tf12.margin_top = Inches(0.14); tf12.margin_bottom = Inches(0.10)
+add_bullets(tf12, [
+    ("Regra de Ouro:", "Modelo identificado só com senoides, testado em entradas inéditas (Quadrada e Triangular)."),
+    ("Aderência Física:", "Curva vermelha (N2CACGO) rastreia subida, patamar e rampas medidas pelo tacômetro (preto).")
+], font_size=15, space_before=4)
 
 set_speaker_notes(slide12,
 """[ORADOR: Scarpini | ~1:15 min]
-- Agradeça ao Pedro Augusto e destaque a Regra de Ouro da Identificação ensinada pelo Prof. Marcelo:
-  * Nunca valide um modelo usando apenas os mesmos dados usados para estimá-lo;
-  * Nosso modelo foi calibrado com senoides puras e agora é submetido a ondas quadrada e triangular a 10 Hz;
-  * Veja nos gráficos: a linha vermelha do modelo N2CACGO segue com fidelidade impecável as respostas reais medidas pelo tacômetro (linha preta);
-  * Isso comprova que a constante de tempo de 0,21 s e o ganho estático de 10,08 são parâmetros físicos reais do motor!""")
+Obrigado, Pedro. Cumprimento o professor Marcelo e a banca examinadora.
+No Bloco 4 trago a validação temporal definitiva, as dificuldades superadas e o fechamento do trabalho.
+Aplicamos a 'Regra de Ouro da Identificação' vista nas aulas de MASD: jamais validar um modelo apenas com os mesmos dados usados para estimá-lo.
+Nosso modelo foi calibrado exclusivamente com ensaios senoidais e agora é testado contra duas excitações temporais nunca vistas: Onda Quadrada e Onda Triangular a 10 Hz.
+Como mostram os dois gráficos, a curva vermelha prevista pelo modelo N2CACGO acompanha com precisão a subida exponencial, o regime permanente e as rampas medidas na bancada real (linha preta), confirmando a autenticidade física de Km = 10,08 e tau_m = 0,209 s.""")
+
 
 # =========================================================================
-# SLIDE 13: DIFICULDADES ENCONTRADAS E SOLUÇÕES (SCARPINI)
+# SLIDE 13: DIFICULDADES E SOLUÇÕES DE ENGENHARIA (SCARPINI)
 # =========================================================================
 slide13 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide13, "12. Dificuldades Encontradas e Soluções de Engenharia", 
-           "Desafios numéricos e metrológicos enfrentados durante a execução do trabalho", 
+add_header(slide13, "12. Dificuldades Encontradas e Soluções Adotadas",
+           "Problemas numéricos e experimentais resolvidos durante o projeto",
            "Scarpini")
 
-c13_1 = slide13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.6), Inches(5.1))
-c13_1.fill.solid(); c13_1.fill.fore_color.rgb = COR_CINZA_FUNDO; c13_1.line.color.rgb = COR_CINZA_BORDA
-tf = c13_1.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Desafios Numéricos Matriciais"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+_, tf131 = make_card(slide13, 0.75, 1.72, 5.72, 5.25, "Desafios Numéricos e Espectrais", title_size=18.5)
+add_bullets(tf131, [
+    ("1. Matriz Q Mal-Condicionada (n ≥ 5):", "Potências (jω)ⁿ elevam κ(Q) > 10¹⁵."),
+    ("Solução Numérica:", "Escalonamento euclidiano de colunas e SVD."),
+    ("2. Vazamento Espectral na FFT:", "Truncamento temporal dispersa energia."),
+    ("Solução Espectral:", "Janela de Hann + seleção de banda coerente.")
+], font_size=15.5, space_before=15)
 
-items_131 = [
-    "1. Mal-condicionamento da Matriz de Vandermonde:\n  • Causa: Para ordens n ≥ 5, as potências sᵏ = (jω)ᵏ variam muitas ordens de magnitude (ωⁿ), elevando o número de condição κ(Q) > 10¹⁵ e gerando rcond(Q) ≈ 10⁻¹⁶.\n  • Solução Implementada: Normalização e escalonamento euclidiano de colunas no MATLAB, além do uso de fatoração SVD/pseudoinversa.",
-    "2. Fugas Espectrais (Spectral Leakage) na FFT:\n  • Causa: Truncamento do sinal temporal no Simulink causava vazamento de harmônicas na razão FFT Y(k)/U(k).\n  • Solução Implementada: Janelamento temporal de Hann e seleção da faixa ativa com alta coerência espectral (1,26 a 79,8 rad/s)."
-]
-for it in items_131:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(8)
-
-c13_2 = slide13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.9), Inches(1.8), Inches(5.6), Inches(5.1))
-c13_2.fill.solid(); c13_2.fill.fore_color.rgb = COR_CINZA_FUNDO; c13_2.line.color.rgb = COR_CINZA_BORDA
-tf = c13_2.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Desafios Físicos e Metrológicos"
-p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
-
-items_132 = [
-    "3. Defasagem Além de −90° em Alta Frequência:\n  • Causa: O motor apresentava defasagem de −104° a 10 Hz, impossível de modelar por uma FT estritamente de 1ª ordem sem atraso.\n  • Solução de Engenharia: Identificação de que o zero no SPD sintetizado pelo N2CACGO atua como aproximação de Padé de um atraso puro de transporte da placa DAQ (10,2 ms).",
-    "4. Não-Linearidades Mecânicas (Zona Morta e Atrito):\n  • Causa: Atrito estático e de Coulomb distorcem a resposta em amplitudes reduzidas.\n  • Solução Implementada: Ajuste senoidal restrito aos últimos 60% do registro, garantindo regime permanente linearizado."
-]
-for it in items_132:
-    p = tf.add_paragraph(); p.text = "• " + it
-    p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(8)
+_, tf132 = make_card(slide13, 6.85, 1.72, 5.72, 5.25, "Desafios Físicos de Bancada", title_size=18.5)
+add_bullets(tf132, [
+    ("3. Defasagem de −104° em 10 Hz:", "Incompatível com 1ª ordem sem atraso."),
+    ("Solução Física:", "Zero no SPD interpretado como Padé (10,2 ms)."),
+    ("4. Atrito Seco e Zona Morta:", "Distorções mecânicas no início do ensaio."),
+    ("Solução Metrológica:", "Descarte de 40% e ajuste nos 60% finais.")
+], font_size=15.5, space_before=15)
 
 set_speaker_notes(slide13,
 """[ORADOR: Scarpini | ~1:15 min]
-- Apresente as dificuldades reais encontradas e como as solucionamos como engenheiros:
-  1) Mal-condicionamento da matriz Q para ordens altas: superado com escalonamento de colunas e uso de decomposição SVD;
-  2) Vazamento espectral na FFT: mitigado com janelamento de Hann e corte de bordas;
-  3) Atraso de transporte da bancada: absorvido elegantemente pela aproximação de Padé sintetizada no zero de fase não-mínima;
-  4) Não-linearidades de atrito: tratadas descartando o transitório inicial e usando regressão senoidal de regime permanente.""")
+Ao longo da implementação enfrentamos quatro dificuldades técnicas reais e aplicamos soluções de engenharia objetivas:
+1) Mal-condicionamento de Vandermonde para ordens n >= 5, onde o número de condição passa de 10^15; resolvido com escalonamento euclidiano das colunas e decomposição SVD/pseudoinversa;
+2) Vazamento espectral (spectral leakage) na FFT do Simulink; resolvido aplicando janela de Hann e selecionando a banda de maior coerência;
+3) Defasagem física além de -90 graus a 10 Hz no motor; explicada e modelada exatamente pela síntese automática de um zero de Padé representando 10,2 ms de atraso da placa DAQ;
+4) Atrito seco e transitório inicial na bancada; mitigados descartando os primeiros 40% e ajustando apenas o regime permanente senoidal nos 60% finais.""")
+
 
 # =========================================================================
 # SLIDE 14: CONCLUSÕES FINAIS (SCARPINI)
 # =========================================================================
 slide14 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide14, "13. Conclusões Finais e Fechamento", 
-           "Síntese das realizações técnicas e cumprimento integral dos 8 itens do trabalho", 
+add_header(slide14, "13. Conclusões Finais e Entrega",
+           "Síntese dos resultados e cumprimento integral dos 8 itens solicitados",
            "Scarpini")
 
-c14 = slide14.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(11.7), Inches(5.1))
-c14.fill.solid(); c14.fill.fore_color.rgb = COR_CINZA_FUNDO; c14.line.color.rgb = COR_CINZA_BORDA
-tf = c14.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
-p = tf.paragraphs[0]; p.text = "Principais Conquistas Técnicas do Trabalho"
-p.font.size = Pt(17); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+_, tf141 = make_card(slide14, 0.75, 1.72, 5.72, 4.05, "Principais Resultados Alcançados", title_size=18.5)
+add_bullets(tf141, [
+    ("Convexidade Garantida:", "Solução analítica única θ* = Q⁻¹Y."),
+    ("Silveira & Simulink:", "FIT = 99,98% (tese) e 96,47% (FFT)."),
+    ("Motor CC + Padé:", "Km = 10,08, τm = 0,209 s, τd = 10,2 ms."),
+    ("Validação Cega:", "Onda quadrada e triangular confirmadas.")
+], font_size=15.5, space_before=13)
 
-conclusoes = [
-    "1. Eficácia do Método N2CACGO: A formulação convexa de Bruno de Pinho Silveira (IME, 2006) comprovou-se imune a mínimos locais, com solução analítica fechada sem custo iterativo.",
-    "2. Cumprimento dos 8 Itens do Trabalho:\n   • Item 1: Rotina identifica_N2CACGO.m implementada e vetorizada no MATLAB.\n   • Item 2: Rotina valida_modelo_fr.m com métricas completas (J, RMSE mag/fase, FIT %).\n   • Item 3: Validação acadêmica reproduzindo a Tabela 3.2 de Silveira e sistemas didáticos (FIT 100%).\n   • Item 4: Simulação dinâmica no Simulink (modelo_item4.slx) com recuperação espectral FFT (FIT 96,47%).\n   • Item 5: Identificação física da bancada de motor CC com interpretação de Padé (10,2 ms).\n   • Item 6: Artigo acadêmico completo em formato IEEE de duas colunas compilado em PDF.\n   • Item 7: Apresentação em PowerPoint (14 slides) com notas de orador completas.\n   • Item 8: Prontidão técnica para defesa oral perante a banca examinadora.",
-    "3. Reprodutibilidade e Rigor: Todos os scripts MATLAB, modelos Simulink e artigo LaTeX encontram-se versionados e organizados para entrega no Google Classroom."
-]
-for c in conclusoes:
-    p = tf.add_paragraph(); p.text = "• " + c
-    p.font.size = Pt(12); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(8)
+_, tf142 = make_card(slide14, 6.85, 1.72, 5.72, 4.05, "Cumprimento dos 8 Itens (100%)", title_size=18.5)
+add_bullets(tf142, [
+    ("Itens 1 e 2:", "identifica_N2CACGO.m e valida_modelo_fr.m."),
+    ("Itens 3 e 4:", "Benchmark Silveira + Simulink ode4 / FFT."),
+    ("Item 5:", "Identificação completa e cega do Motor CC."),
+    ("Itens 6, 7 e 8:", "Artigo IEEE (PDF), Slides, GitHub e Defesa.")
+], font_size=15.5, space_before=13)
 
-p_fim = tf.add_paragraph()
-p_fim.text = "\nMuito obrigado pela atenção de todos! Estamos abertos às perguntas do Professor e da banca."
-p_fim.font.size = Pt(14); p_fim.font.bold = True; p_fim.font.color.rgb = COR_AZUL_MEDIO; p_fim.alignment = PP_ALIGN.CENTER
+_, tf14_fim = make_card(slide14, 0.75, 5.95, 11.83, 1.05, bg_color=COR_AZUL_ESCURO, border_color=COR_DOURADO)
+tf14_fim.vertical_anchor = MSO_ANCHOR.MIDDLE
+p_fim = tf14_fim.paragraphs[0]
+p_fim.text = "Muito obrigado pela atenção! Estamos abertos às perguntas do Professor e da banca."
+p_fim.font.size = Pt(18.5); p_fim.font.bold = True; p_fim.font.color.rgb = COR_BRANCO; p_fim.alignment = PP_ALIGN.CENTER
 
 set_speaker_notes(slide14,
 """[ORADOR: Scarpini | ~1:00 min]
-- Finalize a apresentação com segurança e autoridade técnica:
-  * Resuma que o método N2CACGO cumpriu com louvor todos os objetivos propostos;
-  * Destaque o cumprimento de 100% dos 8 itens solicitados pelo professor na disciplina de MASD;
-  * Enfatize a reprodutibilidade do projeto: códigos limpos, modelo Simulink funcional, artigo IEEE compilado e slides prontos;
-  * Agradeça ao Prof. Dr. Marcelo de Araújo Oliveira pela orientação e finalize convidando a banca para a sessão de perguntas e respostas.""")
+Para concluir nossa apresentação:
+- Comprovamos a eficácia analítica do método N2CACGO de Silveira (2006), obtendo solução fechada em um único passo sem mínimos locais;
+- Reproduzimos o gabarito de Silveira com 99,98% de FIT, validamos o modelo contínuo no Simulink com 96,47% de FIT e caracterizamos o motor CC real revelando o atraso de Padé de 10,2 ms e validação temporal cega positiva;
+- Cumprimos integralmente todos os 8 itens propostos em MASD — códigos MATLAB, modelo Simulink, artigo IEEE de 6 páginas, apresentação, GitHub e defesa oral.
+Muito obrigado pela atenção do Prof. Dr. Marcelo e de todos os colegas. Ficamos à disposição para perguntas.""")
 
 prs.save(PPTX_PATH)
 print(f"Presentation saved successfully at: {PPTX_PATH}")
