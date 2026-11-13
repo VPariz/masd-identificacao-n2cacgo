@@ -293,15 +293,10 @@ p_code = tf41.add_paragraph()
 p_code.text = code_clean
 p_code.font.size = Pt(12.5); p_code.font.name = "Consolas"; p_code.font.bold = True; p_code.font.color.rgb = RGBColor(10, 40, 95)
 p_code.space_before = Pt(10); p_code.line_spacing = 1.25
+slide4.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide4_matriz.png'), Inches(0.95), Inches(5.65), width=Inches(5.80))
 
 _, tf42 = make_card(slide4, 7.20, 1.72, 5.37, 5.25, "valida_modelo_fr.m (Métricas MASD)", title_size=18)
-add_bullets(tf42, [
-    ("Custo Norma 2:", "J = || G_med − G_id ||₂"),
-    ("RMSE Magnitude:", "Erro quadrático médio em dB"),
-    ("RMSE Fase:", "Desvio angular médio em graus"),
-    ("Ajuste Global (FIT %):", "(1 − ||ΔG|| / ||G_med − Ḡ||) × 100%"),
-    ("Diagnóstico Visual:", "Plota Bode comparativo automático")
-], font_size=15.5, space_before=15)
+slide4.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide4_validacao.png'), Inches(7.32), Inches(2.38), width=Inches(5.12))
 
 set_speaker_notes(slide4,
 """[ORADOR: Pariz | ~1:15 min]
@@ -416,13 +411,8 @@ img_chirp = os.path.join(FIG_DIR, 'item4_simulink_sinais_temporais.png')
 if os.path.exists(img_chirp):
     slide7.shapes.add_picture(img_chirp, Inches(7.05), Inches(1.72), Inches(5.53), Inches(5.25))
 
-_, tf7_desc = make_card(slide7, 0.75, 4.22, 6.05, 2.75, "Especificação da Simulação", title_size=17.5)
-add_bullets(tf7_desc, [
-    ("Entrada_u:", "Chirp 0,1 → 15 Hz por 50 s (From Workspace)."),
-    ("Planta_LTI:", "G(s) = 40 / (s² + 6s + 5) (polos −1 e −5)."),
-    ("Saida_y:", "Exportação Array, Ts = 1 ms (20.001 pts)."),
-    ("Solver ode4:", "Runge-Kutta 4ª ordem (passo fixo 0,001 s).")
-], font_size=14.5, space_before=7)
+_, tf7_desc = make_card(slide7, 0.75, 4.22, 6.05, 2.75, "Equações do Modelo Simulink", title_size=17.5)
+slide7.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide7_simulink.png'), Inches(0.92), Inches(4.70), height=Inches(2.18))
 
 set_speaker_notes(slide7,
 """[ORADOR: Pariz | ~1:10 min]
@@ -442,21 +432,8 @@ add_header(slide8, "7. [Item 4] Validação do Simulink e FFT (FIT = 96,47%)",
            "Evidência final do código: recuperação analítica da planta a partir de u(t) e y(t)",
            "Pariz")
 
-_, tf81 = make_card(slide8, 0.75, 1.72, 5.75, 5.25, "Resultados da Extração via FFT", title_size=18.5)
-add_bullets(tf81, [
-    ("FRF Empírica:", "G_med = FFT{y} / FFT{u} (126 fasores úteis)."),
-    ("Banda Analisada:", "1,26 a 79,76 rad/s (janela de Hann)."),
-], font_size=15.5, space_before=10)
-
-p_gid = tf81.add_paragraph()
-p_gid.text = "G_id(s) = 40,0 / (s² + 6,005s + 4,818)"
-p_gid.font.size = Pt(18); p_gid.font.bold = True; p_gid.font.color.rgb = COR_AZUL_MEDIO; p_gid.space_before = Pt(14); p_gid.space_after = Pt(8)
-
-add_bullets(tf81, [
-    ("Polos Recuperados:", "−0,967 e −5,038 (reais: −1 e −5 | erro < 3%)."),
-    ("Ganho Estático:", "8,30 (nominal: 8,00)."),
-    ("Métricas Finais:", "FIT = 96,47% | RMSE = 0,165 dB | Fase = 1,03°.")
-], font_size=15.5, space_before=10)
+_, tf81 = make_card(slide8, 0.75, 1.72, 5.75, 5.25, "Extração FFT & Modelo Identificado", title_size=18.5)
+slide8.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide8_fft.png'), Inches(0.88), Inches(2.35), width=Inches(5.48))
 
 img_fft = os.path.join(FIG_DIR, 'item4_simulink_bode_validacao.png')
 if os.path.exists(img_fft):
