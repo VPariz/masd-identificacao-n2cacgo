@@ -2,7 +2,7 @@
 ## Identificação de Sistemas SISO no Domínio da Frequência via Método N2CACGO
 **Instituição:** Instituto Militar de Engenharia (IME) — DE/3 • Engenharia Elétrica  
 **Disciplina:** Modelagem e Análise de Sistemas Dinâmicos (MASD)  
-**Docente / Orientador:** Prof. Dr. Marcelo de Araújo Oliveira  
+**Docente:** Prof. Dr. Marcelo de Araújo Oliveira  
 **Equipe de Autores (Nomes de Guerra em Destaque):**  
 - **Renato Felix** (Renato Costa Félix)  
 - **Pariz** (João Victor Tavares Pariz)  

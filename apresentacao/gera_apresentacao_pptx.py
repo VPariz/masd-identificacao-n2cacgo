@@ -164,7 +164,7 @@ for b in blocos_capa:
     p.font.size = Pt(15); p.font.color.rgb = COR_BRANCO; p.space_before = Pt(7)
 
 p = tf_a.add_paragraph()
-p.text = "Orientador: Prof. Dr. Marcelo de Araújo Oliveira  •  Engenharia Elétrica (MASD)"
+p.text = "Docente: Prof. Dr. Marcelo de Araújo Oliveira  •  Engenharia Elétrica (MASD)"
 p.font.size = Pt(14); p.font.color.rgb = RGBColor(190, 210, 235); p.space_before = Pt(14)
 
 set_speaker_notes(slide1,
