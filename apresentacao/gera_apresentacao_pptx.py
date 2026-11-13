@@ -278,33 +278,42 @@ add_header(slide4, "3. [Itens 1 & 2] Rotinas Vetorizadas no MATLAB",
            "Pariz")
 
 _, tf41 = make_card(slide4, 0.75, 1.72, 6.20, 5.25, "identifica_N2CACGO.m (Núcleo Analítico)", bg_color=COR_CODE_BG, title_size=18)
-code_clean = """R(k+1,:) = (1i*w.').^(n-k);  % Base monomial
-S = diag(H);  Gamma = diag(H.*conj(H));
-
-Q1 = real(R * R');
-Q2 = real(R * S' * R(2:n+1,:)');
-Q3 = real(R(2:n+1,:) * S * R');
-Q4 = real(R(2:n+1,:) * Gamma * R(2:n+1,:)');
-
-Q = [Q1, -Q2; Q3, -Q4];
-theta = Q \\ Y;   % Passo único (LU)
-sys = tf(theta(1:n+1)', [1, theta(n+2:end)']);"""
-p_code = tf41.add_paragraph()
-p_code.text = code_clean
-p_code.font.size = Pt(12.5); p_code.font.name = "Consolas"; p_code.font.bold = True; p_code.font.color.rgb = RGBColor(10, 40, 95)
-p_code.space_before = Pt(10); p_code.line_spacing = 1.25
-slide4.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide4_matriz.png'), Inches(0.95), Inches(5.65), width=Inches(5.80))
+tf41.margin_left = Inches(0.22); tf41.margin_right = Inches(0.22)
+tf41.margin_top = Inches(0.18); tf41.margin_bottom = Inches(0.14)
+code_lines_4 = [
+    ("% 1. Base polinomial R e diagonais espectrais", True),
+    ("R(k+1,:) = (1i*w.').^(n-k);   % k = 0..n", False),
+    ("S = diag(H);  Gamma = diag(H.*conj(H));  RH = R';", False),
+    ("% 2. Blocos Hermitianos reais (matriz Q e vetor Y)", True),
+    ("Q1 = real(R * RH);", False),
+    ("Q2 = real(R * S' * RH(:,2:end));", False),
+    ("Q3 = real(R(2:end,:) * S * RH);", False),
+    ("Q4 = real(R(2:end,:) * Gamma * RH(:,2:end));", False),
+    ("Y  = [real(R*S'*RH(:,1)); real(R(2:end,:)*Gamma*RH(:,1))];", False),
+    ("% 3. Passo único analítico (LU) & FT contínua", True),
+    ("theta = [Q1, -Q2; Q3, -Q4] \\ Y;", False),
+    ("sys   = tf(theta(1:n+1)', [1, theta(n+2:end)']);", False),
+]
+for line_txt, is_c in code_lines_4:
+    p_code = tf41.add_paragraph()
+    p_code.space_before = Pt(5 if is_c else 1); p_code.space_after = Pt(1); p_code.line_spacing = 1.12
+    r_code = p_code.add_run(); r_code.text = line_txt
+    r_code.font.size = Pt(11.4); r_code.font.name = "Consolas"
+    r_code.font.bold = not is_c; r_code.font.italic = is_c
+    r_code.font.color.rgb = RGBColor(71, 85, 105) if is_c else RGBColor(10, 40, 95)
+slide4.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide4_matriz.png'), Inches(0.94), Inches(5.46), width=Inches(5.82), height=Inches(1.25))
 
 _, tf42 = make_card(slide4, 7.20, 1.72, 5.37, 5.25, "valida_modelo_fr.m (Métricas MASD)", title_size=18)
-slide4.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide4_validacao.png'), Inches(7.32), Inches(2.38), width=Inches(5.12))
+slide4.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide4_validacao.png'), Inches(7.30), Inches(2.34), width=Inches(5.18), height=Inches(4.48))
 
 set_speaker_notes(slide4,
 """[ORADOR: Pariz | ~1:15 min]
-Obrigado, Renato. Cumprimento o professor Marcelo e os colegas.
-No Bloco 2, apresento toda a nossa arquitetura computacional em MATLAB e Simulink, além das validações que comprovam o funcionamento dos códigos.
-Começando pelos Itens 1 e 2 no MATLAB:
-- Em identifica_N2CACGO.m, implementamos o algoritmo de forma 100% vetorizada, sem laços de busca: montamos a base monomial R = (j*w)^(n-k), construímos os quatro blocos reais Q1 a Q4 via projeções Hermitianas, e resolvemos Q * theta = Y em um único passo com o operador backslash (fatoração LU com pivoteamento ótimo).
-- Em valida_modelo_fr.m, avaliamos qualquer modelo identificado pelas 4 métricas oficiais vistas em sala: o custo J em norma 2, o RMSE de módulo em dB, o RMSE de fase em graus e o índice FIT percentual, gerando automaticamente o diagrama de Bode sobreposto.""")
+Obrigado, Renato. Cumprimento o professor e os colegas. Eu sou o Pariz e vou detalhar como saímos das equações matemáticas do N2CACGO para as rotinas funcionais no MATLAB e no Simulink, trazendo duas comprovações objetivas de validação.
+À esquerda está o núcleo vetorizado identifica_N2CACGO.m em três passos:
+1) Montamos a matriz monomial R = (jω)^(n−k) e as matrizes espectrais diagonais S, Gamma e RH = R';
+2) Calculamos os blocos reais Q1..Q4 e o vetor independente Y = [Y1; Y2] decorrente do denominador mônico (beta_0 = 1);
+3) Como o erro linearizado J_S(θ) = ||D·G − N||_2^2 é quadrático e convexo nos parâmetros, Qθ = Y resolve o mínimo global em passo único via eliminação LU (theta = Q \\ Y), sem chute inicial nem laços iterativos.
+À direita está valida_modelo_fr.m, nossa auditoria oficial em quatro métricas sobre o erro direto de transferência (G_med − G_id): Custo J (Norma 2), RMSE de Magnitude (dB), RMSE de Fase (graus) e o coeficiente FIT percentual.""")
 
 
 # =========================================================================
@@ -317,15 +326,15 @@ add_header(slide5, "4. Fluxograma Integrado: MATLAB & Simulink",
 
 img_fluxo = os.path.join(FIG_DIR, 'fluxograma_matlab_simulink.png')
 if os.path.exists(img_fluxo):
-    slide5.shapes.add_picture(img_fluxo, Inches(0.75), Inches(1.62), Inches(11.83), Inches(5.45))
+    slide5.shapes.add_picture(img_fluxo, Inches(1.58), Inches(1.56), Inches(10.17), Inches(5.69))
 
 set_speaker_notes(slide5,
 """[ORADOR: Pariz | ~1:00 min]
-No Slide 5 vemos o fluxograma completo integrando todas as etapas do trabalho:
-1) Em cima entram as três fontes de dados: benchmarks acadêmicos de até 7ª ordem (Item 3), sinais do modelo dinâmico no Simulink (Item 4) e ensaios experimentais do motor CC (Item 5);
-2) Para os ensaios no tempo fazemos o pré-processamento espectral — razão direta de FFTs Y(k)/U(k) no Simulink e regressão senoidal de mínimos quadrados no motor CC;
-3) Todos os fasores convergem para o núcleo identifica_N2CACGO.m e são auditados por valida_modelo_fr.m;
-4) Agora vou mostrar as duas evidências diretas de que esse código funciona na prática: primeiro validando o MATLAB contra a dissertação de Silveira (Item 3), e depois montando e validando o Simulink (Item 4).""")
+No Slide 5 vemos o pipeline completo integrando todas as etapas do trabalho em três estágios numerados:
+- Etapa 1 (Fontes de Dados): no Item 3 entram as FRFs analíticas da planta de 7ª ordem de Silveira e sistemas didáticos; no Item 4 simulamos o modelo no Simulink com chirp de 0,1 a 15 Hz e obtemos a FRF via razão de FFT Y(k)/U(k); e no Item 5 o colega Pedro Augusto carrega os 26 ensaios senoidais do motor CC real via regressão de mínimos quadrados nos 60% estacionários.
+- Etapa 2 (Núcleo Analítico): todos os espectros convergem exatamente para a mesma rotina identifica_N2CACGO.m.
+- Etapa 3 (Auditoria): valida_modelo_fr.m calcula J, RMSEs, FIT, gera os diagramas de Bode e alimenta a validação temporal cega.
+A seguir apresento as duas evidências diretas de que esse código opera com precisão.""")
 
 
 # =========================================================================
@@ -336,50 +345,60 @@ add_header(slide6, "5. [Item 3] Validação do Código MATLAB: Benchmark Silveir
            "Evidência exata contra a Tabela 3.2 de Silveira (2006) — Ordens 1 a 7 e sistemas didáticos",
            "Pariz")
 
-table_shape = slide6.shapes.add_table(8, 5, Inches(0.75), Inches(1.75), Inches(6.65), Inches(4.55))
+table_shape = slide6.shapes.add_table(8, 5, Inches(0.75), Inches(1.75), Inches(6.65), Inches(4.12))
 table = table_shape.table
-col_w = [Inches(1.05), Inches(1.55), Inches(1.55), Inches(1.05), Inches(1.45)]
+col_w = [Inches(0.95), Inches(1.48), Inches(1.48), Inches(1.02), Inches(1.72)]
 for i, w in enumerate(col_w):
     table.columns[i].width = w
+for r_idx in range(8):
+    table.rows[r_idx].height = Inches(0.515)
 
 headers = ["Ordem", "J (Nosso)", "J₁ (Tese)", "FIT", "Análise"]
 for j, h in enumerate(headers):
     cell = table.cell(0, j)
     cell.fill.solid(); cell.fill.fore_color.rgb = COR_AZUL_ESCURO
     cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+    cell.margin_top = Inches(0.03); cell.margin_bottom = Inches(0.03)
+    cell.margin_left = Inches(0.06); cell.margin_right = Inches(0.06)
     p = cell.text_frame.paragraphs[0]
-    p.text = h; p.font.size = Pt(14); p.font.bold = True; p.font.color.rgb = COR_BRANCO
+    p.text = h; p.font.size = Pt(13.5); p.font.bold = True; p.font.color.rgb = COR_BRANCO
     p.alignment = PP_ALIGN.CENTER
 
 dados_silv = [
-    ("1ª", "1,505 × 10¹", "1,513 × 10¹", "0,0%", "Sub-ord."),
-    ("2ª", "3,027 × 10⁰", "3,018 × 10⁰", "11,3%", "Sub-ord."),
-    ("3ª", "1,459 × 10⁰", "1,466 × 10⁰", "57,2%", "Sub-ord."),
-    ("4ª", "6,290 × 10⁻⁴", "6,320 × 10⁻⁴", "99,98%", "Ótima"),
-    ("5ª", "3,743 × 10⁻⁴", "3,795 × 10⁻⁴", "99,99%", "Canc."),
-    ("6ª", "3,533 × 10⁻⁴", "6,306 × 10⁻⁴", "99,99%", "Super."),
-    ("7ª", "3,866 × 10⁻⁴", "3,439 × 10⁻⁴", "99,99%", "Super.")
+    ("1ª", "1,505 × 10¹", "1,513 × 10¹", "0,0%", "Subajuste"),
+    ("2ª", "3,027 × 10⁰", "3,018 × 10⁰", "11,3%", "Subajuste"),
+    ("3ª", "1,459 × 10⁰", "1,466 × 10⁰", "57,2%", "Subajuste"),
+    ("4ª", "6,290 × 10⁻⁴", "6,320 × 10⁻⁴", "99,98%", "Ótima ✓"),
+    ("5ª", "3,743 × 10⁻⁴", "3,795 × 10⁻⁴", "99,99%", "Polo ≈ Zero"),
+    ("6ª", "3,533 × 10⁻⁴", "6,306 × 10⁻⁴", "99,99%", "Sobreajuste"),
+    ("7ª", "3,866 × 10⁻⁴", "3,439 × 10⁻⁴", "99,99%", "Sobreajuste")
 ]
 for i, row in enumerate(dados_silv):
-    is_opt = (row[4] == "Ótima")
+    is_opt = (row[0] == "4ª")
     for j, val in enumerate(row):
         cell = table.cell(i+1, j)
         cell.fill.solid()
         cell.fill.fore_color.rgb = COR_VERDE_BG if is_opt else COR_CINZA_FUNDO
         cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+        cell.margin_top = Inches(0.03); cell.margin_bottom = Inches(0.03)
+        cell.margin_left = Inches(0.06); cell.margin_right = Inches(0.06)
         p = cell.text_frame.paragraphs[0]
-        p.text = val; p.font.size = Pt(13.5)
+        p.text = val; p.font.size = Pt(13.0)
         p.font.color.rgb = COR_VERDE_OK if is_opt else COR_TEXTO_ESCURO
         p.font.bold = is_opt
         p.alignment = PP_ALIGN.CENTER
 
-# Faixa resumo embaixo da tabela
-_, tf6_b = make_card(slide6, 0.75, 6.42, 6.65, 0.65, bg_color=COR_EQUACAO_BG, border_color=COR_AZUL_MEDIO)
+# Faixa resumo embaixo da tabela (parcimonia + didaticos)
+_, tf6_b = make_card(slide6, 0.75, 6.02, 6.65, 1.02, bg_color=COR_EQUACAO_BG, border_color=COR_AZUL_MEDIO)
 tf6_b.vertical_anchor = MSO_ANCHOR.MIDDLE
-tf6_b.margin_top = Inches(0.06); tf6_b.margin_bottom = Inches(0.06)
-p6b = tf6_b.paragraphs[0]
-p6b.text = "✓ Sistemas didáticos (1ª–3ª ordem): FIT = 100,00% (erro nulo)"
-p6b.font.size = Pt(14); p6b.font.bold = True; p6b.font.color.rgb = COR_AZUL_ESCURO; p6b.alignment = PP_ALIGN.CENTER
+tf6_b.margin_left = Inches(0.14); tf6_b.margin_right = Inches(0.14)
+tf6_b.margin_top = Inches(0.07); tf6_b.margin_bottom = Inches(0.07)
+p6b1 = tf6_b.paragraphs[0]; p6b1.space_after = Pt(3)
+p6b1.text = "★ Parcimônia (Silveira, 7ª ord.): n = 4 (FIT = 99,98%) evita quase-cancelamentos (n ≥ 5)"
+p6b1.font.size = Pt(12.2); p6b1.font.bold = True; p6b1.font.color.rgb = COR_AZUL_ESCURO; p6b1.alignment = PP_ALIGN.LEFT
+p6b2 = tf6_b.add_paragraph()
+p6b2.text = "✓ Sistemas didáticos puros (1ª–3ª ordem): FIT = 100,00% (erro numérico nulo)"
+p6b2.font.size = Pt(12.2); p6b2.font.bold = True; p6b2.font.color.rgb = COR_VERDE_OK; p6b2.alignment = PP_ALIGN.LEFT
 
 img_silv = os.path.join(FIG_DIR, 'item3_exemplo_silveira_bode.png')
 if os.path.exists(img_silv):
@@ -387,12 +406,12 @@ if os.path.exists(img_silv):
 
 set_speaker_notes(slide6,
 """[ORADOR: Pariz | ~1:15 min - Evidência 1 do Código MATLAB]
-Esta é a primeira evidência concreta de que nossas rotinas MATLAB estão corretas: no Item 3 reproduzimos o Exemplo 3.4.1 da tese de Silveira (2006), cuja planta original é de 7ª ordem.
-Olhem na tabela comparativa:
-- De 1ª a 3ª ordem, o modelo é insuficiente (erro alto e FIT de até 57%);
-- Na 4ª ordem — que é o modelo reduzido ótimo pelo critério de parcimônia — o custo J cai quatro ordens de grandeza para 6,29e-4, batendo na casa decimal com o gabarito J1 = 6,32e-4 da dissertação, e alcançando FIT = 99,98%!
-- De 5ª a 7ª ordem o FIT mal muda (99,99%) porque surgem pares polo-zero de quase-cancelamento (superparametrização), confirmando que a 4ª ordem já captura com precisão a dinâmica essencial.
-- Além disso, validamos sistemas didáticos puros de 1ª, 2ª e 3ª ordem com FIT de 100,00%, confirmando que identifica_N2CACGO.m e valida_modelo_fr.m operam sem erros.""")
+Esta é a primeira evidência concreta de validação das rotinas MATLAB: no Item 3 reproduzimos o Exemplo 3.4.1 de Silveira (2006), uma planta original de 7ª ordem avaliada em 100 pontos de 0,01 a 100 rad/s.
+Na tabela:
+- De 1ª a 3ª ordem há subajuste (FIT máximo de 57,2%).
+- Na 4ª ordem — modelo reduzido ótimo pelo princípio da parcimônia — o custo J cai quatro ordens de grandeza para 6,290×10^-4, coincidindo na casa decimal com J1 = 6,320×10^-4 da tese e atingindo FIT = 99,98%.
+- De 5ª a 7ª ordem ocorre sobreparametrização: o FIT estabiliza em 99,99% à custa de pares polo-zero de quase-cancelamento (pequenas diferenças em n=6 e n=7 decorrem do condicionamento numérico em altas potências de ω^n).
+- Além disso, nos sistemas didáticos puros de 1ª, 2ª e 3ª ordens obtivemos FIT = 100,00%, confirmando implementação isenta de erros.""")
 
 
 # =========================================================================
@@ -405,23 +424,22 @@ add_header(slide7, "6. [Item 4] Arquitetura do Modelo no Simulink",
 
 img_sim_diag = os.path.join(FIG_DIR, 'simulink_diagrama_blocos.png')
 if os.path.exists(img_sim_diag):
-    slide7.shapes.add_picture(img_sim_diag, Inches(0.75), Inches(1.72), Inches(6.05), Inches(2.35))
+    slide7.shapes.add_picture(img_sim_diag, Inches(0.75), Inches(1.86), Inches(6.05), Inches(1.90))
 
 img_chirp = os.path.join(FIG_DIR, 'item4_simulink_sinais_temporais.png')
 if os.path.exists(img_chirp):
     slide7.shapes.add_picture(img_chirp, Inches(7.05), Inches(1.72), Inches(5.53), Inches(5.25))
 
-_, tf7_desc = make_card(slide7, 0.75, 4.22, 6.05, 2.75, "Equações do Modelo Simulink", title_size=17.5)
-slide7.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide7_simulink.png'), Inches(0.95), Inches(4.80), height=Inches(2.06))
+_, tf7_desc = make_card(slide7, 0.75, 4.02, 6.05, 2.95, "Equações do Modelo Simulink", title_size=17.5)
+slide7.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide7_simulink.png'), Inches(0.91), Inches(4.60), width=Inches(5.72), height=Inches(2.15))
 
 set_speaker_notes(slide7,
 """[ORADOR: Pariz | ~1:10 min]
-Passando ao Item 4, aqui está o nosso modelo funcional construído no Simulink (modelo_item4.slx):
-- O bloco Entrada_u (From Workspace) injeta um sinal Chirp linear varrendo de 0,1 Hz a 15 Hz durante 10 segundos para excitar toda a banda dinâmica;
-- O bloco Planta_LTI implementa a planta contínua 40 / (s^2 + 6s + 5), com polos em -1 e -5 e ganho estático 8;
-- O bloco Saida_y registra a resposta y(t) em Array com passo fixo Ts = 5 ms (fs = 200 Hz, totalizando N = 2.001 amostras);
-- Utilizamos o solver contínuo ode4 (Runge-Kutta de 4ª ordem), evitando distorções de passo variável para a etapa seguinte da FFT.
-À direita vemos os sinais temporais simulados ao longo dos 10 segundos, exibindo a atenuação progressiva da saída conforme a frequência sobe.""")
+Passando ao Item 4, aqui está o modelo funcional construído no Simulink (modelo_item4.slx):
+- Entrada_u (From Workspace) injeta um chirp linear varrendo de 0,1 Hz a 15 Hz em T = 10 s para excitar toda a banda dinâmica;
+- Planta_LTI implementa o sistema contínuo de 2ª ordem sobreamortecido 40 / [(s+1)(s+5)], com ganho estático K_0 = 8 e ω_n ≈ 2,24 rad/s;
+- Saida_y grava y(t) com passo fixo Ts = 5 ms (fs = 200 Hz, N = 2.001 amostras) usando o solver contínuo ode4 (Runge-Kutta de 4ª ordem) — passo fixo é essencial para gerar uma grade temporal uniforme antes da FFT.
+À direita observamos os sinais temporais u(t) e y(t), evidenciando a atenuação progressiva da planta à medida que a frequência sobe.""")
 
 
 # =========================================================================
@@ -432,8 +450,8 @@ add_header(slide8, "7. [Item 4] Validação do Simulink e FFT (FIT = 96,47%)",
            "Evidência final do código: recuperação analítica da planta a partir de u(t) e y(t)",
            "Pariz")
 
-_, tf81 = make_card(slide8, 0.75, 1.72, 5.75, 5.25, "Extração FFT & Modelo Identificado", title_size=18.5)
-slide8.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide8_fft.png'), Inches(0.88), Inches(2.35), width=Inches(5.48))
+_, tf81 = make_card(slide8, 0.75, 1.72, 5.75, 5.25, "Extração FFT & Modelo Identificado", title_size=18.0)
+slide8.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide8_fft.png'), Inches(0.88), Inches(2.30), width=Inches(5.48), height=Inches(4.55))
 
 img_fft = os.path.join(FIG_DIR, 'item4_simulink_bode_validacao.png')
 if os.path.exists(img_fft):
@@ -441,11 +459,11 @@ if os.path.exists(img_fft):
 
 set_speaker_notes(slide8,
 """[ORADOR: Pariz | ~1:15 min - Evidência 2 do Código & Simulink]
-E aqui está a validação que fecha o ciclo do nosso código Simulink + FFT + N2CACGO:
-Pegamos os vetores u(t) e y(t) exportados pelo Simulink, aplicamos a FFT retangular direta e calculamos a FRF pela razão fasorial Y(k)/U(k) em 126 frequências na faixa de 1,26 a 79,8 rad/s.
-Alimentando esses dados espectrais na nossa rotina identifica_N2CACGO.m para 2ª ordem, recuperamos G_id(s) = 40,0 / (s^2 + 6,005s + 4,818), com polos estimados em -0,954 e -5,051 — erro menor que 5% frente à planta nominal (-1 e -5)!
-Na nossa rotina de validação obtivemos FIT de 96,47%, RMSE de magnitude de apenas 0,165 dB e RMSE de fase de 1,02 grau, como comprova a sobreposição no diagrama de Bode à direita.
-Com os códigos MATLAB e o modelo Simulink devidamente validados, passo a palavra ao Pedro Augusto para apresentar o estudo experimental completo do Motor CC real.""")
+Por fim, fechando a minha parte no Slide 8, validamos o encadeamento completo Simulink → FFT → N2CACGO:
+1) Extraímos a FRF empírica pela razão fasorial Y(k)/U(k) via FFT retangular direta sobre 126 frequências válidas entre 1,26 e 79,8 rad/s;
+2) Aplicando identifica_N2CACGO para ordem n = 2, recuperamos G_id(s) = 40,00 / (s^2 + 6,005s + 4,818), com polos em −0,954 e −5,051 (erro abaixo de 5% frente aos polos nominais −1 e −5) e K_0 = 8,30 (nominal 8,00);
+3) Na rotina valida_modelo_fr alcançamos FIT = 96,47%, Custo J = 2,49×10^-1, RMSE de 0,165 dB em magnitude e 1,02° em fase. Vale ressaltar que os ~3,5% residuais decorrem do vazamento espectral típico da janela retangular aplicada a um sinal chirp finito (não periódico).
+Com código MATLAB e Simulink validados, passo a palavra ao Pedro Augusto para apresentar o estudo experimental no motor CC real.""")
 
 
 # =========================================================================

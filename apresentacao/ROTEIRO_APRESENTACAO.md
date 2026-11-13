@@ -63,44 +63,44 @@
 
 ---
 
-## 👤 BLOCO 2: JOÃO VICTOR PARIZ (Slides 4 a 8 — ~5:00 min)
+## 👤 BLOCO 2: PARIZ (Slides 4 a 8 — ~5:00 min)
 
 ### 🟢 Slide 4: 3. [Itens 1 & 2] Rotinas Vetorizadas no MATLAB (~1:15 min)
-> *"Obrigado, Renato. Cumprimento o professor Marcelo e os colegas.*  
-> *No Bloco 2, apresento toda a nossa arquitetura computacional em MATLAB e Simulink, além das validações que comprovam o funcionamento dos códigos.*  
-> *Começando pelos Itens 1 e 2 no MATLAB:*  
-> - *Em `identifica_N2CACGO.m`, implementamos o algoritmo de forma 100% vetorizada, sem laços de busca: montamos a base monomial $R = (j\omega)^{n-k}$, construímos os quatro blocos reais $Q_1$ a $Q_4$ via projeções Hermitianas, e resolvemos $Q\theta = Y$ em um único passo com o operador backslash (fatoração LU com pivoteamento ótimo).*  
-> - *Em `valida_modelo_fr.m`, avaliamos qualquer modelo identificado pelas 4 métricas oficiais vistas em sala: o custo $J$ em norma 2, o RMSE de módulo em dB, o RMSE de fase em graus e o índice FIT percentual, gerando automaticamente o diagrama de Bode sobreposto."*
+> *"Obrigado, Renato. Cumprimento o professor Marcelo e os colegas. Eu sou o Pariz e vou detalhar como saímos das equações matemáticas do N2CACGO para as rotinas funcionais no MATLAB e no Simulink, trazendo duas comprovações objetivas de validação.*  
+> *À esquerda está o núcleo vetorizado `identifica_N2CACGO.m` em três passos:*  
+> 1. *Montamos a base monomial $R = (j\omega)^{n-k}$ e as matrizes diagonais $S$, $\Gamma$ e $R_H = R^H$;*  
+> 2. *Calculamos os blocos reais $Q_1$ a $Q_4$ e o vetor independente $Y = [Y_1; Y_2]$ decorrente do denominador mônico ($\beta_0 = 1$);*  
+> 3. *Como o erro de equação linearizado $J_S(\theta) = \|D\cdot G - N\|_2^2$ é convexo e quadrático nos parâmetros, $Q\theta = Y$ resolve o mínimo global em passo único via eliminação LU (`theta = Q \ Y`), sem chute inicial nem iterações.*  
+> *À direita está `valida_modelo_fr.m`, nossa auditoria oficial em quatro métricas sobre o erro direto de transferência ($G_{\text{med}} - G_{\text{id}}$): Custo $J$ (Norma 2), RMSE de Magnitude (dB), RMSE de Fase (graus) e o índice global FIT percentual."*
 
 ### 🟢 Slide 5: 4. Fluxograma Integrado: MATLAB & Simulink (~0:50 min)
-> *"No Slide 5 vemos o fluxograma completo integrando todas as etapas do trabalho:*  
-> 1. *Em cima entram as três fontes de dados: benchmarks acadêmicos de até 7ª ordem (Item 3), sinais do modelo dinâmico no Simulink (Item 4) e ensaios experimentais do motor CC (Item 5);*  
-> 2. *Para os ensaios no tempo fazemos o pré-processamento espectral — razão direta de FFTs $Y(k)/U(k)$ no Simulink e regressão senoidal de mínimos quadrados no motor CC;*  
-> 3. *Todos os fasores convergem para o núcleo `identifica_N2CACGO.m` e são auditados por `valida_modelo_fr.m`;*  
-> 4. *Agora vou mostrar as duas evidências diretas de que esse código funciona na prática: primeiro validando o MATLAB contra a dissertação de Silveira (Item 3), e depois montando e validando o Simulink (Item 4)."*
+> *"No Slide 5 vemos o pipeline completo integrando todas as etapas do trabalho em três estágios numerados:*  
+> - *Etapa 1 (Fontes de Dados): no Item 3 entram as FRFs analíticas da planta de 7ª ordem de Silveira e sistemas didáticos; no Item 4 simulamos o modelo no Simulink com chirp de 0,1 a 15 Hz e obtemos a FRF via FFT $Y(k)/U(k)$; e no Item 5 o colega Pedro Augusto carrega os 26 ensaios senoidais do motor CC via regressão de mínimos quadrados nos 60% estacionários;*  
+> - *Etapa 2 (Núcleo Analítico): todos os espectros convergem exatamente para a mesma rotina `identifica_N2CACGO.m`;*  
+> - *Etapa 3 (Auditoria): `valida_modelo_fr.m` calcula $J$, RMSEs, FIT, gera os diagramas de Bode e alimenta a validação temporal cega.*  
+> *A seguir apresento as duas evidências diretas de que esse código opera com precisão."*
 
 ### 🟢 Slide 6: 5. [Item 3] Validação do Código MATLAB: Benchmark Silveira (~1:05 min)
-> *"Esta é a primeira evidência concreta de que nossas rotinas MATLAB estão corretas: no Item 3 reproduzimos o Exemplo 3.4.1 da tese de Silveira (2006), cuja planta original é de 7ª ordem.*  
-> *Olhem na tabela comparativa:*  
-> - *De 1ª a 3ª ordem, o modelo é insuficiente (erro alto e FIT de até 57%);*  
-> - *Na **4ª ordem** — que é o modelo reduzido ótimo pelo critério de parcimônia — o custo $J$ cai quatro ordens de grandeza para $6,290 \times 10^{-4}$, batendo na casa decimal com o gabarito $J_1 = 6,320 \times 10^{-4}$ da dissertação, e alcançando **FIT = 99,98%**!*  
-> - *De 5ª a 7ª ordem o FIT mal muda (99,99%) porque surgem pares polo-zero de quase-cancelamento (superparametrização), confirmando que a 4ª ordem já captura com precisão a dinâmica essencial.*  
-> - *Além disso, validamos sistemas didáticos puros de 1ª, 2ª e 3ª ordem com FIT de 100,00%, confirmando que `identifica_N2CACGO.m` e `valida_modelo_fr.m` operam sem erros."*
+> *"Esta é a primeira evidência concreta de validação das rotinas MATLAB: no Item 3 reproduzimos o Exemplo 3.4.1 de Silveira (2006), uma planta original de 7ª ordem avaliada em 100 pontos de 0,01 a 100 rad/s.*  
+> *Olhem na tabela:*  
+> - *De 1ª a 3ª ordem há subajuste (FIT máximo de 57,2%);*  
+> - *Na **4ª ordem** — modelo reduzido ótimo pelo princípio da parcimônia — o custo $J$ despenca quatro ordens de grandeza para $6,290 \times 10^{-4}$, batendo na casa decimal com $J_1 = 6,320 \times 10^{-4}$ da tese e atingindo **FIT = 99,98%**;*  
+> - *De 5ª a 7ª ordem ocorre sobreajuste/quase-cancelamento polo-zero ($99,99\%$, com pequenas variações numéricas em $n=6,7$ pelo condicionamento das potências de $\omega^n$);*  
+> - *Além disso, validamos sistemas didáticos puros de 1ª, 2ª e 3ª ordens com FIT = 100,00% (erro nulo), confirmando que nossas rotinas operam sem falhas."*
 
 ### 🟢 Slide 7: 6. [Item 4] Arquitetura do Modelo no Simulink (~0:50 min)
-> *"Passando ao Item 4, aqui está o nosso modelo funcional construído no Simulink (`modelo_item4.slx`):*  
-> - *O bloco `Entrada_u` (From Workspace) injeta um sinal Chirp linear varrendo de 0,1 Hz a 15 Hz durante 10 segundos para excitar toda a banda dinâmica;*  
-> - *O bloco `Planta_LTI` implementa a planta contínua $40 / (s^2 + 6s + 5)$, com polos em $-1$ e $-5$ e ganho estático 8;*  
-> - *O bloco `Saida_y` registra a resposta $y(t)$ em Array com passo fixo $T_s = 5$ ms ($f_s = 200$ Hz, totalizando $N = 2.001$ amostras);*  
-> - *Utilizamos o solver contínuo `ode4` (Runge-Kutta de 4ª ordem), evitando distorções de passo variável para a etapa seguinte da FFT.*  
-> *À direita vemos os sinais temporais simulados ao longo dos 10 segundos, exibindo a atenuação progressiva da saída conforme a frequência sobe."*
+> *"Passando ao Item 4, aqui está o modelo funcional construído no Simulink (`modelo_item4.slx`):*  
+> - *`Entrada_u` (From Workspace) injeta um chirp linear varrendo de 0,1 Hz a 15 Hz em $T = 10$ s para excitar toda a banda dinâmica;*  
+> - *`Planta_LTI` implementa o sistema contínuo sobreamortecido $40 / [(s+1)(s+5)]$, com ganho estático $K_0 = 8$ e $\omega_n \approx 2,24$ rad/s;*  
+> - *`Saida_y` grava $y(t)$ com passo fixo $T_s = 5$ ms ($f_s = 200$ Hz, $N = 2.001$ amostras) usando o solver contínuo `ode4` (Runge-Kutta de 4ª ordem) — passo fixo é essencial para gerar grade temporal uniforme antes da FFT.*  
+> *À direita observamos os sinais temporais $u(t)$ e $y(t)$, evidenciando a atenuação progressiva da planta conforme a frequência sobe."*
 
 ### 🟢 Slide 8: 7. [Item 4] Validação do Simulink e FFT (`FIT = 96,47%`) (~1:00 min)
-> *"E aqui está a validação que fecha o ciclo do nosso código Simulink + FFT + N2CACGO:*  
-> *Pegamos os vetores $u(t)$ e $y(t)$ exportados pelo Simulink, aplicamos a FFT retangular direta e calculamos a FRF pela razão fasorial $Y(k)/U(k)$ em 126 frequências na faixa de 1,26 a 79,8 rad/s.*  
-> *Alimentando esses dados espectrais na nossa rotina `identifica_N2CACGO.m` para 2ª ordem, recuperamos $G_{id}(s) = 40,0 / (s^2 + 6,005s + 4,818)$, com polos estimados em $-0,954$ e $-5,051$ — erro menor que 5% frente à planta nominal ($-1$ e $-5$)!*  
-> *Na nossa rotina de validação obtivemos **FIT de 96,47%**, RMSE de magnitude de apenas $0,165$ dB e RMSE de fase de $1,02^\circ$, como comprova a sobreposição no diagrama de Bode à direita.*  
-> *Com os códigos MATLAB e o modelo Simulink devidamente validados, passo a palavra ao Pedro Augusto para apresentar o estudo experimental completo do Motor CC real."*
+> *"Por fim, fechando a minha parte no Slide 8, validamos o encadeamento completo Simulink → FFT → N2CACGO:*  
+> *Extraímos a FRF empírica pela razão fasorial $Y(k)/U(k)$ via FFT retangular direta sobre 126 frequências válidas entre 1,26 e 79,8 rad/s.*  
+> *Aplicando `identifica_N2CACGO` para ordem $n = 2$, recuperamos $G_{id}(s) = 40,00 / (s^2 + 6,005s + 4,818)$, com polos em $-0,954$ e $-5,051$ (erro abaixo de 5% frente aos nominais $-1$ e $-5$) e $K_0 = 8,30$ (nominal 8,00).*  
+> *Na rotina `valida_modelo_fr` alcançamos **FIT de 96,47%**, $J = 2,49 \times 10^{-1}$, RMSE de $0,165$ dB em magnitude e $1,02^\circ$ em fase — sendo o desvio residual (~3,5%) explicado pelo vazamento espectral típico da janela retangular aplicada a um chirp finito.*  
+> *Com código MATLAB e Simulink validados, passo a palavra ao Pedro Augusto para apresentar o estudo experimental no motor CC real."*
 
 ---
 
