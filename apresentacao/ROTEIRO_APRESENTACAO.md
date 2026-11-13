@@ -143,7 +143,7 @@
 ### 🟢 Slide 13: 12. Dificuldades Encontradas e Soluções Adotadas (~1:15 min)
 > *"Ao longo da implementação enfrentamos quatro dificuldades técnicas reais e aplicamos soluções de engenharia objetivas:*  
 > 1. * **Mal-condicionamento de Vandermonde ($n \ge 5$):** onde o número de condição passa de $10^{15}$; resolvido com escalonamento euclidiano das colunas e decomposição SVD/pseudoinversa;*  
-> 2. * **Vazamento espectral na FFT do Simulink:** resolvido aplicando janela de Hann e selecionando a banda de maior coerência;*  
+> 2. * **Vazamento espectral na FFT do Simulink:** mitigado adotando passo fixo no solver `ode4` ($T_s = 5$ ms) e selecionando as 126 frequências na banda excitada de maior coerência;*  
 > 3. * **Defasagem física além de $-90^\circ$ a 10 Hz no motor:** explicada e modelada exatamente pela síntese automática de um zero de Padé representando $10,2$ ms de atraso da placa DAQ;*  
 > 4. * **Atrito seco e transitório inicial na bancada:** mitigados descartando os primeiros 40% e ajustando apenas o regime permanente senoidal nos 60% finais."*
 

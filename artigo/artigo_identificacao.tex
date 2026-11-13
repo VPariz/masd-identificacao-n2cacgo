@@ -191,7 +191,7 @@ A Tabela \ref{tab:silveira_comp} apresenta o confronto direto entre os custos de
 4 & $6,290 \times 10^{-4}$ & $6,320 \times 10^{-4}$ & 99,98 \% \\
 5 & $3,743 \times 10^{-4}$ & $3,795 \times 10^{-4}$ & 99,99 \% \\
 6 & $3,533 \times 10^{-4}$ & $6,306 \times 10^{-4}$ & 99,99 \% \\
-7 & $3,865 \times 10^{-4}$ & $3,439 \times 10^{-4}$ & 99,99 \% \\
+7 & $3,866 \times 10^{-4}$ & $3,439 \times 10^{-4}$ & 99,99 \% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -203,15 +203,15 @@ A Tabela \ref{tab:silveira_comp} apresenta o confronto direto entre os custos de
 \label{fig:silveira_bode}
 \end{figure}
 
-Observa-se na Fig. \ref{fig:silveira_bode} e na Tabela \ref{tab:silveira_comp} a exata concordância entre a implementação e os valores teóricos da literatura. Destaca-se que a partir da ordem $n = 4$ o erro decai abruptamente de $1,46$ para $6,29 \times 10^{-4}$ (FIT de 99,98\%), evidenciando a capacidade do N2CACGO em capturar a dinâmica dominante e atuar como ferramenta de redução balanceada de modelos.
+Observa-se na Fig. \ref{fig:silveira_bode} e na Tabela \ref{tab:silveira_comp} a exata concordância entre a implementação e os valores teóricos da literatura. Destaca-se que na ordem $n = 4$ (modelo reduzido ótimo pelo princípio da parcimônia frente à planta original de 7ª ordem) o erro decai abruptamente de $1,459$ para $6,290 \times 10^{-4}$ ($\text{FIT} = 99,98\%$), enquanto ordens de 5 a 7 apenas introduzem pares polo-zero de quase-cancelamento. Adicionalmente, sistemas didáticos puros de 1ª, 2ª e 3ª ordens foram testados, atingindo $\text{FIT} = 100,00\%$ (erro numérico nulo).
 
 \subsection{Item 4: Simulação Temporal no Simulink e FFT}
-No Item 4, investigou-se a reconstrução espectral a partir de sinais temporais. Definiu-se a planta LTI subamortecida de 2ª ordem:
+No Item 4, investigou-se a reconstrução espectral a partir de sinais temporais. Definiu-se a planta LTI sobreamortecida de 2ª ordem (polos reais em $s = -1$ e $s = -5$):
 \begin{equation}
-    G_{\text{alvo}}(s) = \frac{8}{0,2 s^2 + 1,2 s + 1}
+    G_{\text{alvo}}(s) = \frac{8}{0,2 s^2 + 1,2 s + 1} = \frac{40}{s^2 + 6s + 5}
     \label{eq:alvo_simulink}
 \end{equation}
-que possui ganho estático $K = 8$, frequência natural $\omega_n = \sqrt{5} \approx 2,236$~rad/s e fator de amortecimento $\zeta = 0,6/\sqrt{0,2} \approx 1,34$.
+que possui ganho estático $K_0 = 8$, frequência natural $\omega_n = \sqrt{5} \approx 2,236$~rad/s e fator de amortecimento $\zeta = 0,6/\sqrt{0,2} \approx 1,34$.
 
 \begin{figure}[htbp]
 \centering
@@ -228,9 +228,9 @@ que possui ganho estático $K = 8$, frequência natural $\omega_n = \sqrt{5} \ap
 \end{figure}
 
 
-O sistema foi simulado com taxa de amostragem $f_s = 200$~Hz por $T = 10$~s, sob excitação de um sinal \textit{chirp} varrendo linearmente de $0,1$~Hz a $15$~Hz, exibido na Fig. \ref{fig:chirp_tempo}. Aplicando a FFT a $u(t)$ e $y(t)$, estimou-se a Função de Resposta em Frequência (FRF):
+O sistema foi simulado no Simulink com solver contínuo \texttt{ode4} (Runge-Kutta de 4ª ordem) de passo fixo $T_s = 5$~ms ($f_s = 200$~Hz) durante $T = 10$~s ($N = 2.001$ amostras), sob excitação de um sinal \textit{chirp} varrendo linearmente de $0,1$~Hz a $15$~Hz (Fig. \ref{fig:chirp_tempo}). Aplicando a FFT retangular direta a $u(t)$ e $y(t)$ em $126$ frequências válidas ($\omega_k \in [1,26;\; 79,8]$~rad/s), estimou-se a Função de Resposta em Frequência (FRF):
 \begin{equation}
-    \hat{H}(j\omega_k) = \frac{Y(j\omega_k)}{U(j\omega_k)}
+    \hat{G}(j\omega_k) = \frac{Y(j\omega_k)}{U(j\omega_k)}
 \end{equation}
 
 \begin{figure}[htbp]
@@ -242,14 +242,14 @@ O sistema foi simulado com taxa de amostragem $f_s = 200$~Hz por $T = 10$~s, sob
 
 Alimentando os pontos da FRF na rotina N2CACGO para ordem $n=2$, obteve-se o modelo identificado:
 \begin{equation}
-    G_{\text{id}}(s) = \frac{40,00}{s^2 + 6,005 s + 4,818} = \frac{8,30}{0,207 s^2 + 1,246 s + 1}
+    G_{\text{id}}(s) = \frac{40,00}{s^2 + 6,005 s + 4,818} = \frac{40,00}{(s + 0,954)(s + 5,051)}
 \end{equation}
-que recupera fielmente os parâmetros nominais da Eq. (\ref{eq:alvo_simulink}), atingindo $\text{FIT} = 96,47\%$ e $\text{RMSE}_{\text{mag}} = 0,16$~dB (Fig. \ref{fig:simulink_bode}).
+que recupera fielmente os parâmetros nominais da Eq. (\ref{eq:alvo_simulink}), com polos estimados em $-0,954$ e $-5,051$ (erro inferior a $5\%$), ganho estático $K_0 = 8,30$, custo $J = 2,49 \times 10^{-1}$, $\text{FIT} = 96,47\%$, $\text{RMSE}_{\text{mag}} = 0,165$~dB e $\text{RMSE}_{\text{fase}} = 1,02^\circ$ (Fig. \ref{fig:simulink_bode}).
 
 \subsection{Item 5: Identificação de Modelo de Motor CC Experimental}
-Para a aplicação em sistema físico real, foram utilizados os ensaios de bancada coletados na disciplina de Sinais e Sistemas Lineares (Grupo 3). O conjunto experimental é composto por 26 ensaios senoidais com frequências de $0,20$~Hz a $10,00$~Hz ($1,26$~rad/s a $62,83$~rad/s).
+Para a aplicação em sistema físico real, foram utilizados os ensaios de bancada coletados na disciplina de Sinais e Sistemas Lineares (Grupo 3). O conjunto experimental é composto por 26 ensaios senoidais com frequências de $0,20$~Hz a $10,00$~Hz ($1,26$~rad/s a $62,83$~rad/s), amostrados a $f_s = 1$~kHz.
 
-A resposta em frequência complexa de cada ensaio foi extraída calculando-se a DFT fundamental no regime permanente (últimos 60\% do sinal amostrado), eliminando transitórios de partida. Os modelos de ordens 1 a 5 foram identificados via N2CACGO, gerando as métricas da Tabela \ref{tab:motor_comp}.
+A resposta em frequência complexa de cada ensaio foi extraída por regressão senoidal de mínimos quadrados (projeção fasorial fundamental) no regime permanente (últimos 60\% do sinal amostrado, descartando os 40\% iniciais de transitório de partida). Os modelos de ordens 1 a 5 foram identificados via N2CACGO, gerando as métricas da Tabela \ref{tab:motor_comp}.
 
 \begin{table}[htbp]
 \centering
@@ -319,7 +319,7 @@ As Figs. \ref{fig:valid_quad} e \ref{fig:valid_tri} comprovam que o modelo linea
 Durante o desenvolvimento do trabalho, quatro dificuldades técnicas principais foram identificadas e solucionadas:
 \begin{enumerate}
     \item \textbf{Condicionamento Matricial em Ordens Elevadas}: Para ordens $n \ge 5$, as potências de frequência geram colunas na matriz de regressão com variações de magnitude da ordem de $\omega^n$, elevando o número de condição ($\kappa(Q) > 10^{15}$) e aproximando a matriz da singularidade. A normalização euclidiana de colunas e uso de decomposição SVD/pseudoinversa mitigaram a propagação de erros de arredondamento.
-    \item \textbf{Vazamento Espectral e Resolução Finita da FFT}: Na reconstrução espectral a partir de séries temporais (Item 4), o truncamento de sinal introduz vazamento e distorção na fase. O emprego de janelamento temporal adequado (Hann) e seleção criteriosa do intervalo útil com alta coerência espectral garantiram estimativas de FRF limpas para a identificação.
+    \item \textbf{Vazamento Espectral e Resolução Finita da FFT}: Na reconstrução espectral a partir de séries temporais (Item 4), o truncamento do sinal \textit{chirp} em janela finita ($T = 10$~s) e o transitório inicial introduzem leve vazamento espectral nas bordas. A adoção do solver contínuo \texttt{ode4} com passo fixo ($T_s = 5$~ms) e a seleção criteriosa da banda útil excitada ($\omega \in [1,26;\; 79,8]$~rad/s, $126$ pontos) garantiram estimativas de FRF com alta coerência para a identificação.
     \item \textbf{Atrasos Puros de Transporte e Fases Além de $-90^\circ$}: Modelos racionais puros sem zeros no semiplano direito não conseguem reproduzir o decaimento linear de fase característico de atrasos puros ($-\omega \tau_d$). O método N2CACGO sintetizou autonomamente um zero no semiplano direito compatível com a aproximação de Padé de 1ª ordem, absorvendo o atraso de $10,2$~ms da placa DAQ sem necessidade de sobreparametrizar a ordem do denominador.
     \item \textbf{Não-Linearidades Mecânicas e Ruído de Comutação}: Na bancada experimental do motor CC, a presença de atrito estático/Coulomb (zona morta) e ruído elétrico de comutação das escovas distorce os sinais em baixas amplitudes. A filtragem espectral via regressão senoidal restrita ao regime permanente (últimos 60\% de cada registro) isolou a dinâmica linear fundamental do sistema.
 \end{enumerate}
@@ -327,7 +327,7 @@ Durante o desenvolvimento do trabalho, quatro dificuldades técnicas principais 
 \section{Conclusão}
 O presente trabalho confirmou a robustez, elegância matemática e eficiência computacional do método N2CACGO para identificação de sistemas SISO no domínio da frequência. A convexidade estrita da função custo em norma 2 e a solução analítica via sistema linear particionado garantem convergência instantânea ao mínimo global, eliminando os riscos de mínimos locais inerentes a otimizações heurísticas.
 
-Os testes de bancada do motor CC comprovaram a aderência prática do método, identificando com precisão o polo dominante mecânico ($\tau_m \approx 0,21$~s) e ganho estático ($K \approx 10,08$), validado com sucesso sob sinais periódicos não-senoidais. Todo o código computacional, modelos do Simulink e gráficos foram organizados de forma reprodutível para a apresentação do dia 06 de novembro.
+Os testes de bancada do motor CC comprovaram a aderência prática do método, identificando com precisão o polo dominante mecânico ($\tau_m \approx 0,209$~s), o ganho estático ($K_m \approx 10,08$) e o atraso de transporte de Padé ($10,2$~ms), validados com sucesso sob sinais periódicos não-senoidais (ondas quadrada e triangular). Todo o código computacional, modelo Simulink e gráficos foram organizados de forma integralmente reprodutível para a avaliação final da disciplina.
 
 \begin{thebibliography}{00}
 \bibitem{silveira2006} B. P. Silveira, ``Identificação de Sistemas no Domínio da Frequência aplicada a Veículos Aéreos Não Tripulados,'' Dissertação de Mestrado em Engenharia Elétrica, Instituto Militar de Engenharia (IME), Rio de Janeiro, 2006.
