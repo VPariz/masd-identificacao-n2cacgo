@@ -81,7 +81,14 @@ que pode ser expandido discretamente sobre as $m$ frequências como:
     J_S(\theta) = \sum_{i=1}^m | D(\beta, j\omega_i) G(j\omega_i) - N(\alpha, j\omega_i) |^2
 \end{equation}
 
-Conforme demonstrado por Silveira \cite{silveira2006}, a função $J_S(\theta)$ é estritamente convexa e quadrática em relação a $\theta$. Pelo Teorema da Otimização Convexa, existe um \textbf{único mínimo global}, obtido anulando-se o gradiente:
+A importância da convexidade reside na garantia matemática de que \textbf{todo mínimo local é necessariamente o mínimo global absoluto} \cite{marcelo2024}. Formalmente, uma função $f: X \to \mathbb{R}$ é dita convexa se, para quaisquer $x_1, x_2 \in X$ e qualquer $\lambda \in [0, 1]$:
+\begin{equation}
+    f(\lambda x_1 + (1-\lambda) x_2) \le \lambda f(x_1) + (1-\lambda) f(x_2)
+    \label{eq:def_convexa}
+\end{equation}
+Em termos de cálculo diferencial multivariado, isso equivale a exigir que a matriz Hessiana seja semidefinida positiva ($\nabla^2 f(\theta) \ge 0$) em todo o domínio. No caso da Eq. (\ref{eq:custo_n2cacgo}), o resíduo $e(\theta, j\omega_i) = D(\beta, j\omega_i) G(j\omega_i) - N(\alpha, j\omega_i)$ é \textbf{estritamente linear} nos parâmetros $\theta = [\alpha^T, \beta^T]^T$. Consequentemente, o Hessiano $\nabla^2 J_S(\theta) = 2 \text{Re}\{A^H A\}$ é constante e estritamente positivo definido.
+
+Esse resultado supera de forma definitiva as limitações de abordagens clássicas, como a Técnica de Imposição de Polos de Valle \cite{valle2005}, a qual não é convexa, não permite o cálculo analítico fechado de todos os parâmetros e fica sujeita a convergências espúrias em mínimos locais. No N2CACGO, a otimalidade global é atingida analiticamente anulando-se o gradiente:
 \begin{equation}
     \nabla_\theta J_S(\theta) = \mathbf{0}_{(2n+1) \times 1} \implies \begin{cases}
         \frac{\partial J_S}{\partial \alpha_k} = 0, & k = 0, \dots, n \\
@@ -328,6 +335,8 @@ Os testes de bancada do motor CC comprovaram a aderência prática do método, i
 \bibitem{lathi2008} B. P. Lathi, \textit{Sinais e Sistemas Lineares}, 2ª ed. Porto Alegre: Bookman, 2008.
 \bibitem{enns1984} D. F. Enns, ``Model reduction for large space structures,'' Ph.D. dissertation, Dept. Aeronautics and Astronautics, Stanford Univ., Stanford, CA, 1984.
 \bibitem{aguirre1994} L. A. Aguirre, \textit{Introdução à Identificação de Sistemas: Técnicas Lineares e Não-Lineares Aplicadas a Sistemas Reais}, 4ª ed. Belo Horizonte: Ed. UFMG, 2015.
+\bibitem{valle2005} R. L. Valle, ``Identifica\c{c}\~{a}o de Sistemas no Dom\'{\i}nio da Frequ\^{e}ncia via Imposi\c{c}\~{a}o de Polos,'' Disserta\c{c}\~{a}o de Mestrado em Engenharia El\'{e}trica, Instituto Militar de Engenharia (IME), Rio de Janeiro, 2005.
+\bibitem{marcelo2024} M. A. Oliveira, ``Modelagem e An\'{a}lise de Sistemas Din\^{a}micos: Identifica\c{c}\~{a}o de Sistemas no Dom\'{\i}nio da Frequ\^{e}ncia,'' Notas de Aula e Slides de Curso, Instituto Militar de Engenharia (IME), DE/3, 2026.
 \end{thebibliography}
 
 \end{document}

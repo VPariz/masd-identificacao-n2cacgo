@@ -1,6 +1,9 @@
 # Arquivos grandes (> 100 MB) que excedem o limite do GitHub
 dados_motor/relatorio_ssl.zip
 
+# Pasta descompactada de entrega temporária (o ZIP compilado já é versionado)
+entrega_classroom/
+
 # MATLAB e Simulink temporários
 *.asv
 slprj/
