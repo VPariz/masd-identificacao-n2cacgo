@@ -95,10 +95,10 @@ abox1 = slide1.shapes.add_textbox(Inches(1.2), Inches(4.8), Inches(11), Inches(2
 tf_a = abox1.text_frame
 p = tf_a.paragraphs[0]
 p.text = "Equipe e Divisão dos 4 Blocos da Apresentação (~15 minutos):\n" \
-         "• Bloco 1 (Slides 1 a 4): João Victor Pariz — Contexto Físico, Método de Silveira e Estrutura do Código MATLAB\n" \
-         "• Bloco 2 (Slides 5 a 7): Pedro Augusto — Validação Acadêmica e Simulação no Simulink com FFT\n" \
-         "• Bloco 3 (Slides 8 a 10): Renato Felix — Bancada Experimental do Motor CC, Rigor Metrológico e Atraso de Padé\n" \
-         "• Bloco 4 (Slides 11 a 13): Arthur Scarpini — Validação Cega no Tempo, Condicionamento Matricial e Conclusões\n\n" \
+         "• Bloco 1 (Slides 1 a 5): João Victor Pariz — Contexto Físico, Método de Silveira e Estrutura do Código MATLAB\n" \
+         "• Bloco 2 (Slides 6 a 8): Pedro Augusto — Validação Acadêmica e Simulação no Simulink com FFT\n" \
+         "• Bloco 3 (Slides 9 a 11): Renato Felix — Bancada Experimental do Motor CC, Rigor Metrológico e Atraso de Padé\n" \
+         "• Bloco 4 (Slides 12 a 14): Arthur Scarpini — Validação Cega no Tempo, Condicionamento Matricial e Conclusões\n\n" \
          "Orientador: Prof. Dr. Marcelo de Araújo Oliveira  |  Disciplina: Modelagem e Análise de Sistemas Dinâmicos (MASD)"
 p.font.size = Pt(12.5); p.font.color.rgb = RGBColor(220, 230, 245)
 
@@ -268,10 +268,31 @@ set_speaker_notes(slide4,
 - Transição: 'Para apresentar a validação desse código com a dissertação de Silveira e os ensaios no Simulink, passo a palavra ao Pedro Augusto.'""")
 
 # =========================================================================
+# SLIDE 5: FLUXOGRAMA DE PROCESSAMENTO: MATLAB & SIMULINK
+# =========================================================================
+slide_flx = prs.slides.add_slide(prs.slide_layouts[6])
+add_header(slide_flx, "4. Fluxograma de Processamento: MATLAB & Simulink", 
+           "Arquitetura integrada: dos ensaios e simulações ao núcleo N2CACGO e rotinas de validação", 
+           "João Victor Pariz / Pedro Augusto")
+
+img_fluxo = os.path.join(FIG_DIR, 'fluxograma_matlab_simulink.png')
+if os.path.exists(img_fluxo):
+    slide_flx.shapes.add_picture(img_fluxo, Inches(0.8), Inches(1.65), Inches(11.733), Inches(5.4))
+
+set_speaker_notes(slide_flx,
+"""[ORADOR: Transição João Victor Pariz -> Pedro Augusto | ~1:15 min]
+- Pariz apresenta a visão geral do pipeline de engenharia antes de passar a palavra:
+  * 3 Fontes de Dados: 1) Benchmark de Silveira (Item 3), 2) Simulação no Simulink com Chirp (Item 4) e 3) Bancada experimental do Motor CC (Item 5);
+  * Todas convergem para o NÚCLEO ALGORÍTMICO CENTRAL em MATLAB: identifica_N2CACGO.m;
+  * O núcleo constrói as matrizes analíticas Q e Y e resolve o SEL via Q \ Y em um único passo;
+  * Por fim, a rotina valida_modelo_fr.m calcula custos, RMSEs, FIT % e gera os gráficos de validação temporal cega.
+- Transição de fala: 'Para detalhar como esse pipeline operou no benchmark de Silveira e no Simulink, passo a palavra ao Pedro Augusto.'""")
+
+# =========================================================================
 # SLIDE 5: BENCHMARK SILVEIRA 2006 (ITEM 3)
 # =========================================================================
 slide5 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide5, "4. [Item 3] Validação Teórica: Benchmark de Silveira (2006)", 
+add_header(slide5, "5. [Item 3] Validação Teórica: Benchmark de Silveira (2006)", 
            "Reprodução fiel da Tabela 3.2 da dissertação de mestrado (Ordens 1 a 7)", 
            "Pedro Augusto")
 
@@ -325,7 +346,7 @@ set_speaker_notes(slide5,
 # SLIDE 6: O MODELO SIMULINK (ITEM 4) - COM O PRINT NÍTIDO DO DIAGRAMA!
 # =========================================================================
 slide6 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide6, "5. [Item 4] O Modelo Simulink: Diagrama de Blocos e Chirp", 
+add_header(slide6, "6. [Item 4] O Modelo Simulink: Diagrama de Blocos e Chirp", 
            "Estrutura do modelo_item4.slx, solver numérico ode4 e geração dos sinais temporais", 
            "Pedro Augusto")
 
@@ -368,7 +389,7 @@ set_speaker_notes(slide6,
 # SLIDE 7: RESULTADOS FFT E VALIDAÇÃO ESPECTRAL (ITEM 4)
 # =========================================================================
 slide7 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide7, "6. [Item 4] Extração por FFT e Validação do Modelo Identificado", 
+add_header(slide7, "7. [Item 4] Extração por FFT e Validação do Modelo Identificado", 
            "Processamento espectral de 126 fasores e recuperação analítica com FIT de 96,47%", 
            "Pedro Augusto")
 
@@ -403,7 +424,7 @@ set_speaker_notes(slide7,
 # SLIDE 8: O CASO DO MOTOR CC E OS DADOS EXPERIMENTAIS (ITEM 5)
 # =========================================================================
 slide8 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide8, "7. [Item 5] O Caso do Motor CC: Dados de Bancada e Rigor Metrológico", 
+add_header(slide8, "8. [Item 5] O Caso do Motor CC: Dados de Bancada e Rigor Metrológico", 
            "Origem dos dados experimentais da disciplina de SSL (Grupo 3, IME) e tratamento temporal", 
            "Renato Felix")
 
@@ -449,7 +470,7 @@ set_speaker_notes(slide8,
 # SLIDE 9: VARREDURA DE ORDENS E ESCOLHA DA 1ª ORDEM (ITEM 5)
 # =========================================================================
 slide9 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide9, "8. [Item 5] Varredura de Ordens: Por que Selecionamos a 1ª Ordem?", 
+add_header(slide9, "9. [Item 5] Varredura de Ordens: Por que Selecionamos a 1ª Ordem?", 
            "Comparação de ordens 1 a 5, análise de sobreajuste (overfitting) e parcimônia física", 
            "Renato Felix")
 
@@ -483,7 +504,7 @@ set_speaker_notes(slide9,
 # SLIDE 10: MODELO FÍSICO DO MOTOR E O ATRASO DE PADÉ (ITEM 5)
 # =========================================================================
 slide10 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide10, "9. [Item 5] Modelo Físico Eletromecânico e Atraso de Padé (10,2 ms)", 
+add_header(slide10, "10. [Item 5] Modelo Físico Eletromecânico e Atraso de Padé (10,2 ms)", 
            "Interpretação física dos parâmetros e explicação do zero no semi-plano direito", 
            "Renato Felix")
 
@@ -521,7 +542,7 @@ set_speaker_notes(slide10,
 # SLIDE 11: VALIDAÇÃO TEMPORAL CEGA (ITEM 5)
 # =========================================================================
 slide11 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide11, "10. [Item 5] Validação Temporal Cega (Regra de Ouro)", 
+add_header(slide11, "11. [Item 5] Validação Temporal Cega (Regra de Ouro)", 
            "Confronto do modelo linear contra ondas quadrada e triangular inéditas a 10 Hz", 
            "Arthur Scarpini")
 
@@ -551,7 +572,7 @@ set_speaker_notes(slide11,
 # SLIDE 12: DIFICULDADES NUMÉRICAS E ENGENHARIA
 # =========================================================================
 slide12 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide12, "11. Dificuldades Encontradas e Soluções de Engenharia", 
+add_header(slide12, "12. Dificuldades Encontradas e Soluções de Engenharia", 
            "Condicionamento matricial da matriz Q, vazamento espectral e integridade de dados", 
            "Arthur Scarpini")
 
@@ -596,7 +617,7 @@ set_speaker_notes(slide12,
 # SLIDE 13: CONCLUSÕES, DIFICULDADES E LIÇÕES APRENDIDAS
 # =========================================================================
 slide13 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide13, "12. Conclusões Finais: Síntese, Dificuldades e Lições", 
+add_header(slide13, "13. Conclusões Finais: Síntese, Dificuldades e Lições", 
            "Balanço geral das entregas de MASD, superação de desafios e repositório aberto", 
            "Arthur Scarpini & Equipe")
 
