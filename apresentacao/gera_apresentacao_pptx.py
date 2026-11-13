@@ -593,36 +593,56 @@ set_speaker_notes(slide12,
   3) Transitórios de bancada eliminados pelo corte seletivo dos primeiros 40% de dados.""")
 
 # =========================================================================
-# SLIDE 13: CONCLUSÕES E REPOSITÓRIO
+# SLIDE 13: CONCLUSÕES, DIFICULDADES E LIÇÕES APRENDIDAS
 # =========================================================================
 slide13 = prs.slides.add_slide(prs.slide_layouts[6])
-add_header(slide13, "12. Conclusões e Considerações Finais", 
-           "Síntese das entregas do trabalho de MASD e disponibilização do repositório", 
+add_header(slide13, "12. Conclusões Finais: Síntese, Dificuldades e Lições", 
+           "Balanço geral das entregas de MASD, superação de desafios e repositório aberto", 
            "Arthur Scarpini & Equipe")
 
-c13 = slide13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(11.7), Inches(5.0))
-c13.fill.solid(); c13.fill.fore_color.rgb = COR_CINZA_FUNDO; c13.line.color.rgb = COR_CINZA_BORDA
-tf = c13.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.35)
+c13_1 = slide13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.8), Inches(5.6), Inches(5.0))
+c13_1.fill.solid(); c13_1.fill.fore_color.rgb = COR_CINZA_FUNDO; c13_1.line.color.rgb = COR_CINZA_BORDA
+tf = c13_1.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
+p = tf.paragraphs[0]; p.text = "Síntese das Dificuldades Superadas"
+p.font.size = Pt(15); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
 
-concls = [
-    "Elegância Convexa: O método N2CACGO comprovou ser uma ferramenta analítica extremamente robusta para identificação no domínio da frequência, eliminando armadilhas de mínimos locais.",
-    "Fidelidade Acadêmica: Reprodução exata de 100% dos resultados tabelados por Bruno de Pinho Silveira (IME, 2006).",
-    "Integração Simulink + FFT: Validação bem-sucedida de planta LTI a partir de sinal Chirp com FIT superior a 96%.",
-    "Consistência Experimental na Bancada: O modelo de 1ª ordem representou com alta precisão a dinâmica mecânica dominante do motor (Km ≈ 10,08, τm ≈ 0,21 s), enquanto o zero em SPD revelou o atraso de hardware da placa de aquisição (10,2 ms via Padé).",
-    "Repositório Aberto e Reprodutibilidade Total: Todos os códigos MATLAB (.m), diagramas Simulink (.slx), dados experimentais (.mat) e o artigo IEEE estão disponíveis publicamente em:\nhttps://github.com/VPariz/masd-identificacao-n2cacgo"
+diffs_summary = [
+    "Instabilidade Numérica de Q: Superamos o rcond(Q) < 10^(-16) evitando pseudoinversa cega e adotando eliminação Gaussiana com pivoteamento parcial.",
+    "Leakage Espectral na FFT: Contornado com janelamento adequado e seleção das frequências com excitação ativa do Chirp.",
+    "Transitórios de Partida no Motor: Eliminados pelo corte seletivo dos primeiros 40% das amostras de cada ensaio.",
+    "Interpretação Física do Zero em SPD: Identificamos que o zero não era instabilidade, mas a representação de Padé do atraso de hardware da placa DAQ (10,2 ms)."
 ]
-for idx, c in enumerate(concls):
-    p = tf.paragraphs[0] if idx == 0 else tf.add_paragraph()
-    p.text = "✔  " + c
-    p.font.size = Pt(13.5); p.font.color.rgb = COR_TEXTO_ESCURO
-    p.space_before = Pt(10)
+for it in diffs_summary:
+    p = tf.add_paragraph(); p.text = "⚠️ " + it
+    p.font.size = Pt(11.5); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(6)
+
+c13_2 = slide13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.9), Inches(1.8), Inches(5.6), Inches(5.0))
+c13_2.fill.solid(); c13_2.fill.fore_color.rgb = COR_CINZA_FUNDO; c13_2.line.color.rgb = COR_CINZA_BORDA
+tf = c13_2.text_frame; tf.word_wrap = True; tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = Inches(0.25)
+p = tf.paragraphs[0]; p.text = "Conclusões e Contribuições do Grupo"
+p.font.size = Pt(15); p.font.bold = True; p.font.color.rgb = COR_AZUL_ESCURO
+
+concls_summary = [
+    "Elegância Convexa: O N2CACGO (Silveira, 2006) elimina o risco de mínimos locais de métodos heurísticos tipo Nelder-Mead.",
+    "Rigor Acadêmico: 100% de concordância com o benchmark histórico de Silveira (Tabela 3.2).",
+    "Integração Simulink: Sucesso na recuperação da planta LTI via Chirp + FFT com FIT de 96,47%.",
+    "Fidelidade Experimental: O modelo de 1ª ordem do motor CC explicou a mecânica (Km = 10,08, τm = 0,21 s) e validou cegamente no tempo.",
+    "Repositório Aberto: Códigos MATLAB (.m), modelo (.slx), dados (.mat) e artigo IEEE em:\ngithub.com/VPariz/masd-identificacao-n2cacgo"
+]
+for it in concls_summary:
+    p = tf.add_paragraph(); p.text = "✔ " + it
+    p.font.size = Pt(11.5); p.font.color.rgb = COR_TEXTO_ESCURO; p.space_before = Pt(6)
 
 set_speaker_notes(slide13,
-"""[ORADOR: Arthur Scarpini & Toda a Equipe | ~1:15 min]
-- Sintetize os sucessos dos 5 itens exigidos no trabalho.
-- Convide João Victor, Pedro e Renato a se posicionarem juntos à frente.
-- Agradeça ao Prof. Dr. Marcelo de Araújo Oliveira e aos colegas.
-- Abra formalmente a sessão para a arguição e perguntas da banca!""")
+"""[ORADOR: Arthur Scarpini & Toda a Equipe | ~1:30 min]
+- Amarre as conclusões com as dificuldades reais que enfrentamos e vencemos durante o trabalho:
+  1) O mau condicionamento matricial rcond(Q) < 10^-16 resolvido com pivoteamento direto;
+  2) O vazamento espectral contornado pelo janelamento do Chirp;
+  3) O transitório de bancada eliminado pelo corte de 40%;
+  4) A compreensão de que o zero em SPD era o atraso de Padé de 10,2 ms da placa.
+- Destaque que todos os 5 itens foram implementados em MATLAB nativo e entregues no artigo e repositório.
+- Convide João Victor, Pedro e Renato a se reunirem à frente.
+- Agradeça ao Prof. Dr. Marcelo de Araújo Oliveira e abra para a arguição da banca!""")
 
 prs.save(PPTX_PATH)
 print(f"Apresentação PowerPoint expandida salva com sucesso em: {PPTX_PATH}")
