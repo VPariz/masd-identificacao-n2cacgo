@@ -6,7 +6,7 @@
 **Equipe de Autores (Nomes de Guerra em Destaque):**  
 - **Renato Felix** (Renato Costa Félix)  
 - **Pariz** (João Victor Tavares Pariz)  
-- **Pedro Augusto / Peu** (Pedro Augusto dos Santos Barbosa)  
+- **Pedro Augusto** (Pedro Augusto dos Santos Barbosa)  
 - **Scarpini** (Wagner Scarpini Miranda)  
 
 **Tempo Total de Apresentação:** ~15 a 16 minutos + arguição.  
@@ -21,7 +21,7 @@
 |:---:|---|:---:|---|:---:|
 | **1** | **Renato Felix** | 1 a 3 | Abertura oficial, Tipologia de Modelos (Caixa Branca/Cinza/Preta), Vantagens Frequenciais vs. Tempo e Formulação Convexa N2CACGO (Silveira, 2006) | **~3:45 min** |
 | **2** | **Pariz** | 4 a 8 | Implementação MATLAB (`identifica_N2CACGO.m` e `valida_modelo_fr.m`), Fluxograma Integrado, **Validação do Código no Benchmark Silveira (Item 3)**, **Modelo Simulink `ode4` (Item 4)** e **Validação via FFT ($FIT = 96,47\%$)** | **~5:00 min** |
-| **3** | **Pedro Augusto (Peu)** | 9 a 11 | **Estudo Experimental do Motor CC Real (Item 5):** Dados da Bancada SSL (Grupo 3), Varredura de Ordens ($n=1..5$) por Parcimônia e **Modelo Físico Eletromecânico com Atraso de Padé (10,2 ms)** | **~3:45 min** |
+| **3** | **Pedro Augusto** | 9 a 11 | **Estudo Experimental do Motor CC Real (Item 5):** Dados da Bancada SSL (Grupo 3), Varredura de Ordens ($n=1..5$) por Parcimônia e **Modelo Físico Eletromecânico com Atraso de Padé (10,2 ms)** | **~3:45 min** |
 | **4** | **Scarpini** | 12 a 14 | **Regra de Ouro (Validação Temporal Cega: Quadrada e Triangular 10 Hz)**, Dificuldades Numéricas/Físicas Superadas e Conclusões Finais (Cumprimento dos 8 Itens) | **~3:30 min** |
 | **TOTAL** | **Toda a Equipe** | **1 a 14** | **Apresentação Enxuta, Visual, Fonte Grande e Rigor Técnico** | **~16:00 min** |
 
@@ -104,7 +104,7 @@
 
 ---
 
-## 👤 BLOCO 3: PEDRO AUGUSTO / PEU (Slides 9 a 11 — ~3:45 min)
+## 👤 BLOCO 3: PEDRO AUGUSTO (Slides 9 a 11 — ~3:45 min)
 
 ### 🟢 Slide 9: 8. [Item 5] Motor CC Real: Dados de Bancada (Grupo 3 SSL) (~1:15 min)
 > *"Obrigado, Pariz. Cumprimento o professor Marcelo e a banca.*  

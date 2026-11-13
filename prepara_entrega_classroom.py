@@ -59,7 +59,7 @@ TRABALHO: Identificação de Sistemas SISO no Domínio da Frequência via Métod
 GRUPO DE AUTORES (Nomes de Guerra em Destaque):
   - Renato Felix (Renato Costa Félix)
   - Pariz (João Victor Tavares Pariz)
-  - Pedro Augusto / Peu (Pedro Augusto dos Santos Barbosa)
+  - Pedro Augusto (Pedro Augusto dos Santos Barbosa)
   - Scarpini (Wagner Scarpini Miranda)
 
 ================================================================================

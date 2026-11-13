@@ -149,7 +149,7 @@ abox1 = slide1.shapes.add_textbox(Inches(1.05), Inches(3.85), Inches(11.5), Inch
 tf_a = abox1.text_frame; tf_a.word_wrap = True
 
 p = tf_a.paragraphs[0]
-p.text = "Equipe:  Renato Felix  |  Pariz  |  Pedro Augusto (Peu)  |  Scarpini"
+p.text = "Equipe:  Renato Felix  |  Pariz  |  Pedro Augusto  |  Scarpini"
 p.font.size = Pt(16); p.font.bold = True; p.font.color.rgb = COR_DOURADO
 
 blocos_capa = [
