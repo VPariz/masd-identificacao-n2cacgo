@@ -116,7 +116,7 @@ trabalho_identificacao/
 4. **Item 4 - Simulink + FFT (1 min):** Mostrar a simulação com chirp e a recuperação da planta de 2ª ordem com FIT de 96,5\%.
 5. **Item 5 - Motor DC (3 min):**
    - Apresentar o diagrama de Bode com as 23 frequências da bancada de SSL.
-   - Defender por que a **1ª ordem** é o melhor modelo (menor RMSE de 0,21 dB e menor erro J, alinhado à teoria de que $\tau_e \ll \tau_m$).
+   - Defender por que a **1ª ordem** é o melhor modelo (menor custo J = 1,7468, RMSE de magnitude = 0,22 dB, menor RMSE de fase = 2,19° e maior FIT = 88,36%, alinhado à teoria de que $\tau_e \ll \tau_m$).
    - Exibir os gráficos de validação com onda quadrada e triangular a 10 Hz mostrando a aderência temporal.
 6. **Dificuldades Encontradas (1 min):** Mencionar o condicionamento numérico para ordens altas ($n \ge 6$) e o tratamento do regime permanente para eliminar transitórios de partida.
 7. **Conclusão (1 min):** Encerrar destacando o sucesso e a reprodutibilidade da metodologia.

@@ -75,7 +75,7 @@
 
 ### 🟢 Slide 5: 4. Fluxograma Integrado: MATLAB & Simulink (~0:50 min)
 > *"No Slide 5 vemos o pipeline completo integrando todas as etapas do trabalho em três estágios numerados:*  
-> - *Etapa 1 (Fontes de Dados): no Item 3 entram as FRFs analíticas da planta de 7ª ordem de Silveira e sistemas didáticos; no Item 4 simulamos o modelo no Simulink com chirp de 0,1 a 15 Hz e obtemos a FRF via FFT $Y(k)/U(k)$; e no Item 5 o colega Pedro Augusto carrega os 26 ensaios senoidais do motor CC via regressão de mínimos quadrados nos 60% estacionários;*  
+> - *Etapa 1 (Fontes de Dados): no Item 3 entram as FRFs analíticas da planta de 7ª ordem de Silveira e sistemas didáticos; no Item 4 simulamos o modelo no Simulink com chirp de 0,1 a 15 Hz e obtemos a FRF via FFT $Y(k)/U(k)$; e no Item 5 o colega Pedro Augusto carrega os 26 ensaios senoidais do motor CC via projeção fasorial (DFT fundamental) nos 60% estacionários;*  
 > - *Etapa 2 (Núcleo Analítico): todos os espectros convergem exatamente para a mesma rotina `identifica_N2CACGO.m`;*  
 > - *Etapa 3 (Auditoria): `valida_modelo_fr.m` calcula $J$, RMSEs, FIT, gera os diagramas de Bode e alimenta a validação temporal cega.*  
 > *A seguir apresento as duas evidências diretas de que esse código opera com precisão."*
@@ -109,13 +109,13 @@
 ### 🟢 Slide 9: 8. [Item 5] Motor CC Real: Dados de Bancada (Grupo 3 SSL) (~1:15 min)
 > *"Obrigado, Pariz. Cumprimento o professor Marcelo e a banca.*  
 > *No Bloco 3, aplicamos o algoritmo validado a uma planta física real: o motor de corrente contínua da bancada de Sinais e Sistemas Lineares (dados do Grupo 3).*  
-> *A entrada é a tensão de armadura via ponte H PWM e a saída é a velocidade angular lida por tacômetro óptico. Foram processados 26 ensaios senoidais de 0,20 Hz a 10 Hz amostrados a 1 kHz.*  
-> *Para eliminar o transitório de partida e efeitos de atrito estático inicial, descartamos os primeiros 40% de cada registro e aplicamos regressão senoidal de mínimos quadrados nos 60% finais, extraindo amplitude e fase imunes a ruído.*  
+> *A entrada é a tensão de armadura via ponte H PWM e a saída é a velocidade angular lida por tacômetro óptico. Foram processados 26 ensaios senoidais de 0,20 Hz a 10 Hz amostrados a $f_s = 100$ Hz ($352$ a $1.000$ amostras por ensaio).*  
+> *Para eliminar o transitório de partida e efeitos de atrito estático inicial, descartamos os primeiros 40% de cada registro e aplicamos projeção fasorial (DFT na frequência fundamental) nos 60% finais, extraindo amplitude e fase imunes a ruído.*  
 > *Um detalhe físico importante apareceu na leitura: a defasagem passa de $-90^\circ$ e chega a $-104^\circ$ em 10 Hz — veremos a explicação física exata no Slide 11."*
 
 ### 🟢 Slide 10: 9. [Item 5] Varredura de Ordens do Motor CC ($n = 1$ a 5) (~1:00 min)
 > *"No Slide 10 avaliamos ordens de 1 a 5 para o motor CC usando a nossa rotina no MATLAB:*  
-> - *A **1ª ordem** obteve o menor custo em norma 2 ($J = 1,7468$), menor erro de magnitude ($0,21$ dB) e o maior FIT: **88,36%**!*  
+> - *A **1ª ordem** obteve o menor custo em norma 2 ($J = 1,7468$), erro de magnitude de $0,22$ dB ($0,2166$ dB), menor erro de fase ($2,19^\circ$) e o maior FIT: **88,36%**!*  
 > - *A partir da 2ª ordem, o FIT cai (85% na 2ª/3ª, 75,6% na 5ª ordem), porque polos extras apenas ajustam ruído de comutação das escovas (overfitting) e pioram o condicionamento da matriz $Q$.*  
 > - *Seguindo o princípio da parcimônia, escolhemos a 1ª ordem como representação física ótima do motor."*
 
@@ -142,10 +142,10 @@
 
 ### 🟢 Slide 13: 12. Dificuldades Encontradas e Soluções Adotadas (~1:15 min)
 > *"Ao longo da implementação enfrentamos quatro dificuldades técnicas reais e aplicamos soluções de engenharia objetivas:*  
-> 1. * **Mal-condicionamento de Vandermonde ($n \ge 5$):** onde o número de condição passa de $10^{15}$; resolvido com escalonamento euclidiano das colunas e decomposição SVD/pseudoinversa;*  
+> 1. * **Mal-condicionamento de Vandermonde ($n \ge 5$):** onde o número de condição passa de $10^{15}$; mitigado com fatoração LU (`Q \ Y`), fallback por decomposição SVD/pseudoinversa (`pinv`) e critério de parcimônia ($n \le 4$);*  
 > 2. * **Vazamento espectral na FFT do Simulink:** mitigado adotando passo fixo no solver `ode4` ($T_s = 5$ ms) e selecionando as 126 frequências na banda excitada de maior coerência;*  
 > 3. * **Defasagem física além de $-90^\circ$ a 10 Hz no motor:** explicada e modelada exatamente pela síntese automática de um zero de Padé representando $10,2$ ms de atraso da placa DAQ;*  
-> 4. * **Atrito seco e transitório inicial na bancada:** mitigados descartando os primeiros 40% e ajustando apenas o regime permanente senoidal nos 60% finais."*
+> 4. * **Atrito seco e transitório inicial na bancada:** mitigados descartando os primeiros 40% e aplicando projeção fasorial na frequência fundamental nos 60% finais."*
 
 ### 🟢 Slide 14: 13. Conclusões Finais e Entrega (~1:00 min)
 > *"Para concluir nossa apresentação:*  

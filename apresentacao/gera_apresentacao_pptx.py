@@ -115,7 +115,9 @@ def add_bullets(tf, items, font_size=15.5, space_before=10, bullet_char="▸ "):
 
 
 def set_speaker_notes(slide, notes_text):
-    slide.notes_slide.notes_text_frame.text = notes_text
+    # Notas mantidas vazias no deck final enviado ao Classroom/Google Slides.
+    if slide.has_notes_slide:
+        slide.notes_slide.notes_text_frame.text = ""
 
 
 # =========================================================================
@@ -479,13 +481,13 @@ add_bullets(tf91, [
     ("Planta Física:", "Motor CC + carga inercial (SSL Grupo 3)."),
     ("Entrada / Saída:", "Tensão PWM u(t) → velocidade ω(t) por tacômetro."),
     ("Varredura:", "26 senoides puras de 0,20 Hz a 10,0 Hz."),
-    ("Amostragem:", "fs = 1 kHz (10.000 amostras por ensaio)."),
+    ("Amostragem:", "fs = 100 Hz (352 a 1.000 amostras/ensaio)."),
     ("Corte Transitório:", "Descartados 40% iniciais; usados últimos 60%.")
 ], font_size=15.5, space_before=13)
 
 _, tf92 = make_card(slide9, 6.85, 1.72, 5.72, 5.25, "Extração Fasorial da FRF", title_size=18.5)
 add_bullets(tf92, [
-    ("Ajuste Senoidal:", "Regressão de mínimos quadrados em regime:"),
+    ("Projeção Fasorial:", "DFT na frequência fundamental em regime:"),
 ], font_size=15.5, space_before=12)
 
 p_frf = tf92.add_paragraph()
@@ -529,9 +531,9 @@ for j, h in enumerate(["Ordem", "Custo J", "RMSE Mag", "FIT (%)"]):
     p.text = h; p.font.size = Pt(14); p.font.bold = True; p.font.color.rgb = COR_BRANCO; p.alignment = PP_ALIGN.CENTER
 
 rows10 = [
-    ("1ª Ordem", "1,7468", "0,21 dB", "88,36%"),
+    ("1ª Ordem", "1,7468", "0,22 dB", "88,36%"),
     ("2ª Ordem", "2,2320", "0,22 dB", "85,12%"),
-    ("3ª Ordem", "2,2780", "0,31 dB", "84,82%"),
+    ("3ª Ordem", "2,2780", "0,32 dB", "84,82%"),
     ("4ª Ordem", "1,8653", "0,21 dB", "87,57%"),
     ("5ª Ordem", "3,6628", "0,68 dB", "75,59%")
 ]
@@ -652,9 +654,9 @@ add_header(slide13, "12. Dificuldades Encontradas e Soluções Adotadas",
 _, tf131 = make_card(slide13, 0.75, 1.72, 5.72, 5.25, "Desafios Numéricos e Espectrais", title_size=18.5)
 add_bullets(tf131, [
     ("1. Matriz Q Mal-Condicionada (n ≥ 5):", "Potências (jω)ⁿ elevam κ(Q) > 10¹⁵."),
-    ("Solução Numérica:", "Escalonamento euclidiano de colunas e SVD."),
+    ("Solução Numérica:", "Fatoração LU (Q \\ Y), fallback SVD (pinv) e parcimônia."),
     ("2. Vazamento Espectral na FFT:", "Truncamento temporal dispersa energia."),
-    ("Solução Espectral:", "Janela de Hann + seleção de banda coerente.")
+    ("Solução Espectral:", "Solver ode4 (Ts = 5 ms) + banda útil (1,26–79,8 rad/s).")
 ], font_size=15.5, space_before=15)
 
 _, tf132 = make_card(slide13, 6.85, 1.72, 5.72, 5.25, "Desafios Físicos de Bancada", title_size=18.5)
