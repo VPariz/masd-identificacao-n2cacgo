@@ -412,7 +412,7 @@ if os.path.exists(img_chirp):
     slide7.shapes.add_picture(img_chirp, Inches(7.05), Inches(1.72), Inches(5.53), Inches(5.25))
 
 _, tf7_desc = make_card(slide7, 0.75, 4.22, 6.05, 2.75, "Equações do Modelo Simulink", title_size=17.5)
-slide7.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide7_simulink.png'), Inches(0.92), Inches(4.70), height=Inches(2.18))
+slide7.shapes.add_picture(os.path.join(FIG_DIR, 'eq_slide7_simulink.png'), Inches(0.95), Inches(4.80), height=Inches(2.06))
 
 set_speaker_notes(slide7,
 """[ORADOR: Pariz | ~1:10 min]
